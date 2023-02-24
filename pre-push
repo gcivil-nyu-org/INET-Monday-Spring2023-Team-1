@@ -1,0 +1,20 @@
+#!/bin/sh
+# This script will run before git push
+# it will protect "main" and "develop" branch from pushing
+# put this file in .git/hooks/
+
+remote="$1"
+url="$2"
+
+main="refs/heads/main"
+develop="refs/heads/develop"
+
+while read local_ref local_oid remote_ref remote_oid
+do
+    if test "$local_ref" = "$main" -o "$local_ref" = "$develop"
+    then
+	echo >&2 "Error: pushing to the main or develop branch is forbidden! Use a pull request"
+	exit 1
+    fi
+done
+exit 0
