@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "doghub_app",
     "crispy_forms",
     "crispy_bootstrap5",
 ]
@@ -119,3 +120,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# a custom user class that subclass Django User
+# provides more flexibility than default auth_user
+AUTH_USER_MODEL = "doghub_app.CustomUser"
