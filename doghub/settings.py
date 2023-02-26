@@ -37,9 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "doghub_app",
-    "crispy_forms",
-    "crispy_bootstrap5",
+    "doghub_app"
 ]
 
 MIDDLEWARE = [
@@ -124,3 +122,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # a custom user class that subclass Django User
 # provides more flexibility than default auth_user
 AUTH_USER_MODEL = "doghub_app.CustomUser"
+AUTHENTICATION_BACKENDS = ['doghub_app.backends.CustomAuth']
