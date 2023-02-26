@@ -7,7 +7,7 @@ UserModel = get_user_model()
 class CustomAuth(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
-            if kwargs['username'] is not None and email is None:
+            if 'username' in kwargs and kwargs['username'] is not None and email is None:
                 email = kwargs['username']
             user = UserModel.objects.get(Q(username__iexact=email) | Q(email__iexact=email))
         except UserModel.DoesNotExist:
