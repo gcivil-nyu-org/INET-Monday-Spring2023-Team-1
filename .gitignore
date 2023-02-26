@@ -3,7 +3,7 @@
 
 ##vs code##
 .vscode
-
+launch.json
 
 ### Django ###
 *.log
