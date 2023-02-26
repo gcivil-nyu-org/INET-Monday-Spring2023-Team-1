@@ -1,0 +1,19 @@
+{% if messages %} {% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %} {% endif %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Title</title>
+  </head>
+  <body>
+    <p>Welcome {{ request.user.username}}</p>
+    <p>This is the events homepage</p>
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Sign Out</button>
+    </form>
+  </body>
+</html>
