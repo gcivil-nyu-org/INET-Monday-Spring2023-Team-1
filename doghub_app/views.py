@@ -17,15 +17,15 @@ def home(request):
 
 def register_request(request):
 	if request.method == "POST":
-		form = CustomUserCreationForm(request.POST)
-		if form.is_valid():
-			user = form.save()
+		user_email=request.POST.get('reg_uemail')
+		password = request.POST.get('reg_psw')
+		if CustomUser.objects.filter(email=user_email).exists():
+			messages.error(request,'User Exists')
+		else:
+			user = CustomUser.objects.create_user(username = user_email, email= user_email, password=password)
 			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("events")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = CustomUserCreationForm()
-	return render (request=request, template_name="doghub_app/register.html", context={"register_form":form})
+			return redirect('events')
+	return render(request=request, template_name="doghub_app/login.html")
 
 def login_request(request):
 	if request.method == "POST":
