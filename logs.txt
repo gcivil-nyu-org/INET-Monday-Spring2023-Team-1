@@ -1,0 +1,247 @@
+Retrieving logs...
+============= i-0bc08044f5854dfd7 ==============
+----------------------------------------
+/var/log/web.stdout.log
+----------------------------------------
+Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+Feb 27 21:11:52 ip-172-31-11-171 web: return self.load_wsgiapp()
+Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+Feb 27 21:11:52 ip-172-31-11-171 web: return util.import_app(self.app_uri)
+Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
+Feb 27 21:11:52 ip-172-31-11-171 web: mod = importlib.import_module(module)
+Feb 27 21:11:52 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
+Feb 27 21:11:52 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
+Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+Feb 27 21:11:52 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
+Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3559] [INFO] Worker exiting (pid: 3559)
+Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3552] [INFO] Shutting down: Master
+Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3552] [INFO] Reason: Worker failed to boot.
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Starting gunicorn 20.1.0
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Listening at: http://127.0.0.1:8000 (3564)
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Using worker: gthread
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [INFO] Booting worker with pid: 3571
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [ERROR] Exception in worker process
+Feb 27 21:11:53 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/arbiter.py", line 589, in spawn_worker
+Feb 27 21:11:53 ip-172-31-11-171 web: worker.init_process()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 92, in init_process
+Feb 27 21:11:53 ip-172-31-11-171 web: super().init_process()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 134, in init_process
+Feb 27 21:11:53 ip-172-31-11-171 web: self.load_wsgi()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+Feb 27 21:11:53 ip-172-31-11-171 web: self.wsgi = self.app.wsgi()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+Feb 27 21:11:53 ip-172-31-11-171 web: self.callable = self.load()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+Feb 27 21:11:53 ip-172-31-11-171 web: return self.load_wsgiapp()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+Feb 27 21:11:53 ip-172-31-11-171 web: return util.import_app(self.app_uri)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
+Feb 27 21:11:53 ip-172-31-11-171 web: mod = importlib.import_module(module)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
+Feb 27 21:11:53 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+Feb 27 21:11:53 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [INFO] Worker exiting (pid: 3571)
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Shutting down: Master
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Reason: Worker failed to boot.
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Starting gunicorn 20.1.0
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Listening at: http://127.0.0.1:8000 (3576)
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Using worker: gthread
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [INFO] Booting worker with pid: 3583
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [ERROR] Exception in worker process
+Feb 27 21:11:53 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/arbiter.py", line 589, in spawn_worker
+Feb 27 21:11:53 ip-172-31-11-171 web: worker.init_process()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 92, in init_process
+Feb 27 21:11:53 ip-172-31-11-171 web: super().init_process()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 134, in init_process
+Feb 27 21:11:53 ip-172-31-11-171 web: self.load_wsgi()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+Feb 27 21:11:53 ip-172-31-11-171 web: self.wsgi = self.app.wsgi()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+Feb 27 21:11:53 ip-172-31-11-171 web: self.callable = self.load()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+Feb 27 21:11:53 ip-172-31-11-171 web: return self.load_wsgiapp()
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+Feb 27 21:11:53 ip-172-31-11-171 web: return util.import_app(self.app_uri)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
+Feb 27 21:11:53 ip-172-31-11-171 web: mod = importlib.import_module(module)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
+Feb 27 21:11:53 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+Feb 27 21:11:53 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [INFO] Worker exiting (pid: 3583)
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Shutting down: Master
+Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Reason: Worker failed to boot.
+Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Starting gunicorn 20.1.0
+Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Listening at: http://127.0.0.1:8000 (4080)
+Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Using worker: gthread
+Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4136] [INFO] Booting worker with pid: 4136
+Feb 27 21:21:26 ip-172-31-11-171 web: Not Found: /favicon.ico
+Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /favicon.ico
+Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4080] [INFO] Handling signal: term
+Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4136] [INFO] Worker exiting (pid: 4136)
+Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4080] [INFO] Shutting down: Master
+Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Starting gunicorn 20.1.0
+Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Listening at: http://127.0.0.1:8000 (4516)
+Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Using worker: gthread
+Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4574] [INFO] Booting worker with pid: 4574
+Feb 27 21:25:08 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:25:08 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:25:16 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:25:16 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+
+
+----------------------------------------
+/var/log/eb-engine.log
+----------------------------------------
+2023/02/27 21:24:45.207361 [INFO] This is a web server environment instance, skip start sqsd daemon ...
+2023/02/27 21:24:45.207366 [INFO] Executing instruction: Track pids in healthd
+2023/02/27 21:24:45.207370 [INFO] This is an enhanced health env...
+2023/02/27 21:24:45.207384 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
+2023/02/27 21:24:45.221793 [INFO] healthd.service nginx.service cfn-hup.service
+
+2023/02/27 21:24:45.221818 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2023/02/27 21:24:45.232729 [INFO] web.service
+
+2023/02/27 21:24:45.232895 [INFO] Executing instruction: RunAppDeployPostDeployHooks
+2023/02/27 21:24:45.232914 [INFO] Executing platform hooks in .platform/hooks/postdeploy/
+2023/02/27 21:24:45.232929 [INFO] The dir .platform/hooks/postdeploy/ does not exist
+2023/02/27 21:24:45.232933 [INFO] Finished running scripts in /var/app/current/.platform/hooks/postdeploy
+2023/02/27 21:24:45.232946 [INFO] Executing cleanup logic
+2023/02/27 21:24:45.233050 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment successfully generated a 'Procfile'.","timestamp":1677533076862,"severity":"INFO"},{"msg":"Instance deployment completed successfully.","timestamp":1677533085232,"severity":"INFO"}]}]}
+
+2023/02/27 21:24:45.234025 [INFO] Platform Engine finished execution on command: app-deploy
+
+2023/02/27 21:27:35.910943 [INFO] Starting...
+2023/02/27 21:27:35.910995 [INFO] Starting EBPlatform-PlatformEngine
+2023/02/27 21:27:35.911014 [INFO] reading event message file
+2023/02/27 21:27:35.911151 [INFO] Engine received EB command cfn-hup-exec
+
+2023/02/27 21:27:35.967357 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
+2023/02/27 21:27:36.308670 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
+2023/02/27 21:27:36.620288 [INFO] checking whether command app-deploy is applicable to this instance...
+2023/02/27 21:27:36.620304 [INFO] this command is applicable to the instance, thus instance should execute command
+2023/02/27 21:27:36.620309 [INFO] Engine command: (app-deploy)
+
+2023/02/27 21:27:36.620316 [INFO] Downloading EB Application...
+2023/02/27 21:27:36.620320 [INFO] Region: us-west-2
+2023/02/27 21:27:36.620324 [INFO] envID: e-m5bxc2mpdt
+2023/02/27 21:27:36.620328 [INFO] envBucket: elasticbeanstalk-us-west-2-697432387497
+2023/02/27 21:27:36.620332 [INFO] Using manifest file name from command request
+2023/02/27 21:27:36.620340 [INFO] Manifest name is : manifest_1677533253347
+2023/02/27 21:27:36.620344 [INFO] Download app version manifest
+2023/02/27 21:27:36.620454 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/versions/manifest_1677533253347
+2023/02/27 21:27:36.655471 [INFO] Download successful110bytes downloaded
+2023/02/27 21:27:36.655657 [INFO] Trying to read and parse version manifest...
+2023/02/27 21:27:36.655753 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/_versions/eb-doghub-git/app-8e26-230227_162726716787
+2023/02/27 21:27:36.671035 [INFO] Download successful23597bytes downloaded
+2023/02/27 21:27:36.671232 [INFO] Executing instruction: ElectLeader
+2023/02/27 21:27:36.671262 [INFO] Running leader election for instance i-0bc08044f5854dfd7...
+2023/02/27 21:27:36.671267 [INFO] Calling the cfn-elect-cmd-leader to elect the command leader.
+2023/02/27 21:27:36.671283 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-elect-cmd-leader --stack arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb --command-name ElasticBeanstalkCommand-AWSEBAutoScalingGroup --invocation-id ee63b510-273e-4973-a419-eecd01c5a334 --listener-id i-0bc08044f5854dfd7 --region us-west-2
+2023/02/27 21:27:36.980396 [INFO] Instance is Leader.
+2023/02/27 21:27:36.980446 [INFO] Executing instruction: stopSqsd
+2023/02/27 21:27:36.980453 [INFO] This is a web server environment instance, skip stop sqsd daemon ...
+2023/02/27 21:27:36.980457 [INFO] Executing instruction: PreBuildEbExtension
+2023/02/27 21:27:36.980462 [INFO] Starting executing the config set Infra-EmbeddedPreBuild.
+2023/02/27 21:27:36.980478 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-init -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2 --configsets Infra-EmbeddedPreBuild
+2023/02/27 21:27:37.326027 [INFO] Finished executing the config set Infra-EmbeddedPreBuild.
+
+2023/02/27 21:27:37.326067 [INFO] Executing instruction: StageApplication
+2023/02/27 21:27:37.326189 [INFO] extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/
+2023/02/27 21:27:37.326210 [INFO] Running command /bin/sh -c /usr/bin/unzip -q -o /opt/elasticbeanstalk/deployment/app_source_bundle -d /var/app/staging/
+2023/02/27 21:27:37.330659 [INFO] finished extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/ successfully
+2023/02/27 21:27:37.331407 [INFO] Executing instruction: RunAppDeployPreBuildHooks
+2023/02/27 21:27:37.331423 [INFO] Executing platform hooks in .platform/hooks/prebuild/
+2023/02/27 21:27:37.331438 [INFO] The dir .platform/hooks/prebuild/ does not exist
+2023/02/27 21:27:37.331442 [INFO] Finished running scripts in /var/app/staging/.platform/hooks/prebuild
+2023/02/27 21:27:37.331448 [INFO] Executing instruction: InstallDependency
+2023/02/27 21:27:37.331456 [INFO] checking dependencies file
+2023/02/27 21:27:37.331462 [INFO] Installing dependencies with requirements.txt by using Pip
+2023/02/27 21:27:37.331470 [INFO] Running command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt
+2023/02/27 21:27:38.130586 [INFO] Processing /home/ktietz/src/ci/alabaster_1611921544520/work
+
+2023/02/27 21:27:38.130609 [INFO] ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
+
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: /var/app/venv/staging-LQM1lest/bin/python -m pip install --upgrade pip
+
+2023/02/27 21:27:38.130667 [ERROR] An error occurred during execution of command [app-deploy] - [InstallDependency]. Stop running the command. Error: fail to install dependencies with requirements.txt file with error Command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt failed with error exit status 1. Stderr:ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
+
+
+[notice] A new release of pip available: 22.3.1 -> 23.0.1
+[notice] To update, run: /var/app/venv/staging-LQM1lest/bin/python -m pip install --upgrade pip
+ 
+
+2023/02/27 21:27:38.130673 [INFO] Executing cleanup logic
+2023/02/27 21:27:38.130776 [INFO] CommandService Response: {"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"Engine execution has encountered an error.","returncode":1,"events":[{"msg":"Instance deployment failed to install application dependencies. The deployment failed.","timestamp":1677533258130,"severity":"ERROR"},{"msg":"Instance deployment failed. For details, see 'eb-engine.log'.","timestamp":1677533258130,"severity":"ERROR"}]}]}
+
+2023/02/27 21:27:38.131735 [INFO] Platform Engine finished execution on command: app-deploy
+
+2023/02/27 21:28:31.577185 [INFO] Starting...
+2023/02/27 21:28:31.577231 [INFO] Starting EBPlatform-PlatformEngine
+2023/02/27 21:28:31.577249 [INFO] reading event message file
+2023/02/27 21:28:31.577391 [INFO] Engine received EB command cfn-hup-exec
+
+2023/02/27 21:28:31.646435 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
+2023/02/27 21:28:31.982481 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
+2023/02/27 21:28:32.313915 [INFO] checking whether command tail-log is applicable to this instance...
+2023/02/27 21:28:32.313929 [INFO] this command is applicable to the instance, thus instance should execute command
+2023/02/27 21:28:32.313933 [INFO] Engine command: (tail-log)
+
+2023/02/27 21:28:32.313983 [INFO] Executing instruction: GetTailLogs
+2023/02/27 21:28:32.313988 [INFO] Tail Logs...
+2023/02/27 21:28:32.314233 [INFO] Running command /bin/sh -c tail -n 100 /var/log/web.stdout.log
+2023/02/27 21:28:32.316186 [INFO] Running command /bin/sh -c tail -n 100 /var/log/eb-engine.log
+
+
+----------------------------------------
+/var/log/eb-hooks.log
+----------------------------------------
+
+
+----------------------------------------
+/var/log/nginx/access.log
+----------------------------------------
+172.31.25.143 - - [27/Feb/2023:21:21:26 +0000] "GET / HTTP/1.1" 200 19 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:21:26 +0000] "GET /favicon.ico HTTP/1.1" 404 2988 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:22:16 +0000] "GET / HTTP/1.1" 200 19 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:22:23 +0000] "GET /login HTTP/1.1" 200 2923 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:22:23 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:22:23 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:22:23 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.1.23 - - [27/Feb/2023:21:22:37 +0000] "GET /login HTTP/1.1" 200 2923 "-" "Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)" "35.196.132.85"
+172.31.25.143 - - [27/Feb/2023:21:22:44 +0000] "GET /login HTTP/1.1" 200 2923 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:22:44 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:22:44 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:22:44 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 3024 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:22:44 +0000] "GET /favicon.ico HTTP/1.1" 404 2988 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:25:04 +0000] "GET / HTTP/1.1" 200 19 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:25:08 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:25:08 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:25:08 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+
+
+----------------------------------------
+/var/log/nginx/error.log
+----------------------------------------
+
+
