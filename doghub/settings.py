@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-uc^-qkv@gaz58e7qmc@2*+$pvognknbewiw2t*hb(k!4#j^-jw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com','127.0.0.1']
+ALLOWED_HOSTS = ['doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com','127.0.0.1','to-11.com']
 
 
 # Application definition
