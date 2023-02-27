@@ -3,211 +3,211 @@ Retrieving logs...
 ----------------------------------------
 /var/log/web.stdout.log
 ----------------------------------------
-Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
-Feb 27 21:11:52 ip-172-31-11-171 web: return self.load_wsgiapp()
-Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
-Feb 27 21:11:52 ip-172-31-11-171 web: return util.import_app(self.app_uri)
-Feb 27 21:11:52 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
-Feb 27 21:11:52 ip-172-31-11-171 web: mod = importlib.import_module(module)
-Feb 27 21:11:52 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
-Feb 27 21:11:52 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
-Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
-Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
-Feb 27 21:11:52 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
-Feb 27 21:11:52 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
-Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3559] [INFO] Worker exiting (pid: 3559)
-Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3552] [INFO] Shutting down: Master
-Feb 27 21:11:52 ip-172-31-11-171 web: [2023-02-27 21:11:52 +0000] [3552] [INFO] Reason: Worker failed to boot.
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Starting gunicorn 20.1.0
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Listening at: http://127.0.0.1:8000 (3564)
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Using worker: gthread
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [INFO] Booting worker with pid: 3571
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [ERROR] Exception in worker process
-Feb 27 21:11:53 ip-172-31-11-171 web: Traceback (most recent call last):
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/arbiter.py", line 589, in spawn_worker
-Feb 27 21:11:53 ip-172-31-11-171 web: worker.init_process()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 92, in init_process
-Feb 27 21:11:53 ip-172-31-11-171 web: super().init_process()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 134, in init_process
-Feb 27 21:11:53 ip-172-31-11-171 web: self.load_wsgi()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
-Feb 27 21:11:53 ip-172-31-11-171 web: self.wsgi = self.app.wsgi()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
-Feb 27 21:11:53 ip-172-31-11-171 web: self.callable = self.load()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
-Feb 27 21:11:53 ip-172-31-11-171 web: return self.load_wsgiapp()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
-Feb 27 21:11:53 ip-172-31-11-171 web: return util.import_app(self.app_uri)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
-Feb 27 21:11:53 ip-172-31-11-171 web: mod = importlib.import_module(module)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
-Feb 27 21:11:53 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
-Feb 27 21:11:53 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3571] [INFO] Worker exiting (pid: 3571)
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Shutting down: Master
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3564] [INFO] Reason: Worker failed to boot.
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Starting gunicorn 20.1.0
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Listening at: http://127.0.0.1:8000 (3576)
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Using worker: gthread
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [INFO] Booting worker with pid: 3583
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [ERROR] Exception in worker process
-Feb 27 21:11:53 ip-172-31-11-171 web: Traceback (most recent call last):
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/arbiter.py", line 589, in spawn_worker
-Feb 27 21:11:53 ip-172-31-11-171 web: worker.init_process()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 92, in init_process
-Feb 27 21:11:53 ip-172-31-11-171 web: super().init_process()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 134, in init_process
-Feb 27 21:11:53 ip-172-31-11-171 web: self.load_wsgi()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
-Feb 27 21:11:53 ip-172-31-11-171 web: self.wsgi = self.app.wsgi()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
-Feb 27 21:11:53 ip-172-31-11-171 web: self.callable = self.load()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
-Feb 27 21:11:53 ip-172-31-11-171 web: return self.load_wsgiapp()
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
-Feb 27 21:11:53 ip-172-31-11-171 web: return util.import_app(self.app_uri)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/util.py", line 359, in import_app
-Feb 27 21:11:53 ip-172-31-11-171 web: mod = importlib.import_module(module)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "/usr/lib64/python3.7/importlib/__init__.py", line 127, in import_module
-Feb 27 21:11:53 ip-172-31-11-171 web: return _bootstrap._gcd_import(name[level:], package, level)
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 983, in _find_and_load
-Feb 27 21:11:53 ip-172-31-11-171 web: File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
-Feb 27 21:11:53 ip-172-31-11-171 web: ModuleNotFoundError: No module named 'application'
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3583] [INFO] Worker exiting (pid: 3583)
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Shutting down: Master
-Feb 27 21:11:53 ip-172-31-11-171 web: [2023-02-27 21:11:53 +0000] [3576] [INFO] Reason: Worker failed to boot.
-Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Starting gunicorn 20.1.0
-Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Listening at: http://127.0.0.1:8000 (4080)
-Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4080] [INFO] Using worker: gthread
-Feb 27 21:20:55 ip-172-31-11-171 web: [2023-02-27 21:20:55 +0000] [4136] [INFO] Booting worker with pid: 4136
-Feb 27 21:21:26 ip-172-31-11-171 web: Not Found: /favicon.ico
-Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
-Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
-Feb 27 21:22:23 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
-Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
-Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
-Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
-Feb 27 21:22:44 ip-172-31-11-171 web: Not Found: /favicon.ico
-Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4080] [INFO] Handling signal: term
-Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4136] [INFO] Worker exiting (pid: 4136)
-Feb 27 21:24:44 ip-172-31-11-171 web: [2023-02-27 21:24:44 +0000] [4080] [INFO] Shutting down: Master
-Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Starting gunicorn 20.1.0
-Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Listening at: http://127.0.0.1:8000 (4516)
-Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4516] [INFO] Using worker: gthread
-Feb 27 21:24:45 ip-172-31-11-171 web: [2023-02-27 21:24:45 +0000] [4574] [INFO] Booting worker with pid: 4574
-Feb 27 21:25:08 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
-Feb 27 21:25:08 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
-Feb 27 21:25:16 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
-Feb 27 21:25:16 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:53:00 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/__init__.py", line 57, in close_old_connections
+Feb 27 21:53:00 ip-172-31-11-171 web: conn.close_if_unusable_or_obsolete()
+Feb 27 21:53:00 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/base/base.py", line 514, in close_if_unusable_or_obsolete
+Feb 27 21:53:00 ip-172-31-11-171 web: self.close()
+Feb 27 21:53:00 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 248, in close
+Feb 27 21:53:00 ip-172-31-11-171 web: if not self.is_in_memory_db():
+Feb 27 21:53:00 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 367, in is_in_memory_db
+Feb 27 21:53:00 ip-172-31-11-171 web: return self.creation.is_in_memory_db(self.settings_dict['NAME'])
+Feb 27 21:53:00 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/creation.py", line 12, in is_in_memory_db
+Feb 27 21:53:00 ip-172-31-11-171 web: return database_name == ':memory:' or 'mode=memory' in database_name
+Feb 27 21:53:00 ip-172-31-11-171 web: TypeError: argument of type 'PosixPath' is not iterable
+Feb 27 21:53:00 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:53:09 ip-172-31-11-171 web: [2023-02-27 21:53:09 +0000] [6291] [ERROR] Error handling request
+Feb 27 21:53:09 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 336, in handle_request
+Feb 27 21:53:09 ip-172-31-11-171 web: respiter.close()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/http/response.py", line 252, in close
+Feb 27 21:53:09 ip-172-31-11-171 web: signals.request_finished.send(sender=self._handler_class)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in send
+Feb 27 21:53:09 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+Feb 27 21:53:09 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/__init__.py", line 57, in close_old_connections
+Feb 27 21:53:09 ip-172-31-11-171 web: conn.close_if_unusable_or_obsolete()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/base/base.py", line 514, in close_if_unusable_or_obsolete
+Feb 27 21:53:09 ip-172-31-11-171 web: self.close()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 248, in close
+Feb 27 21:53:09 ip-172-31-11-171 web: if not self.is_in_memory_db():
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 367, in is_in_memory_db
+Feb 27 21:53:09 ip-172-31-11-171 web: return self.creation.is_in_memory_db(self.settings_dict['NAME'])
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/creation.py", line 12, in is_in_memory_db
+Feb 27 21:53:09 ip-172-31-11-171 web: return database_name == ':memory:' or 'mode=memory' in database_name
+Feb 27 21:53:09 ip-172-31-11-171 web: TypeError: argument of type 'PosixPath' is not iterable
+Feb 27 21:53:09 ip-172-31-11-171 web: [2023-02-27 21:53:09 +0000] [6291] [ERROR] Error handling request
+Feb 27 21:53:09 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 336, in handle_request
+Feb 27 21:53:09 ip-172-31-11-171 web: respiter.close()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/http/response.py", line 252, in close
+Feb 27 21:53:09 ip-172-31-11-171 web: signals.request_finished.send(sender=self._handler_class)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in send
+Feb 27 21:53:09 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+Feb 27 21:53:09 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/__init__.py", line 57, in close_old_connections
+Feb 27 21:53:09 ip-172-31-11-171 web: conn.close_if_unusable_or_obsolete()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/base/base.py", line 514, in close_if_unusable_or_obsolete
+Feb 27 21:53:09 ip-172-31-11-171 web: self.close()
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 248, in close
+Feb 27 21:53:09 ip-172-31-11-171 web: if not self.is_in_memory_db():
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 367, in is_in_memory_db
+Feb 27 21:53:09 ip-172-31-11-171 web: return self.creation.is_in_memory_db(self.settings_dict['NAME'])
+Feb 27 21:53:09 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/creation.py", line 12, in is_in_memory_db
+Feb 27 21:53:09 ip-172-31-11-171 web: return database_name == ':memory:' or 'mode=memory' in database_name
+Feb 27 21:53:09 ip-172-31-11-171 web: TypeError: argument of type 'PosixPath' is not iterable
+Feb 27 21:53:16 ip-172-31-11-171 web: [2023-02-27 21:53:16 +0000] [6291] [ERROR] Error handling request
+Feb 27 21:53:16 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 336, in handle_request
+Feb 27 21:53:16 ip-172-31-11-171 web: respiter.close()
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/http/response.py", line 252, in close
+Feb 27 21:53:16 ip-172-31-11-171 web: signals.request_finished.send(sender=self._handler_class)
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in send
+Feb 27 21:53:16 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+Feb 27 21:53:16 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/__init__.py", line 57, in close_old_connections
+Feb 27 21:53:16 ip-172-31-11-171 web: conn.close_if_unusable_or_obsolete()
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/base/base.py", line 514, in close_if_unusable_or_obsolete
+Feb 27 21:53:16 ip-172-31-11-171 web: self.close()
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 248, in close
+Feb 27 21:53:16 ip-172-31-11-171 web: if not self.is_in_memory_db():
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 367, in is_in_memory_db
+Feb 27 21:53:16 ip-172-31-11-171 web: return self.creation.is_in_memory_db(self.settings_dict['NAME'])
+Feb 27 21:53:16 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/creation.py", line 12, in is_in_memory_db
+Feb 27 21:53:16 ip-172-31-11-171 web: return database_name == ':memory:' or 'mode=memory' in database_name
+Feb 27 21:53:16 ip-172-31-11-171 web: TypeError: argument of type 'PosixPath' is not iterable
+Feb 27 21:53:17 ip-172-31-11-171 web: Not Found: /static/scripts/login.js
+Feb 27 21:53:17 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
+Feb 27 21:55:02 ip-172-31-11-171 web: [2023-02-27 21:55:02 +0000] [6291] [ERROR] Error handling request /Core/Skin/Login.aspx
+Feb 27 21:55:02 ip-172-31-11-171 web: Traceback (most recent call last):
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 271, in handle
+Feb 27 21:55:02 ip-172-31-11-171 web: keepalive = self.handle_request(req, conn)
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/gunicorn/workers/gthread.py", line 323, in handle_request
+Feb 27 21:55:02 ip-172-31-11-171 web: respiter = self.wsgi(environ, resp.start_response)
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/core/handlers/wsgi.py", line 139, in __call__
+Feb 27 21:55:02 ip-172-31-11-171 web: signals.request_started.send(sender=self.__class__, environ=environ)
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in send
+Feb 27 21:55:02 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+Feb 27 21:55:02 ip-172-31-11-171 web: for receiver in self._live_receivers(sender)
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/__init__.py", line 57, in close_old_connections
+Feb 27 21:55:02 ip-172-31-11-171 web: conn.close_if_unusable_or_obsolete()
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/base/base.py", line 514, in close_if_unusable_or_obsolete
+Feb 27 21:55:02 ip-172-31-11-171 web: self.close()
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 248, in close
+Feb 27 21:55:02 ip-172-31-11-171 web: if not self.is_in_memory_db():
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/base.py", line 367, in is_in_memory_db
+Feb 27 21:55:02 ip-172-31-11-171 web: return self.creation.is_in_memory_db(self.settings_dict['NAME'])
+Feb 27 21:55:02 ip-172-31-11-171 web: File "/var/app/venv/staging-LQM1lest/lib/python3.7/site-packages/django/db/backends/sqlite3/creation.py", line 12, in is_in_memory_db
+Feb 27 21:55:02 ip-172-31-11-171 web: return database_name == ':memory:' or 'mode=memory' in database_name
+Feb 27 21:55:02 ip-172-31-11-171 web: TypeError: argument of type 'PosixPath' is not iterable
 
 
 ----------------------------------------
 /var/log/eb-engine.log
 ----------------------------------------
-2023/02/27 21:24:45.207361 [INFO] This is a web server environment instance, skip start sqsd daemon ...
-2023/02/27 21:24:45.207366 [INFO] Executing instruction: Track pids in healthd
-2023/02/27 21:24:45.207370 [INFO] This is an enhanced health env...
-2023/02/27 21:24:45.207384 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
-2023/02/27 21:24:45.221793 [INFO] healthd.service nginx.service cfn-hup.service
+2023/02/27 21:51:54.697684 [INFO] This is a web server environment instance, skip start sqsd daemon ...
+2023/02/27 21:51:54.697689 [INFO] Executing instruction: Track pids in healthd
+2023/02/27 21:51:54.697694 [INFO] This is an enhanced health env...
+2023/02/27 21:51:54.697707 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
+2023/02/27 21:51:54.709041 [INFO] nginx.service healthd.service cfn-hup.service
 
-2023/02/27 21:24:45.221818 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
-2023/02/27 21:24:45.232729 [INFO] web.service
+2023/02/27 21:51:54.709059 [INFO] Running command /bin/sh -c systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2023/02/27 21:51:54.719911 [INFO] web.service
 
-2023/02/27 21:24:45.232895 [INFO] Executing instruction: RunAppDeployPostDeployHooks
-2023/02/27 21:24:45.232914 [INFO] Executing platform hooks in .platform/hooks/postdeploy/
-2023/02/27 21:24:45.232929 [INFO] The dir .platform/hooks/postdeploy/ does not exist
-2023/02/27 21:24:45.232933 [INFO] Finished running scripts in /var/app/current/.platform/hooks/postdeploy
-2023/02/27 21:24:45.232946 [INFO] Executing cleanup logic
-2023/02/27 21:24:45.233050 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment successfully generated a 'Procfile'.","timestamp":1677533076862,"severity":"INFO"},{"msg":"Instance deployment completed successfully.","timestamp":1677533085232,"severity":"INFO"}]}]}
+2023/02/27 21:51:54.720061 [INFO] Executing instruction: RunAppDeployPostDeployHooks
+2023/02/27 21:51:54.720072 [INFO] Executing platform hooks in .platform/hooks/postdeploy/
+2023/02/27 21:51:54.720085 [INFO] The dir .platform/hooks/postdeploy/ does not exist
+2023/02/27 21:51:54.720092 [INFO] Finished running scripts in /var/app/current/.platform/hooks/postdeploy
+2023/02/27 21:51:54.720098 [INFO] Executing cleanup logic
+2023/02/27 21:51:54.720187 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment successfully generated a 'Procfile'.","timestamp":1677534706252,"severity":"INFO"},{"msg":"Instance deployment completed successfully.","timestamp":1677534714720,"severity":"INFO"}]}]}
 
-2023/02/27 21:24:45.234025 [INFO] Platform Engine finished execution on command: app-deploy
+2023/02/27 21:51:54.721168 [INFO] Platform Engine finished execution on command: app-deploy
 
-2023/02/27 21:27:35.910943 [INFO] Starting...
-2023/02/27 21:27:35.910995 [INFO] Starting EBPlatform-PlatformEngine
-2023/02/27 21:27:35.911014 [INFO] reading event message file
-2023/02/27 21:27:35.911151 [INFO] Engine received EB command cfn-hup-exec
+2023/02/27 21:56:54.860512 [INFO] Starting...
+2023/02/27 21:56:54.860553 [INFO] Starting EBPlatform-PlatformEngine
+2023/02/27 21:56:54.860571 [INFO] reading event message file
+2023/02/27 21:56:54.860704 [INFO] Engine received EB command cfn-hup-exec
 
-2023/02/27 21:27:35.967357 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
-2023/02/27 21:27:36.308670 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
-2023/02/27 21:27:36.620288 [INFO] checking whether command app-deploy is applicable to this instance...
-2023/02/27 21:27:36.620304 [INFO] this command is applicable to the instance, thus instance should execute command
-2023/02/27 21:27:36.620309 [INFO] Engine command: (app-deploy)
+2023/02/27 21:56:54.913119 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
+2023/02/27 21:56:55.252223 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
+2023/02/27 21:56:55.571442 [INFO] checking whether command app-deploy is applicable to this instance...
+2023/02/27 21:56:55.571457 [INFO] this command is applicable to the instance, thus instance should execute command
+2023/02/27 21:56:55.571461 [INFO] Engine command: (app-deploy)
 
-2023/02/27 21:27:36.620316 [INFO] Downloading EB Application...
-2023/02/27 21:27:36.620320 [INFO] Region: us-west-2
-2023/02/27 21:27:36.620324 [INFO] envID: e-m5bxc2mpdt
-2023/02/27 21:27:36.620328 [INFO] envBucket: elasticbeanstalk-us-west-2-697432387497
-2023/02/27 21:27:36.620332 [INFO] Using manifest file name from command request
-2023/02/27 21:27:36.620340 [INFO] Manifest name is : manifest_1677533253347
-2023/02/27 21:27:36.620344 [INFO] Download app version manifest
-2023/02/27 21:27:36.620454 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/versions/manifest_1677533253347
-2023/02/27 21:27:36.655471 [INFO] Download successful110bytes downloaded
-2023/02/27 21:27:36.655657 [INFO] Trying to read and parse version manifest...
-2023/02/27 21:27:36.655753 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/_versions/eb-doghub-git/app-8e26-230227_162726716787
-2023/02/27 21:27:36.671035 [INFO] Download successful23597bytes downloaded
-2023/02/27 21:27:36.671232 [INFO] Executing instruction: ElectLeader
-2023/02/27 21:27:36.671262 [INFO] Running leader election for instance i-0bc08044f5854dfd7...
-2023/02/27 21:27:36.671267 [INFO] Calling the cfn-elect-cmd-leader to elect the command leader.
-2023/02/27 21:27:36.671283 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-elect-cmd-leader --stack arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb --command-name ElasticBeanstalkCommand-AWSEBAutoScalingGroup --invocation-id ee63b510-273e-4973-a419-eecd01c5a334 --listener-id i-0bc08044f5854dfd7 --region us-west-2
-2023/02/27 21:27:36.980396 [INFO] Instance is Leader.
-2023/02/27 21:27:36.980446 [INFO] Executing instruction: stopSqsd
-2023/02/27 21:27:36.980453 [INFO] This is a web server environment instance, skip stop sqsd daemon ...
-2023/02/27 21:27:36.980457 [INFO] Executing instruction: PreBuildEbExtension
-2023/02/27 21:27:36.980462 [INFO] Starting executing the config set Infra-EmbeddedPreBuild.
-2023/02/27 21:27:36.980478 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-init -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2 --configsets Infra-EmbeddedPreBuild
-2023/02/27 21:27:37.326027 [INFO] Finished executing the config set Infra-EmbeddedPreBuild.
+2023/02/27 21:56:55.571471 [INFO] Downloading EB Application...
+2023/02/27 21:56:55.571475 [INFO] Region: us-west-2
+2023/02/27 21:56:55.571479 [INFO] envID: e-m5bxc2mpdt
+2023/02/27 21:56:55.571482 [INFO] envBucket: elasticbeanstalk-us-west-2-697432387497
+2023/02/27 21:56:55.571486 [INFO] Using manifest file name from command request
+2023/02/27 21:56:55.571495 [INFO] Manifest name is : manifest_1677535011999
+2023/02/27 21:56:55.571498 [INFO] Download app version manifest
+2023/02/27 21:56:55.571611 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/versions/manifest_1677535011999
+2023/02/27 21:56:55.649709 [INFO] Download successful112bytes downloaded
+2023/02/27 21:56:55.649873 [INFO] Trying to read and parse version manifest...
+2023/02/27 21:56:55.649970 [INFO] Downloading: bucket: elasticbeanstalk-us-west-2-697432387497, object: /resources/environments/e-m5bxc2mpdt/_runtime/_versions/eb-doghub-git/app-daa8-230227_165645946996
+2023/02/27 21:56:55.662343 [INFO] Download successful43833bytes downloaded
+2023/02/27 21:56:55.662562 [INFO] Executing instruction: ElectLeader
+2023/02/27 21:56:55.662569 [INFO] Running leader election for instance i-0bc08044f5854dfd7...
+2023/02/27 21:56:55.662573 [INFO] Calling the cfn-elect-cmd-leader to elect the command leader.
+2023/02/27 21:56:55.662588 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-elect-cmd-leader --stack arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb --command-name ElasticBeanstalkCommand-AWSEBAutoScalingGroup --invocation-id 6e09ca84-dc7f-4f2d-b829-da726e3572a6 --listener-id i-0bc08044f5854dfd7 --region us-west-2
+2023/02/27 21:56:56.001520 [INFO] Instance is Leader.
+2023/02/27 21:56:56.001563 [INFO] Executing instruction: stopSqsd
+2023/02/27 21:56:56.001570 [INFO] This is a web server environment instance, skip stop sqsd daemon ...
+2023/02/27 21:56:56.001574 [INFO] Executing instruction: PreBuildEbExtension
+2023/02/27 21:56:56.001579 [INFO] Starting executing the config set Infra-EmbeddedPreBuild.
+2023/02/27 21:56:56.001595 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-init -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2 --configsets Infra-EmbeddedPreBuild
+2023/02/27 21:56:56.343054 [INFO] Finished executing the config set Infra-EmbeddedPreBuild.
 
-2023/02/27 21:27:37.326067 [INFO] Executing instruction: StageApplication
-2023/02/27 21:27:37.326189 [INFO] extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/
-2023/02/27 21:27:37.326210 [INFO] Running command /bin/sh -c /usr/bin/unzip -q -o /opt/elasticbeanstalk/deployment/app_source_bundle -d /var/app/staging/
-2023/02/27 21:27:37.330659 [INFO] finished extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/ successfully
-2023/02/27 21:27:37.331407 [INFO] Executing instruction: RunAppDeployPreBuildHooks
-2023/02/27 21:27:37.331423 [INFO] Executing platform hooks in .platform/hooks/prebuild/
-2023/02/27 21:27:37.331438 [INFO] The dir .platform/hooks/prebuild/ does not exist
-2023/02/27 21:27:37.331442 [INFO] Finished running scripts in /var/app/staging/.platform/hooks/prebuild
-2023/02/27 21:27:37.331448 [INFO] Executing instruction: InstallDependency
-2023/02/27 21:27:37.331456 [INFO] checking dependencies file
-2023/02/27 21:27:37.331462 [INFO] Installing dependencies with requirements.txt by using Pip
-2023/02/27 21:27:37.331470 [INFO] Running command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt
-2023/02/27 21:27:38.130586 [INFO] Processing /home/ktietz/src/ci/alabaster_1611921544520/work
+2023/02/27 21:56:56.343074 [INFO] Executing instruction: StageApplication
+2023/02/27 21:56:56.343207 [INFO] extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/
+2023/02/27 21:56:56.343224 [INFO] Running command /bin/sh -c /usr/bin/unzip -q -o /opt/elasticbeanstalk/deployment/app_source_bundle -d /var/app/staging/
+2023/02/27 21:56:56.349707 [INFO] finished extracting /opt/elasticbeanstalk/deployment/app_source_bundle to /var/app/staging/ successfully
+2023/02/27 21:56:56.350607 [INFO] Executing instruction: RunAppDeployPreBuildHooks
+2023/02/27 21:56:56.350627 [INFO] Executing platform hooks in .platform/hooks/prebuild/
+2023/02/27 21:56:56.350642 [INFO] The dir .platform/hooks/prebuild/ does not exist
+2023/02/27 21:56:56.350646 [INFO] Finished running scripts in /var/app/staging/.platform/hooks/prebuild
+2023/02/27 21:56:56.350667 [INFO] Executing instruction: InstallDependency
+2023/02/27 21:56:56.350674 [INFO] checking dependencies file
+2023/02/27 21:56:56.350680 [INFO] Installing dependencies with requirements.txt by using Pip
+2023/02/27 21:56:56.350688 [INFO] Running command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt
+2023/02/27 21:56:57.147811 [INFO] Processing /home/ktietz/src/ci/alabaster_1611921544520/work
 
-2023/02/27 21:27:38.130609 [INFO] ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
+2023/02/27 21:56:57.147834 [INFO] ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
 
 
 [notice] A new release of pip available: 22.3.1 -> 23.0.1
 [notice] To update, run: /var/app/venv/staging-LQM1lest/bin/python -m pip install --upgrade pip
 
-2023/02/27 21:27:38.130667 [ERROR] An error occurred during execution of command [app-deploy] - [InstallDependency]. Stop running the command. Error: fail to install dependencies with requirements.txt file with error Command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt failed with error exit status 1. Stderr:ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
+2023/02/27 21:56:57.147878 [ERROR] An error occurred during execution of command [app-deploy] - [InstallDependency]. Stop running the command. Error: fail to install dependencies with requirements.txt file with error Command /bin/sh -c /var/app/venv/staging-LQM1lest/bin/pip install -r requirements.txt failed with error exit status 1. Stderr:ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/home/ktietz/src/ci/alabaster_1611921544520/work'
 
 
 [notice] A new release of pip available: 22.3.1 -> 23.0.1
 [notice] To update, run: /var/app/venv/staging-LQM1lest/bin/python -m pip install --upgrade pip
  
 
-2023/02/27 21:27:38.130673 [INFO] Executing cleanup logic
-2023/02/27 21:27:38.130776 [INFO] CommandService Response: {"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"Engine execution has encountered an error.","returncode":1,"events":[{"msg":"Instance deployment failed to install application dependencies. The deployment failed.","timestamp":1677533258130,"severity":"ERROR"},{"msg":"Instance deployment failed. For details, see 'eb-engine.log'.","timestamp":1677533258130,"severity":"ERROR"}]}]}
+2023/02/27 21:56:57.147884 [INFO] Executing cleanup logic
+2023/02/27 21:56:57.147985 [INFO] CommandService Response: {"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"Engine execution has encountered an error.","returncode":1,"events":[{"msg":"Instance deployment failed to install application dependencies. The deployment failed.","timestamp":1677535017147,"severity":"ERROR"},{"msg":"Instance deployment failed. For details, see 'eb-engine.log'.","timestamp":1677535017147,"severity":"ERROR"}]}]}
 
-2023/02/27 21:27:38.131735 [INFO] Platform Engine finished execution on command: app-deploy
+2023/02/27 21:56:57.149104 [INFO] Platform Engine finished execution on command: app-deploy
 
-2023/02/27 21:28:31.577185 [INFO] Starting...
-2023/02/27 21:28:31.577231 [INFO] Starting EBPlatform-PlatformEngine
-2023/02/27 21:28:31.577249 [INFO] reading event message file
-2023/02/27 21:28:31.577391 [INFO] Engine received EB command cfn-hup-exec
+2023/02/27 21:57:37.558608 [INFO] Starting...
+2023/02/27 21:57:37.558651 [INFO] Starting EBPlatform-PlatformEngine
+2023/02/27 21:57:37.558669 [INFO] reading event message file
+2023/02/27 21:57:37.558814 [INFO] Engine received EB command cfn-hup-exec
 
-2023/02/27 21:28:31.646435 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
-2023/02/27 21:28:31.982481 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
-2023/02/27 21:28:32.313915 [INFO] checking whether command tail-log is applicable to this instance...
-2023/02/27 21:28:32.313929 [INFO] this command is applicable to the instance, thus instance should execute command
-2023/02/27 21:28:32.313933 [INFO] Engine command: (tail-log)
+2023/02/27 21:57:37.630547 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBAutoScalingGroup --region us-west-2
+2023/02/27 21:57:37.960661 [INFO] Running command /bin/sh -c /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:697432387497:stack/awseb-e-m5bxc2mpdt-stack/ff2bd440-b6e2-11ed-a483-062c053ff9fb -r AWSEBBeanstalkMetadata --region us-west-2
+2023/02/27 21:57:38.279123 [INFO] checking whether command tail-log is applicable to this instance...
+2023/02/27 21:57:38.279138 [INFO] this command is applicable to the instance, thus instance should execute command
+2023/02/27 21:57:38.279142 [INFO] Engine command: (tail-log)
 
-2023/02/27 21:28:32.313983 [INFO] Executing instruction: GetTailLogs
-2023/02/27 21:28:32.313988 [INFO] Tail Logs...
-2023/02/27 21:28:32.314233 [INFO] Running command /bin/sh -c tail -n 100 /var/log/web.stdout.log
-2023/02/27 21:28:32.316186 [INFO] Running command /bin/sh -c tail -n 100 /var/log/eb-engine.log
+2023/02/27 21:57:38.279190 [INFO] Executing instruction: GetTailLogs
+2023/02/27 21:57:38.279195 [INFO] Tail Logs...
+2023/02/27 21:57:38.279411 [INFO] Running command /bin/sh -c tail -n 100 /var/log/web.stdout.log
+2023/02/27 21:57:38.281447 [INFO] Running command /bin/sh -c tail -n 100 /var/log/eb-engine.log
 
 
 ----------------------------------------
@@ -238,6 +238,52 @@ Feb 27 21:25:16 ip-172-31-11-171 web: Not Found: /static/styles/Login.css
 172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
 172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
 172.31.1.23 - - [27/Feb/2023:21:25:16 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:40:16 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:41:53 +0000] "POST /register HTTP/1.1" 500 120494 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:41:55 +0000] "POST /login HTTP/1.1" 500 141 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:41:56 +0000] "GET /login HTTP/1.1" 500 141 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.1.23 - - [27/Feb/2023:21:41:57 +0000] "GET /login HTTP/1.1" 500 141 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:41:58 +0000] "POST /register HTTP/1.1" 500 120496 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:42:07 +0000] "GET /login HTTP/1.1" 500 141 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:42:21 +0000] "POST /register HTTP/1.1" 500 120646 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:44:29 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:44:29 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:44:29 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.1.23 - - [27/Feb/2023:21:47:54 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:47:54 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:47:54 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:47:55 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:47:56 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:47:56 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:48:01 +0000] "POST /register HTTP/1.1" 500 120645 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:48:15 +0000] "POST /register HTTP/1.1" 500 120649 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:48:16 +0000] "POST /login HTTP/1.1" 500 145443 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:52:13 +0000] "GET /login HTTP/1.1" 200 2921 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:13 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:13 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:14 +0000] "GET / HTTP/1.1" 200 19 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:52:18 +0000] "GET /login HTTP/1.1" 200 2995 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:52:18 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:52:18 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" "71.172.41.106"
+172.31.25.143 - - [27/Feb/2023:21:52:19 +0000] "POST /register HTTP/1.1" 302 0 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:20 +0000] "GET /events HTTP/1.1" 200 500 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:25 +0000] "POST /logout HTTP/1.1" 302 0 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:25 +0000] "GET /login HTTP/1.1" 200 3009 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:25 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:25 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:33 +0000] "POST /login HTTP/1.1" 500 141 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:52:36 +0000] "GET /login HTTP/1.1" 500 141 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:00 +0000] "POST /logout HTTP/1.1" 302 0 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:00 +0000] "GET /login HTTP/1.1" 200 3009 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:00 +0000] "GET /static/styles/Login.css HTTP/1.1" 500 141 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:00 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:09 +0000] "POST /login HTTP/1.1" 302 0 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:09 +0000] "GET /events HTTP/1.1" 200 500 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:16 +0000] "POST /logout HTTP/1.1" 302 0 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:16 +0000] "GET /login HTTP/1.1" 200 3009 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/events" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:17 +0000] "GET /static/scripts/login.js HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.25.143 - - [27/Feb/2023:21:53:17 +0000] "GET /static/styles/Login.css HTTP/1.1" 404 2886 "http://doghub-git-env.eba-mbt9wfsb.us-west-2.elasticbeanstalk.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" "108.46.187.183"
+172.31.1.23 - - [27/Feb/2023:21:55:02 +0000] "HEAD /Core/Skin/Login.aspx HTTP/1.1" 500 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36" "43.154.141.71"
 
 
 ----------------------------------------
