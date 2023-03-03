@@ -1,17 +1,75 @@
-{% extends "doghub_app/header.html" %} {% block content %}
-<!--Register-->
-{% if messages %} {% for message in messages %}
-<div class="alert alert-{{ message.tags }}">{{ message }}</div>
-{% endfor %} {% endif %}
-<div class="container py-5">
-  <h1>Register</h1>
-  <form method="POST">
-    {% csrf_token %} {{ register_form }}
-    <button class="btn btn-primary" type="submit">Register</button>
-  </form>
-  <p class="text-center">
-    If you already have an account, <a href="/login">login</a> instead.
-  </p>
-</div>
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/register.css' %}" />
+    <title>Log In</title>
+  </head>
 
-{% endblock %}
+  <body >
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        <form action="/register" method="post">
+          {% csrf_token %} 
+          <h1 class="profile-head">Dog Profile</h1>
+          <!-- <span>or use your email for registration</span> -->
+          <input type="text" id = 'uname' name = 'dogname' placeholder="Dog Name" />
+          <div class = "input-bio-inline">
+          <label>Bio</label> 
+          <input class="bio-input" type="text" name='bio' placeholder="Bio">
+          </div>
+    
+          <div class = "input-inline">
+          <label>Date of Birth</label> 
+          <input type="date" id="DOB" name="uDOB">
+          </div>
+          <button>Finish</button>
+        </form>
+      </div>
+      <div class="form-container sign-in-container">
+        <h1 class="profile-head">User Profile</h1>
+        <form action="/login"  method="post">
+          {% csrf_token %} 
+          {% if messages %}
+          {% for message in messages %}
+            <h5>{{ message }}</h5>
+          {% endfor %}
+          {% endif %}
+          <input type="text" id = 'uname' name = 'uname' placeholder="User Name" />
+          <input type="text" name = 'ufirstname' placeholder="First Name" />
+          <input type="text" name = 'ulasttname' placeholder="Last Name" />
+
+          <div class = "input-bio-inline">
+          <label>Bio</label> 
+          <input class="bio-input" type="text" name='bio' placeholder="Bio">
+          </div>
+    
+          <div class = "input-inline">
+          <label>Date of Birth</label> 
+          <input type="date" id="DOB" name="uDOB">
+          </div>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="overlay-container" >
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Back To User Profile</h1>
+            <p>To continue your profile page</p>
+            <button class="ghost" id="addUserProfile">User Profile</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1 id = 'demo'>Add Dog Profiles</h1>
+            <p>You can add profiles for your dogs</p>
+            <button class="ghost" id="addDogProfile">Add Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src= "{% static 'scripts/register.js' %}" ></script>
+ </body>
+</html>
