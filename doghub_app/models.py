@@ -8,6 +8,7 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['password', 'username']
+    
     def __str__(self):
         return self.email
     # pass
