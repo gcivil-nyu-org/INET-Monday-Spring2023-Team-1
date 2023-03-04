@@ -5,6 +5,25 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
 body {
     background: #f6f5f7;
     display: flex;
@@ -17,6 +36,7 @@ body {
 }
 
 h1 {
+   
     font-weight: bold;
     margin: 0;
     text-align: center;
@@ -44,6 +64,7 @@ p {
     line-height: 20px;
     letter-spacing: 0.5px;
     margin: 20px 0 30px;
+    
 }
 
 span {
@@ -99,6 +120,7 @@ form {
     padding: 0 50px;
     height: 100%;
     text-align: center;
+    overflow: scroll;
 }
 
 input {
@@ -110,7 +132,7 @@ input {
     
 }
 
-bio-input {
+.bio-input {
     background-color: #eee;
     border: none;
     padding: 12px 15px;
@@ -261,6 +283,7 @@ label {
     overflow: hidden;
     transition: transform 0.6s ease-in-out;
     z-index: 100;
+   
 }
 
 .container.right-panel-active .overlay-container{
@@ -332,4 +355,55 @@ label {
     width: 40px;
 }
 
-
+.profile-list {
+    list-style: none inside;
+    margin: 0 auto;
+    min-height: 620px;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    overflow: auto;
+  }
+  .profile-list--item {
+    display: inline-block;
+    width: 100%;
+    background-color:  transparent;
+    border-color: #FFFFFF;
+    padding: 5px;
+    margin-bottom: 1.5em;
+    text-align: left;
+    transition: transform 0.1s linear;
+    /* &:hover,
+    &:focus {
+      transform: scale(1.025);  
+    } */
+  }
+  /* .profile-details {
+    @extend %group;
+  } */
+  .profile-img {
+    height: 55px;
+    width: 55px;
+    margin-right: 1.5em;
+    float: left;
+    display: block;
+    border-radius: 50%;
+    border: #73BEF5;
+    @media screen and (min-width: 32em) {
+      width: 6em;
+      height: 6em;
+    }
+  }
+  .profile-name {
+    padding-top: 0.5em;
+    font-size: 20px ;
+    @media screen and (min-width: 24em) {
+      font-size: 1.875em;
+    }
+  }
+  .profile-quote {
+    color: #73BEF5;
+    margin-top: 1.5em;
+    font: 400 1em/1.6 "Armata", sans-serif;
+  }
