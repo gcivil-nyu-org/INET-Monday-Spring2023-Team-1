@@ -45,7 +45,7 @@
 
           <div class = "input-bio-inline">
           <label>Bio</label> 
-          <input class="bio-input" type="text" name='bio' placeholder="Bio">
+          <input class="bio-input" type="text" name='bio'>
           </div>
     
           <div class = "input-inline">
@@ -63,9 +63,23 @@
             <button class="ghost" id="addUserProfile">User Profile</button>
           </div>
           <div class="overlay-panel overlay-right">
+            {% if dogList %}
             <h1 id = 'demo'>Add Dog Profiles</h1>
-            <p>You can add profiles for your dogs</p>
             <button class="ghost" id="addDogProfile">Add Profile</button>
+            <p>You can add profiles for your dogs</p>
+            {% else %}
+            <h1 class="profile-head">Dog List</h1>
+            <button class="ghost" id="addDogProfile">Add Profile</button>
+            <ul class="profile-list">
+              <li class="profile-list--item">
+                <header class="profile-details">
+                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/5175/cadet-mahoney.jpg" alt="" class="profile-img" />
+                  <h3 class="profile-name">Carey Mahoney</h3>
+                </header>
+              </li>
+              </ul>
+            {% endif %}
+      
           </div>
         </div>
       </div>
