@@ -1,2 +1,4 @@
 Django
-
+black
+flake8
+Pillow

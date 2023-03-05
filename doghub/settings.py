@@ -128,3 +128,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # provides more flexibility than default auth_user
 AUTH_USER_MODEL = "doghub_app.CustomUser"
 AUTHENTICATION_BACKENDS = ['doghub_app.backends.CustomAuth']
+
+# configuration for uploaded images/files
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
