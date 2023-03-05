@@ -25,4 +25,4 @@ deploy:
   on:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
-      - main
+      - develop
