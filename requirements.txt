@@ -1,4 +1,7 @@
-Django
+Django==2.2
+pytz==2022.7.1
+sqlparse==0.4.3
+whitenoise==6.4.0
 black
 flake8
 Pillow
