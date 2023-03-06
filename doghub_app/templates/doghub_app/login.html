@@ -5,24 +5,16 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/472ce279d4.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="{% static 'styles/Login.css' %}"
-    />
+    <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/Login.css' %}" />
     <title>Log In</title>
   </head>
 
-  <body>
+  <body >
     <div class="container" id="container">
       <div class="form-container sign-up-container">
         <form action="/register" method="post">
-          {% csrf_token %}
+          {% csrf_token %} 
           <h1>Create Account</h1>
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -30,35 +22,33 @@
             <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for registration</span>
-          <input type="email" name="reg_uemail" placeholder="Email" />
-          <input type="password" name="reg_psw" placeholder="Password" />
+          <input type="email" name = 'reg_uemail' placeholder="Email" />
+          <input type="password" name = 'reg_psw' placeholder="Password" />
           <button>Sign Up</button>
         </form>
       </div>
       <div class="form-container sign-in-container">
         <form action="/login" method="post">
-          {% csrf_token %} {% load socialaccount %}
+          {% csrf_token %} 
           <h1>Sign in</h1>
           <div class="social-container">
             <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-            <a
-              href="{% provider_login_url 'google' %}?next=/events"
-              class="social"
-              ><i class="fab fa-google-plus-g"></i
-            ></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
             <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
           </div>
           <span>or use your account</span>
-          {% if messages %} {% for message in messages %}
-          <h5>{{ message }}</h5>
-          {% endfor %} {% endif %}
-          <input type="email" name="uemail" placeholder="Email" />
-          <input type="password" name="psw" placeholder="Password" />
+          {% if messages %}
+          {% for message in messages %}
+            <h5>{{ message }}</h5>
+          {% endfor %}
+          {% endif %}
+          <input type="email"  name = 'uemail' placeholder="Email" />
+          <input type="password" name = 'psw' placeholder="Password" />
           <a href="">Forgot your password?</a>
           <button>Sign In</button>
         </form>
       </div>
-      <div class="overlay-container">
+      <div class="overlay-container" >
         <div class="overlay">
           <div class="overlay-panel overlay-left">
             <h1>Welcome Back!</h1>
@@ -66,17 +56,13 @@
             <button class="ghost" id="signIn">Sign In</button>
           </div>
           <div class="overlay-panel overlay-right">
-            <h1 id="demo">Welcome to Doghub!</h1>
-            <p>
-              You want companionship, your dog does too! Doghub is an app
-              designed to connect with other dog owners for playdates, and for
-              any services that you would need for your dog!
-            </p>
+            <h1 id = 'demo'>Welcome to Doghub!</h1>
+            <p>You want companionship, your dog does too! Doghub is an app designed to connect with other dog owners for playdates, and for any services that you would need for your dog!</p>
             <button class="ghost" id="signUp">Sign Up</button>
           </div>
         </div>
       </div>
     </div>
-    <script src="{% static 'scripts/login.js' %}"></script>
-  </body>
+    <script src= "{% static 'scripts/login.js' %}" ></script>
+ </body>
 </html>
