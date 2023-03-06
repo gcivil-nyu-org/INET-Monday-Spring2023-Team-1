@@ -1,0 +1,28 @@
+language: python
+python:
+  - "3.9.7"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+script:
+  - python manage.py test
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "avchavimnScq7kf1lpGAQE1NeyYPP4nFca7kKE34mQey008Z+1w2kwrjaqFDL/w+clooco01IFWOCDYBw1FZI44c9gLWPzlWUk0fXJhCtIgnzF+LqMZ+zb4G/plN0JHP2KYAU2EZFgmPWupkACYLbqarbhfDtmaQcVWEJv3xGqwsKCkNEURNkrzuNOq133xCKyGvu7Iq8se62REiYA1zV0CNfAZzjfuoCrje/M2AeBDM2UlnIuLvNlAR8zhVLqhC+RWwhAApp4tAeXgDHOI9cCm7AgaPsSsdSbfp4fLoKP2r4j6UaaMYH+ncRED7yhA72LL03pQo6VAmYULXYUqCRYk4/v/15GXkbON9PCEqm3+477jUppj545EKRI4ESZfL9zSdihw7FGM1TXTWTyDQ2T+03jNCTonEx4zdewTBHG158J/p8DzKwKjpWZFgPZP2Lmww1dZyAFFA2+xT7OfGxN66EvyaVeSD8EHD5dQyt1o/QKcpggQmQoFNt5AYyB3E9s3b7+u8zdpyKkhhsApF9GRiVqYffs9vRKCFxuy33kvfwEY4MoiyuGObggRqbYsMWz8GKljiwLyWt6nRm9M8XKDdFBy9Rl3bPPucu1N7M/pN5DKKmkQNhKSWkskcoaizcQgGpxC+iY1+4CHj1cSpYzPyqFcSWH6AzF7nW56OwZE="
+  secret_access_key:
+    secure: "i7e7M2CpO7aVXi7lvhfuy40MSmZ1j0jnOp8hfI0CH1IHIUBGTa0no9NMHgeEBhgfXmgTwFuS8lBhaZl5YvFYLN9Ni21hYIA3o2BquemZ8xa8LHjP5LTXyvUdU6+KmNsQfNiiZ51j/B4qV+EQKblIhbd8XmjNrbvpR24JnaKJeOng2r/Rf2NlOBcBSM/jM1682ysd/9eAvsjxaPo6JsjjDhney1CJQ6BeMKz/TLSIw2p9/h3tbMVGEhXxI+ZhJxdrwptI2tDIxjSpcNiHKEkwh+LEvRkFR7X3dUZyx0SX1Aw+zscF3y2eOIZHSKwChxNVgxSc00/nYImMuBDXs0MNdfTHlAVGBr/zHaKzpc2/Rlnqm6zZwL10llsmYHDeVZ9yBK8ijDFVNokqc6XJ1Aeop77pmCtAWLxjs1wYsYelannHQFfBaRxnUnzOC6gwjz1hwH9Yfzg6rIozba9Kns7HOKdofnfeVBGtR2y+ufYhK5dmf7Xv4rDa51W1NAfngxv5240tyYHCIL5AMBY8q6Ts11DYXRSpKKQ4GSIeow1yW2qW1PgTRR6340FGGqRhczo36iWveNI5JRUJ2ktiGjX8bAcHEG217YfHba8/SUtTHZf3mgj+ZeRQjL1YcpQ6M/yvqc89HAiNpNv8pN/kJ36M6tLop6jgaCuPUBVv/mOFhrg="
+  region: "us-west-2"
+  app: "doghub_develop"
+  env: "doghub_develop_app"
+  bucket_name: "elasticbeanstalk-us-west-2-697432387497"
+  on:
+    repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
+    branch:
+      - develop
