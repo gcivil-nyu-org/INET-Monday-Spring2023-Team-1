@@ -6,7 +6,6 @@ install:
   - pip install -r requirements.txt
 
 before_script:
-  - rm db.sqlite3
   - python manage.py makemigrations
   - python manage.py migrate
 
@@ -27,3 +26,6 @@ deploy:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
       - develop
+
+after_deploy:
+  - rm db.sqlite3
