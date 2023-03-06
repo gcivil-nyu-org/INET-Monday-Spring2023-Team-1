@@ -31,6 +31,9 @@ ALLOWED_HOSTS = ['doghub-develop-env.eba-3vrvsrfw.us-west-2.elasticbeanstalk.com
 
 # Application definition
 
+SITE_ID = 2
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,8 +41,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "doghub_app"
+    "doghub_app",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google"
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS":{"access_type":"online"}
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -127,8 +145,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # a custom user class that subclass Django User
 # provides more flexibility than default auth_user
 AUTH_USER_MODEL = "doghub_app.CustomUser"
-AUTHENTICATION_BACKENDS = ['doghub_app.backends.CustomAuth']
+
+AUTHENTICATION_BACKENDS = ['doghub_app.backends.CustomAuth', 
+                           'django.contrib.auth.backends.ModelBackend',
+                           "allauth.account.auth_backends.AuthenticationBackend"]
+
+
+LOGIN_REDIRECT_URL = "/events"
+LOGOUT_REDIRECT_URL = "/login"
 
 # configuration for uploaded images/files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
