@@ -13,7 +13,7 @@ before_script:
 script:
   - python manage.py test
   - black --check .
-  - flake8 .
+  - flake8 --exclude doghub_app/migrations
 
 deploy:
   provider: elasticbeanstalk

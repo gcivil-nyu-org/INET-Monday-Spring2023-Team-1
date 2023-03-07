@@ -1,13 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
+# from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from .forms import CustomUserCreationForm
+# from .forms import CustomUserCreationForm
 from .models import CustomUser, UserProfile, DogProfile
 
 
@@ -72,7 +71,7 @@ def login_request(request):
         password = request.POST.get("psw")
         try:
             user = CustomUser.objects.get(email=user_email)
-        except:
+        except:  # noqa: E722
             messages.error(request, "User Does Not Exist")
         user = authenticate(request, email=user_email, password=password)
         print(user_email)
