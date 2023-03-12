@@ -8,9 +8,12 @@ install:
 before_script:
   - python manage.py makemigrations
   - python manage.py migrate
+  - python -m pip install flake8
 
 script:
   - python manage.py test
+  - black --check .
+  - flake8 --exclude doghub_app/migrations
 
 deploy:
   provider: elasticbeanstalk

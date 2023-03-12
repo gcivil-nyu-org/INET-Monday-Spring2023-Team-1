@@ -50,5 +50,6 @@ class DogProfile(models.Model):
                 name="dog_profile_composite_pk", fields=["dog_id", "user_id"]
             )
         ]
+
     def __str__(self):
         return self.name

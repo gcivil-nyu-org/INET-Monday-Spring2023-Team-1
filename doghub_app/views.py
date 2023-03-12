@@ -1,78 +1,97 @@
 from django.http import HttpResponse
-from django.shortcuts import  render, redirect
-from django.contrib.auth import login
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm 
-from django.contrib.auth import login, authenticate 
+
+# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from .forms import CustomUserCreationForm
+# from .forms import CustomUserCreationForm
 from .models import CustomUser, UserProfile, DogProfile
-
 
 
 # Create your views here.
 def home(request):
     return HttpResponse("Hello DogHub users.")
 
+
 def register_request(request):
-	if request.method == "POST":
-		user_email=request.POST.get('reg_uemail')
-		password = request.POST.get('reg_psw')
-		if CustomUser.objects.filter(email=user_email).exists():
-			messages.error(request,'User Exists')
-		else:
-			user = CustomUser.objects.create_user(username = user_email, email= user_email, password=password)
-			login(request, user)
-			request.session['uemail']=user_email
-			return redirect('register_details')
-	
-	return render(request=request, template_name="doghub_app/login.html")
+    if request.method == "POST":
+        user_email = request.POST.get("reg_uemail")
+        password = request.POST.get("reg_psw")
+        if CustomUser.objects.filter(email=user_email).exists():
+            messages.error(request, "User Exists")
+        else:
+            user = CustomUser.objects.create_user(
+                username=user_email, email=user_email, password=password
+            )
+            login(request, user)
+            request.session["uemail"] = user_email
+            return redirect("register_details")
+
+    return render(request=request, template_name="doghub_app/login.html")
+
 
 def register_details_request(request):
-	context={}
-	if request.method == "POST" :
-			user_profile = UserProfile(user_id=request.user, fname=request.POST.get('ufirstname'), lname= request.POST.get('ulastname'), bio= request.POST.get('uBio'), dob= request.POST.get('uDOB'))
-			user_profile.save()
-			return redirect('events')
-	if DogProfile.objects.filter(user_id=request.user).exists():
-		dogprofiles = DogProfile.objects.filter(user_id=request.user)
-		context={'dogList':  list(dogprofiles)}
-	return render(request=request, template_name="doghub_app/register.html",context=context)
+    context = {}
+    if request.method == "POST":
+        user_profile = UserProfile(
+            user_id=request.user,
+            fname=request.POST.get("ufirstname"),
+            lname=request.POST.get("ulastname"),
+            bio=request.POST.get("uBio"),
+            dob=request.POST.get("uDOB"),
+        )
+        user_profile.save()
+        return redirect("events")
+    if DogProfile.objects.filter(user_id=request.user).exists():
+        dogprofiles = DogProfile.objects.filter(user_id=request.user)
+        context = {"dogList": list(dogprofiles)}
+    return render(
+        request=request, template_name="doghub_app/register.html", context=context
+    )
+
 
 def dog_profile_create(request):
-	if request.method == "POST":
-		dog_profile = DogProfile(user_id= request.user, name = request.POST.get('dogName'), bio= request.POST.get('dogBio'), dob=request.POST.get('dogDOB'))
-		dog_profile.save()
-		return redirect('register_details')
-	return render(request=request, template_name="doghub_app/register.html")
+    if request.method == "POST":
+        dog_profile = DogProfile(
+            user_id=request.user,
+            name=request.POST.get("dogName"),
+            bio=request.POST.get("dogBio"),
+            dob=request.POST.get("dogDOB"),
+        )
+        dog_profile.save()
+        return redirect("register_details")
+    return render(request=request, template_name="doghub_app/register.html")
 
 
 def login_request(request):
-	if request.method == "POST":
-		user_email=request.POST.get('uemail')
-		password = request.POST.get('psw')
-		try:
-			user = CustomUser.objects.get(email= user_email)
-		except:
-			messages.error(request,'User Does Not Exist')
-		user = authenticate(request, email=user_email, password = password)
-		print(user_email)
-		print(password)
-		if user is not None:
-			login(request, user)
-			return redirect('events')
-		else:
-			messages.error(request, 'Wrong User Email or Password')
-	return render(request=request, template_name="doghub_app/login.html")
+    if request.method == "POST":
+        user_email = request.POST.get("uemail")
+        password = request.POST.get("psw")
+        try:
+            user = CustomUser.objects.get(email=user_email)
+        except:  # noqa: E722
+            messages.error(request, "User Does Not Exist")
+        user = authenticate(request, email=user_email, password=password)
+        print(user_email)
+        print(password)
+        if user is not None:
+            login(request, user)
+            return redirect("events")
+        else:
+            messages.error(request, "Wrong User Email or Password")
+    return render(request=request, template_name="doghub_app/login.html")
+
 
 @login_required
 def events(request):
-	if request.method == "GET":
-	    return render(request=request, template_name="doghub_app/events_homepage.html")
+    if request.method == "GET":
+        return render(request=request, template_name="doghub_app/events_homepage.html")
+
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "You have successfully logged out.") # 
+    messages.info(request, "You have successfully logged out.")  #
     return redirect("login")
