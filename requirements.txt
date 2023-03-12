@@ -3,4 +3,4 @@ whitenoise
 flake8
 Pillow
 black
-allauth
+django-allauth
