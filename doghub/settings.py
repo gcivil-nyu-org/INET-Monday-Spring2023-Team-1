@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google"
-    
+    "allauth.socialaccount.providers.google",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -58,7 +57,7 @@ SOCIALACCOUNT_PROVIDERS = {
             "profile",
             "email",
         ],
-        "AUTH_PARAMS": {"access_type":"online"}
+        "AUTH_PARAMS": {"access_type": "online"},
     }
 }
 
@@ -152,8 +151,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # a custom user class that subclass Django User
 # provides more flexibility than default auth_user
 AUTH_USER_MODEL = "doghub_app.CustomUser"
-AUTHENTICATION_BACKENDS = ("doghub_app.backends.CustomAuth",
-                           "allauth.account.auth_backends.AuthenticationBackend")
+AUTHENTICATION_BACKENDS = [
+    "doghub_app.backends.CustomAuth",
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 # configuration for uploaded images/files
 MEDIA_URL = "/media/"

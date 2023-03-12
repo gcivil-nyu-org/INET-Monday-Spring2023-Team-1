@@ -22,5 +22,5 @@ urlpatterns = [
         "",
         include("doghub_app.urls"),
     ),
-    path("accounts/", include("allauth.urls"))
+    path("accounts/", include("allauth.urls")),
 ]
