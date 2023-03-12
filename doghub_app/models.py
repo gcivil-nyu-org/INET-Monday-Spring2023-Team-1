@@ -32,6 +32,9 @@ class UserProfile(models.Model):
     dob = models.DateField(null=True)
     bio = models.CharField(max_length=BIO_MAX_LENGTH, null=True)
 
+    def get_first_name(self):
+        return self.user_id.fname
+
 
 class DogProfile(models.Model):
     dog_id = models.AutoField(primary_key=True, editable=False)

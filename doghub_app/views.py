@@ -1,13 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
-# from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-
-# from .forms import CustomUserCreationForm
 from .models import CustomUser, UserProfile, DogProfile
 
 
@@ -95,3 +91,25 @@ def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")  #
     return redirect("login")
+
+
+@login_required
+def user_profile(request):
+    # useri = CustomUser.objects.get(request.user)
+    # CustomUser.objects.filter(email=request.user)
+    # //user_email = user.email
+    # //user = CustomUser.objects.get(email=user_email)
+    # user_profile = UserProfile.objects.get('fname')
+    # user=user_profile.user
+    # first_name = user_profile.first_name
+    user_prof = UserProfile.objects.get(user_id=request.user)
+    # first_name = user_prof.fname
+    # last_name = user_prof.lname
+    context = {"userprof": user_prof, "user": request.user}
+    # user = CustomUser.objects.get(uemail=request.email)
+    # user_prof = UserProfile.objects.get(user=user)
+    # print("User first name:", first_name )
+    # print("User last name:", last_name)
+    return render(
+        request=request, template_name="doghub_app/user_profile.html", context=context
+    )
