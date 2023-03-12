@@ -76,3 +76,20 @@ def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") # 
     return redirect("login")
+
+@login_required
+def user_profile(request):
+			useri = CustomUser.objects.get(request.id)
+			#CustomUser.objects.filter(email=request.user)
+			#//user_email = user.email
+			#//user = CustomUser.objects.get(email=user_email)
+			#user_profile = UserProfile.objects.get('fname')
+			#user=user_profile.user
+			#first_name = user_profile.first_name
+			user_prof = UserProfile.objects.get(useri)
+			first_name = user_prof.fname
+			#user = CustomUser.objects.get(uemail=request.email)
+			#user_prof = UserProfile.objects.get(user=user)
+			print("User first name:", first_name )
+			print("User last name:")
+			return render(request=request, template_name="doghub_app/user_profile.html")
