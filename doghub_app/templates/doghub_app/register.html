@@ -1,17 +1,91 @@
-{% extends "doghub_app/header.html" %} {% block content %}
-<!--Register-->
-{% if messages %} {% for message in messages %}
-<div class="alert alert-{{ message.tags }}">{{ message }}</div>
-{% endfor %} {% endif %}
-<div class="container py-5">
-  <h1>Register</h1>
-  <form method="POST">
-    {% csrf_token %} {{ register_form }}
-    <button class="btn btn-primary" type="submit">Register</button>
-  </form>
-  <p class="text-center">
-    If you already have an account, <a href="/login">login</a> instead.
-  </p>
-</div>
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/register.css' %}" />
+    <title>Log In</title>
+  </head>
 
-{% endblock %}
+  <body >
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        <form action=""  method="post">
+          {% csrf_token %} 
+          {% if messages %}
+          {% for message in messages %}
+            <h5>{{ message }}</h5>
+          {% endfor %}
+          {% endif %}
+          <h1 class="profile-head">User Profile</h1>
+          <input type="text" name = 'ufirstname' placeholder="First Name" required />
+          <input type="text" name = 'ulastname' placeholder="Last Name"  required/>
+
+          <div class = "input-bio-inline">
+          <label>Bio</label> 
+          <input class="bio-input" type="text" name='uBio'>
+          </div>
+          <div class = "input-inline">
+          <label>Date of Birth</label> 
+          <input type="date" id="DOB" name="uDOB">
+          </div>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="form-container sign-in-container">
+        <form action="/dogProfilesCreate" method="post">
+          {% csrf_token %} 
+          {% if messages %}
+          {% for message in messages %}
+            <h5>{{ message }}</h5>
+          {% endfor %}
+          {% endif %}
+          <h1 class="profile-head">Dog Profile</h1>
+          <!-- <span>or use your email for registration</span> -->
+          <input type="text" name = 'dogName' placeholder="Dog Name" />
+          <div class = "input-bio-inline">
+          <label>Bio</label> 
+          <input class="bio-input" type="text" name='dogBio'/>
+          </div>
+          <div class = "input-inline">
+          <label>Date of Birth</label> 
+          <input type="date" name="dogDOB">
+          </div>
+          <button>Finish</button>
+        </form>
+      </div>
+      <div class="overlay-container" >
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Back To Dog Profile</h1>
+            <p>Continue adding dog profile</p>
+            <button class="ghost" id="addUserProfile">Back to Dog Profile</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            {% if dogList %}
+            <ul class="profile-list">
+              {% for dog in dogList %}
+              <li class="profile-list--item">
+                <header class="profile-details">
+                  <img src="{% static 'images/profile1.jpg' %}" alt="DOG" class="profile-img" />
+                  <h3 class="profile-name">{{dog}}</h3>
+                </header>
+             </li>
+             {% endfor %}
+            </ul>
+            <button class="ghost" id="addDogProfile">Continue User Profile</button>
+            {% else %}
+            <h1 id = 'demo'>Add Dog Profiles</h1>
+            <p>You can add profiles for your dogs or continue on your profile</p>
+            <button class="ghost" id="addDogProfile">Continue User Profile</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src= "{% static 'scripts/register.js' %}" ></script>
+ </body>
+</html>

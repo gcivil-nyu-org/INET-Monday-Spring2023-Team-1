@@ -1,0 +1,34 @@
+language: python
+python:
+  - "3.9.7"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python -m pip install flake8
+
+script:
+  - python manage.py test
+  - black --check .
+  - flake8 --exclude doghub_app/migrations
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "SinmCc+/2KEYT+b9YLVXxr8x/ZJA8nS1BuuJPqtAi3O2AN8PZm+Vp2/uR2aQPlrsJ/geQkXGTs+NOQhdG596PUP5soZaqtaeMzEYf6QxwjrqUzU6NFT08/qi7m01Fmd6YF4lRvt8ZOjwkMRGL2RhSHUkSZ6ZmkqgLDvltzniHxcJfKp8+hGnhofz+BTn02q2hVLOM+7uQ7ZYEb6NMEicDfTEU4dLq60UJBdQXTMey82XhH00nzvVhG9hpPWwk/jZ8cpgc+AUEdYRTR3OfhDM4JWNWdNdpetHTWLEmsDOOs0+AA7IkddutfoF+XAjNmPKadbgD6r7/3EvHCHfwqp7YPNOZ9paeYPiZqR838JBdyow4PeDVnXABsbe1BxsZtS7kh8syQqHo1T6mwrSh+UVBhF9/Rcdwa1oWsnd9gubCxnG571JDdxzGCSTmNqgNPp51vQK6aSpr1jbJjs7Cwr0WSBVqTie0dMiEVzzGVD/9oAej0iijdyiU1QvESBgFoAmWZIKnYdj+jwdCsnb10IYXC6yEhuh6Pjz+/IVg17zwBTfb4Jksy4JZEiUVnk3GgzKlwfBhi/JCqaSLLHwP9/ebE3xF9+7YUnFA/+yGty3atpp3lfsiY/NHLdb064+lC+ku9kN0Wcoi7pXx7BX25Sot3oGBBpn3+ytMJwow4yHa34="
+  secret_access_key:
+    secure: "QTv6sSwAM95uu7eBdZCetep07Cjg7UpMEfifJPUvwczEf5wrBqj4dOPsOi8hN5Rs7moOhc8p0Oj7+Y+utzYk6omaSuc5ASg40dzdUFvKZfDpGhMbnYReliNWgBK/zizxWd8e15uJjNRW6ldXApfzqEflV68qBidSEhhjiOPnVnTAp9R87kY0q7Qqn6ZhQ+MMkz2gFvbFKfhUHxS1B6jhvUUgCGdiF5pk+VTav4CD6s7VTqt7yMBfp03nbxWi76kvZ7dOtkmsHhw69HMa3SJLC0APa6SXqHOvSf2ANoAla1f7aLm9nzqq9GQQewuIbBa+oHYri/GHv7LwcwiFfM/kJ+e2WAvy7sqgiqy0focDEDSnu01S9gqmaZBTzaEpmw6EKDQm6G5QxcO8EH3tcgN1zt4m1uqZR7R8emK2q8FpSydnSuaqszcLAMrTovXk/4ZJFZaSL3QI80cYrFrKUhftYddlzq8ZuFy0Ba5zShnh5YnQjdcQPDjfVVVfZFLPJZ+PaFj4VdoR/K3M6waTM88wshPAqvu2LvlEhRznETIfgpV/JJJ/8Ji4Ucmxh5JqXQDuKq6ZQEDClyGXxoCFm4yQiiTOCx++Zl3ywMmS5lvY9Ob1/JpNNTB/hovRq8dtJrqszE84zhVLTrNxf5lhnMmL8oAAmK5S5Y1lHu2RPTUIvgU="
+  region: "us-west-2"
+  app: "doghub_develop"
+  env: "doghub-develop-env"
+  bucket_name: "elasticbeanstalk-us-west-2-697432387497"
+  on:
+    repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
+    branch:
+      - develop
+
+after_deploy:
+  - rm db.sqlite3

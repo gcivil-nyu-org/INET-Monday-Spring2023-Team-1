@@ -1,0 +1,22 @@
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="profile-info">
+          <h1>Profile</h1>
+          <p>Username: {{ user.username }}</p>
+          <p>Email: {{ user.email }}</p>
+          <p>First Name: {{ userprof.fname }}</p>
+          <p>Last Name: {{ userprof.lname }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="profile-image">
+          <img src="{{ user.profile.image.url }}" alt="Profile Image">
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+{% endblock %}

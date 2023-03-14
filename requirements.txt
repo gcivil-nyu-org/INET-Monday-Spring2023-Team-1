@@ -1,2 +1,6 @@
-Django
-
+Django==2.2
+whitenoise
+flake8
+Pillow
+black
+django-allauth
