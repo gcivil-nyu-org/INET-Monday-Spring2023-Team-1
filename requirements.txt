@@ -5,3 +5,5 @@ Pillow
 black
 django-allauth
 coveralls
+mysqlclient
+
