@@ -28,7 +28,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = [
-    "doghub-production-env.eba-6u3fpmqj.us-west-2.elasticbeanstalk.com",
+    "doghub-production-env.eba-7pbt5sqz.us-west-2.elasticbeanstalk.com",
     "doghub-develop-env.eba-3vrvsrfw.us-west-2.elasticbeanstalk.com",
     "to-11.com",
     "127.0.0.1",
