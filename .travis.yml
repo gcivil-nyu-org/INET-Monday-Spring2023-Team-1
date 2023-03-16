@@ -15,6 +15,9 @@ script:
   - black --check .
   - flake8 --exclude doghub_app/migrations
 
+after_script:
+  - coveralls
+
 deploy:
   provider: elasticbeanstalk
   access_key_id:
@@ -29,6 +32,3 @@ deploy:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
       - develop
-
-after_deploy:
-  - rm db.sqlite3
