@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     "doghub-develop-env.eba-3vrvsrfw.us-west-2.elasticbeanstalk.com",
     "to-11.com",
     "127.0.0.1",
-"doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
+    "doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
 ]
 
 SITE_ID = 5
