@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -79,7 +79,6 @@ def login_request(request):
         else:
             messages.error(request, "Wrong User Email or Password")
     return render(request=request, template_name="doghub_app/login.html")
-
 
 
 @login_required
