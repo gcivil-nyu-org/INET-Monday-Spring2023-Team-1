@@ -81,6 +81,7 @@ def login_request(request):
     return render(request=request, template_name="doghub_app/login.html")
 
 
+
 @login_required
 def events(request):
     if request.method == "GET":
