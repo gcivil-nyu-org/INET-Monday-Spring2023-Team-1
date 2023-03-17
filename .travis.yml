@@ -1,34 +1,30 @@
 language: python
 python:
-  - "3.9.7"
-
+- 3.9.7
 install:
-  - pip install -r requirements.txt
-
+- pip install -r requirements.txt
 before_script:
-  - python manage.py makemigrations
-  - python manage.py migrate
-  - python -m pip install flake8
-
+- python manage.py makemigrations
+- python manage.py migrate
+- python -m pip install flake8
 script:
-  - python manage.py test
-  - black --check .
-  - flake8 --exclude doghub_app/migrations
-
+- python manage.py test
+- black --check .
+- flake8 --exclude doghub_app/migrations
 deploy:
   provider: elasticbeanstalk
-  access_key_id:
-    secure: $access_key_id
-  secret_access_key:
-    secure: $secret_access_key
-  region: "us-west-2"
-  app: "django-tutorial"
-  env: "doghub-develop-env"
-  bucket_name: "elasticbeanstalk-us-west-2-730437625654"
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  region: us-west-2
+  app: django-tutorial
+  env: doghub-develop-env
+  bucket_name: elasticbeanstalk-us-west-2-730437625654
   on:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
-      - develop
-
+    - develop
 after_deploy:
-  - rm db.sqlite3
+- rm db.sqlite3
+env:
+  global:
+    secure: RoKlnuoZPjqJee58evvljgRmfkXDFqY43Chgx947hy1aCn1COYAZUAuC6iXDT2fg4pktiKv+m0Y3prOC5KGnBTdlFypyZ526vqrEDCRlxG5k1r12XMBJ7+7pCOMPCntIuhtjDy40/ap/htXm1kdiWcLONNWQh0EAJ4iN6zwAaoI60nhQwCR+le7i441c/7bolWuTgNrP29avDjTQkFwFYa1MnfJ3tIb2GOwbOg+mpTfPTIX2vnhRSOXCBwZoz9PWNFNO3IsEA19jEuXUXyMarmUCnLeCDMDukilE/rWyFyV7Y3ZViAetkbUtR67SS4NMEJa9OGzF5M8L0FhU1BO9+Nz9xaWvg+IHgFx5mciTiEBXBP4LngRVgJqdQ6tiSUOp4Sgm2G8PTdPdAo9j0PJsQnlm4L+BVfXRXx5CZwG7RIsxZleJUBVnIFfQ4/PZBzyHrbG7Y2Ek1WZLYxbsYTq62A+GMin3expUBlhjd2b898aGZBh9nQv/pPBBw3O5Qr8qY1vktL0PaAp3k/W0GJJPyXdvl6hUlhh0KEiZXaj341IXyBXOQz1zy8G7P+ZpeUv4+Cn2ouaSzfiamy1HXR5gibotegUL/vRtxcpY2ppADVhZpVHiBPnqwZjflyX5BI3v5KuGxYV/p0IbHrtt+17h56X3T5cUiFwgRI0K+jir2mk=
