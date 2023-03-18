@@ -6,8 +6,11 @@ install:
   - pip install -r requirements.txt
 
 before_script:
+
+  - if [ $TRAVIS_BRANCH = "develop" ]; then backend_name=default; else backend_name=local; fi
+  - echo $backend_name
   - python manage.py makemigrations
-  - python manage.py migrate  --database=local
+  - python manage.py migrate  --database $backend_name
   - python -m pip install flake8
 
 script:
@@ -31,8 +34,8 @@ deploy:
     branch:
       - develop
 
-after_deploy:
-  - rm db.sqlite3
+  # script:
+  #   python manage.py makemigrations && python manage.py migrate
 
 services:
   - mysql
