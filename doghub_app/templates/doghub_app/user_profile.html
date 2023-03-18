@@ -1,0 +1,40 @@
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="profile-info">
+          <h1>Profile</h1>
+        </div>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>First Name: {{ userprof.fname }}</p>
+        <p>Last Name: {{ userprof.lname }}</p>
+        <p>Bio: {{userprof.bio}}</p>
+        <p>Date Of Birth: {{userprof.dob}}</p>
+        <a href="{% url 'user_profile_edit' %}" class="btn btn-primary">Edit</a>
+
+
+        <div class="dog-info">
+          <h1>Dog Profile</h1>
+          {% if dogprof %}
+            {% for dog in dogprof %}
+              <p>Name: {{ dog.name }}</p>
+              <p>Date Of Birth: {{ dog.dob }}</p>
+              <p>Bio: {{dog.bio}}</p>
+              <a href="{% url 'dog_profile_edit' dog.pk%}" class="btn btn-primary">Edit</a>
+            {% endfor %}
+          {% else %}
+            <p>No dog profile information found.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="profile-image">
+          <img src="{{ user.profile.image.url }}" alt="Profile Image">
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
