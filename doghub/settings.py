@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "doghub-production-env.eba-7pbt5sqz.us-west-2.elasticbeanstalk.com",
     "doghub-develop-env.eba-3vrvsrfw.us-west-2.elasticbeanstalk.com",
-    "to-11.com",
+    # "to-11.com",
     "127.0.0.1",
     "doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
 ]
@@ -101,9 +101,25 @@ WSGI_APPLICATION = "doghub.wsgi.application"
 
 DATABASES = {
     "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "doghub",  # database name, must exist
+        "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
+        "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
+        "HOST": os.getenv("AWS_MYSQL_HOST"),
+        "PORT": "3306",
+    },
+    # "local": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "doghub",  # database name, must exist
+    #     "USER": os.getenv('LOCAL_MYSQL_USERNAME'),
+    #     "PASSWORD": os.getenv('LOCAL_MYSQL_PWD'),
+    #     "HOST": "127.0.0.1",
+    #     "PORT": "3306",
+    #     },
+    "backup": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": str(BASE_DIR / "db.sqlite3"),
-    }
+    },
 }
 
 
