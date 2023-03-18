@@ -7,7 +7,7 @@ install:
 
 before_script:
   - python manage.py makemigrations
-  - python manage.py migrate
+  - python manage.py migrate  --database=local
   - python -m pip install flake8
 
 script:
@@ -33,3 +33,9 @@ deploy:
 
 after_deploy:
   - rm db.sqlite3
+
+services:
+  - mysql
+
+before_install:
+  - mysql -e 'CREATE DATABASE doghub;'
