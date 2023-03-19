@@ -99,28 +99,42 @@ WSGI_APPLICATION = "doghub.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "doghub",  # database name, must exist
-        "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
-        "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
-        "HOST": os.getenv("AWS_MYSQL_HOST"),
-        "PORT": "3306",
-    },
-    "local": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "doghub",  # database name, must exist
-        "USER": os.getenv("LOCAL_MYSQL_USERNAME"),
-        "PASSWORD": os.getenv("LOCAL_MYSQL_PWD"),
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
-    },
-    "backup": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": str(BASE_DIR / "db.sqlite3"),
-    },
-}
+# doghub_db_envs documentation:
+# PROD is currently set to AWS doghub-develop-env
+# LOCAL is your local mysql instance running on 127.0.0.1
+
+
+if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "doghub",  # database name, must exist
+            "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
+            "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
+            "HOST": os.getenv("AWS_MYSQL_HOST"),
+            "PORT": "3306",
+        }
+    }
+
+elif "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "LOCAL":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "doghub",  # database name, must exist
+            "USER": os.getenv("LOCAL_MYSQL_USERNAME"),
+            "PASSWORD": os.getenv("LOCAL_MYSQL_PWD"),
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
+        }
+    }
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(BASE_DIR / "db.sqlite3"),
+        }
+    }
 
 
 # Password validation
