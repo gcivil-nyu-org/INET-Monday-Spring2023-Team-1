@@ -5,11 +5,13 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import CustomUser, UserProfile, DogProfile
+from django.http import HttpResponse
+from _version import __version__
 
 
 # Create your views here.
 def home(request):
-    return redirect("login")
+    return HttpResponse(f"Welcome to DogHub {__version__}")
 
 
 def register_request(request):
