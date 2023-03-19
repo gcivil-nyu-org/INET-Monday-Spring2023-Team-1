@@ -20,10 +20,9 @@ script:
   - python manage.py test
   - black --check .
   - flake8 .
-
+  - coverage run manage.py test
 
 after_script:
-  - echo $TRAVIS_BRANCH
   - coveralls
 
 deploy:
