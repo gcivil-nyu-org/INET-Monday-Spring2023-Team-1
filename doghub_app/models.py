@@ -32,6 +32,9 @@ class UserProfile(models.Model):
     dob = models.DateField(null=True)
     bio = models.CharField(max_length=BIO_MAX_LENGTH, null=True)
 
+    def get_first_name(self):
+        return self.user_id.fname
+
 
 class DogProfile(models.Model):
     dog_id = models.AutoField(primary_key=True, editable=False)
@@ -50,5 +53,6 @@ class DogProfile(models.Model):
                 name="dog_profile_composite_pk", fields=["dog_id", "user_id"]
             )
         ]
+
     def __str__(self):
         return self.name

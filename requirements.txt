@@ -1,7 +1,9 @@
 Django==2.2
-pytz==2022.7.1
-sqlparse==0.4.3
-whitenoise==6.4.0
-black
+whitenoise
 flake8
 Pillow
+black
+django-allauth
+coveralls
+mysqlclient
+
