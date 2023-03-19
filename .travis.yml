@@ -12,8 +12,9 @@ before_install:
   - mysql -e 'CREATE DATABASE doghub;'
 
 before_script:
+  - echo $DOGHUB_DB_ENV
   - python manage.py makemigrations
-  - python manage.py migrate --database local
+  - python manage.py migrate
 
 script:
   - python manage.py test
@@ -22,6 +23,7 @@ script:
 
 
 after_script:
+  - echo $TRAVIS_BRANCH
   - coveralls
 
 deploy:
@@ -36,5 +38,3 @@ deploy:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
       - develop
-
-
