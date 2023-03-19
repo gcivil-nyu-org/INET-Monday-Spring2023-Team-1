@@ -3,7 +3,6 @@ whitenoise
 flake8
 Pillow
 black
-django-allauth
 coveralls
 mysqlclient
 
