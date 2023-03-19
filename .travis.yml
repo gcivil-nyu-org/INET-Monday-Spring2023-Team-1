@@ -5,15 +5,21 @@ python:
 install:
   - pip install -r requirements.txt
 
+services:
+  - mysql
+
+before_install:
+  - mysql -e 'CREATE DATABASE doghub;'
+
 before_script:
   - python manage.py makemigrations
-  - python manage.py migrate
-  - python -m pip install flake8
+  - python manage.py migrate --database local
 
 script:
   - python manage.py test
   - black --check .
-  - flake8 --exclude doghub_app/migrations
+  - flake8 .
+
 
 after_script:
   - coveralls
@@ -31,5 +37,4 @@ deploy:
     branch:
       - develop
 
-after_deploy:
-  - rm db.sqlite3
+
