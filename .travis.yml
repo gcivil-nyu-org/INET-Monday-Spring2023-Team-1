@@ -12,14 +12,15 @@ before_install:
   - mysql -e 'CREATE DATABASE doghub;'
 
 before_script:
+  - echo $DOGHUB_DB_ENV
   - python manage.py makemigrations
-  - python manage.py migrate --database local
+  - python manage.py migrate
 
 script:
   - python manage.py test
   - black --check .
   - flake8 .
-
+  - coverage run manage.py test
 
 after_script:
   - coveralls
@@ -36,5 +37,3 @@ deploy:
     repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
     branch:
       - develop
-
-

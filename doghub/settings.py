@@ -29,13 +29,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "doghub-production-env.eba-7pbt5sqz.us-west-2.elasticbeanstalk.com",
-    "doghub-develop-env.eba-3vrvsrfw.us-west-2.elasticbeanstalk.com",
-    # "to-11.com",
     "127.0.0.1",
     "doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
+    "172.31.23.176",  # Private IPv4 addresses for AWS EC2 Develop instance
 ]
 
-SITE_ID = 5
 
 # Application definition
 
@@ -47,22 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "doghub_app",
-    "django.contrib.sites",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "SCOPE": [
-            "profile",
-            "email",
-        ],
-        "AUTH_PARAMS": {"access_type": "online"},
-    }
-}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -99,28 +83,42 @@ WSGI_APPLICATION = "doghub.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "doghub",  # database name, must exist
-        "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
-        "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
-        "HOST": os.getenv("AWS_MYSQL_HOST"),
-        "PORT": "3306",
-    },
-    "local": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "doghub",  # database name, must exist
-        "USER": os.getenv("LOCAL_MYSQL_USERNAME"),
-        "PASSWORD": os.getenv("LOCAL_MYSQL_PWD"),
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
-    },
-    "backup": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": str(BASE_DIR / "db.sqlite3"),
-    },
-}
+# doghub_db_envs documentation:
+# PROD is currently set to AWS doghub-develop-env
+# LOCAL is your local mysql instance running on 127.0.0.1
+
+
+if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "doghub",  # database name, must exist
+            "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
+            "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
+            "HOST": os.getenv("AWS_MYSQL_HOST"),
+            "PORT": "3306",
+        }
+    }
+
+elif "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "LOCAL":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "doghub",  # database name, must exist
+            "USER": os.getenv("LOCAL_MYSQL_USERNAME"),
+            "PASSWORD": os.getenv("LOCAL_MYSQL_PWD"),
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
+        }
+    }
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(BASE_DIR / "db.sqlite3"),
+        }
+    }
 
 
 # Password validation
@@ -172,13 +170,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "doghub_app.CustomUser"
 AUTHENTICATION_BACKENDS = [
     "doghub_app.backends.CustomAuth",
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # configuration for uploaded images/files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
-LOGIN_REDIRECT_URL = "/events"
-LOGOUT_REDIRECT_URL = "/"

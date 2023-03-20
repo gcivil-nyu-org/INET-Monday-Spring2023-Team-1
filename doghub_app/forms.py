@@ -19,19 +19,23 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-	password=None
-	
-	class Meta:
-		model = CustomUser
-		fields = ("email", "username")
-	
+    password = None
+
+    class Meta:
+        model = CustomUser
+        fields = ("email", "username")
+
+
 class UserProfileForm(forms.ModelForm):
-	class Meta:
-		model = UserProfile
-		fields = ("fname", "lname", "bio", "dob")
-#, "first_name", "last_name", "bio", "dob"
+    class Meta:
+        model = UserProfile
+        fields = ("fname", "lname", "bio", "dob")
+
+
+# , "first_name", "last_name", "bio", "dob"
+
 
 class DogProfileForm(forms.ModelForm):
-	class Meta:
-		model = DogProfile
-		fields = ("name", "bio", "dob")
+    class Meta:
+        model = DogProfile
+        fields = ("name", "bio", "dob")
