@@ -1,24 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django import forms
-from django.forms import modelformset_factory
 from django.http import Http404
-from django.urls import reverse
 
 
 from .forms import (
-    CustomUserCreationForm,
     CustomUserChangeForm,
     UserProfileForm,
     DogProfileForm,
 )
 from .models import CustomUser, UserProfile, DogProfile
-from django.http import HttpResponse
 from _version import __version__
 
 
@@ -83,11 +77,10 @@ def login_request(request):
         password = request.POST.get("psw")
         try:
             user = CustomUser.objects.get(email=user_email)
-        except:  # noqa: E722
+        except CustomUser.DoesNotExist:  # noqa: E722
             messages.error(request, "User Does Not Exist")
+            return render(request=request, template_name="doghub_app/login.html")
         user = authenticate(request, email=user_email, password=password)
-        print(user_email)
-        print(password)
         if user is not None:
             login(request, user)
             return redirect("events")
@@ -98,14 +91,20 @@ def login_request(request):
 
 @login_required
 def events(request):
+    user_prof = UserProfile.objects.get(user_id=request.user)
+    context = {"userprof": user_prof}
     if request.method == "GET":
-        return render(request=request, template_name="doghub_app/events_homepage.html")
+        return render(
+            request=request,
+            template_name="doghub_app/events_homepage.html", context=context
+        )
 
 
 def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")  #
     return redirect("login")
+
 
 @login_required
 def user_profile(request):
