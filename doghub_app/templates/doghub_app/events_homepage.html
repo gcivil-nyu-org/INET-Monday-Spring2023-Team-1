@@ -9,7 +9,7 @@
     <title>Title</title>
   </head>
   <body>
-    <p>Welcome {{ request.user.username}}</p>
+    <p>Welcome {{ userprof.fname}}</p>
     <p>This is the events homepage</p>
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
