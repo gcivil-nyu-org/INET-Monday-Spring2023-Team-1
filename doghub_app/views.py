@@ -96,7 +96,8 @@ def events(request):
     if request.method == "GET":
         return render(
             request=request,
-            template_name="doghub_app/events_homepage.html", context=context
+            template_name="doghub_app/events_homepage.html",
+            context=context,
         )
 
 
