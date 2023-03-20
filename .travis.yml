@@ -26,14 +26,26 @@ after_script:
   - coveralls
 
 deploy:
-  provider: elasticbeanstalk
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  region: "us-west-2"
-  app: "django-tutorial"
-  env: "doghub-develop-env"
-  bucket_name: "elasticbeanstalk-us-west-2-730437625654"
-  on:
-    repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
-    branch:
-      - develop
+  - provider: elasticbeanstalk
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    region: "us-west-2"
+    app: "django-tutorial"
+    env: "doghub-develop-env"
+    bucket_name: "elasticbeanstalk-us-west-2-730437625654"
+    on:
+      repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
+      branch:
+        - develop
+
+  - provider: elasticbeanstalk
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    region: "us-west-2"
+    app: "doghub-production-env"
+    env: "doghub-production-env"
+    bucket_name: "elasticbeanstalk-us-west-2-730437625654"
+    on:
+      repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1
+      branch:
+        - main
