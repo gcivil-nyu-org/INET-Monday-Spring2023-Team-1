@@ -1,11 +1,18 @@
-# from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.http import Http404
+
+
+from .forms import (
+    CustomUserChangeForm,
+    UserProfileForm,
+    DogProfileForm,
+)
 from .models import CustomUser, UserProfile, DogProfile
-from django.http import HttpResponse
 from _version import __version__
 
 
@@ -70,11 +77,10 @@ def login_request(request):
         password = request.POST.get("psw")
         try:
             user = CustomUser.objects.get(email=user_email)
-        except:  # noqa: E722
+        except CustomUser.DoesNotExist:  # noqa: E722
             messages.error(request, "User Does Not Exist")
+            return render(request=request, template_name="doghub_app/login.html")
         user = authenticate(request, email=user_email, password=password)
-        print(user_email)
-        print(password)
         if user is not None:
             login(request, user)
             return redirect("events")
@@ -85,8 +91,14 @@ def login_request(request):
 
 @login_required
 def events(request):
+    user_prof = UserProfile.objects.get(user_id=request.user)
+    context = {"userprof": user_prof}
     if request.method == "GET":
-        return render(request=request, template_name="doghub_app/events_homepage.html")
+        return render(
+            request=request,
+            template_name="doghub_app/events_homepage.html",
+            context=context,
+        )
 
 
 def logout_request(request):
@@ -97,21 +109,58 @@ def logout_request(request):
 
 @login_required
 def user_profile(request):
-    # useri = CustomUser.objects.get(request.user)
-    # CustomUser.objects.filter(email=request.user)
-    # //user_email = user.email
-    # //user = CustomUser.objects.get(email=user_email)
-    # user_profile = UserProfile.objects.get('fname')
-    # user=user_profile.user
-    # first_name = user_profile.first_name
     user_prof = UserProfile.objects.get(user_id=request.user)
-    # first_name = user_prof.fname
-    # last_name = user_prof.lname
-    context = {"userprof": user_prof, "user": request.user}
-    # user = CustomUser.objects.get(uemail=request.email)
-    # user_prof = UserProfile.objects.get(user=user)
-    # print("User first name:", first_name )
-    # print("User last name:", last_name)
+    dog_prof = DogProfile.objects.filter(user_id=request.user)
+    context = {"userprof": user_prof, "dogprof": dog_prof}
     return render(
         request=request, template_name="doghub_app/user_profile.html", context=context
     )
+
+
+@login_required
+def user_profile_edit(request):
+    user = request.user
+    user_prof = UserProfile.objects.get(user_id=request.user)
+    if request.method == "POST":
+        user_form = CustomUserChangeForm(request.POST, instance=user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=user_prof)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect("user_profile")
+    else:
+        user_form = CustomUserChangeForm(instance=user)
+        profile_form = UserProfileForm(instance=user_prof)
+    return render(
+        request,
+        "doghub_app/user_profile_edit.html",
+        {"user_form": user_form, "profile_form": profile_form},
+    )
+
+
+@login_required
+def dog_profile_edit(request, pk):
+    dog_prof = get_object_or_404(DogProfile, pk=pk)
+    if not dog_prof:
+        raise Http404("Dog profile does not exist.")
+    if request.method == "POST":
+        form = DogProfileForm(request.POST, request.FILES, instance=dog_prof)
+        if form.is_valid():
+            form.save()
+            return redirect("user_profile")
+    else:
+        form = DogProfileForm(instance=dog_prof)
+    return render(
+        request=request,
+        template_name="doghub_app/dog_profile_edit.html",
+        context={"form": form},
+    )
+
+
+# @login_required
+# def dog_profile_delete(request, pk):
+#    dog_profile = get_object_or_404(DogProfile, pk=pk)
+#    if request.method == "POST":
+#        dog_profile.delete()
+#        return redirect("user_profile")
+#    return redirect("user_profile")
