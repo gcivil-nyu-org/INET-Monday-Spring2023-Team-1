@@ -58,6 +58,7 @@ def register_details_request(request):
         context = {"dogList": list(dogprofiles), 'media_url':settings.MEDIA_URL}
         for dog in dogprofiles:
             print(dog.pic)
+    context['version'] = __version__
     return render(
         request=request, template_name="doghub_app/register.html", context=context
     )
@@ -80,6 +81,7 @@ def dog_profile_create(request):
 
 
 def login_request(request):
+    context = {}
     if request.method == "POST":
         user_email = request.POST.get("uemail")
         password = request.POST.get("psw")
@@ -94,7 +96,8 @@ def login_request(request):
             return redirect("events")
         else:
             messages.error(request, "Wrong User Email or Password")
-    return render(request=request, template_name="doghub_app/login.html")
+    context['version'] = __version__
+    return render(request=request, template_name="doghub_app/login.html", context=context)
 
 
 @login_required
