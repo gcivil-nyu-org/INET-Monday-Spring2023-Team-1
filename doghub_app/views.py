@@ -157,10 +157,33 @@ def dog_profile_edit(request, pk):
     )
 
 
-# @login_required
-# def dog_profile_delete(request, pk):
-#    dog_profile = get_object_or_404(DogProfile, pk=pk)
-#    if request.method == "POST":
-#        dog_profile.delete()
-#        return redirect("user_profile")
-#    return redirect("user_profile")
+@login_required
+def dog_profile_add(request):
+    if request.method == "POST":
+        dog_profile_form = DogProfileForm(request.POST, request.FILES)
+        if dog_profile_form.is_valid():
+            dog_profile = dog_profile_form.save(commit=False)
+            dog_profile.user_id = request.user
+            dog_profile.save()
+            return redirect("user_profile")
+    else:
+        dog_profile_form = DogProfileForm()
+
+    context = {"dog_profile_form": dog_profile_form}
+    if dog_profile_form.errors:
+        context["form_errors"] = dog_profile_form.errors
+
+    return render(
+        request=request,
+        template_name="doghub_app/dog_profile_add.html",
+        context=context,
+    )
+
+
+@login_required
+def dog_profile_delete(request, pk):
+    dog_profile = get_object_or_404(DogProfile, pk=pk)
+    if request.method == "POST":
+        dog_profile.delete()
+        return redirect("user_profile")
+    return render(request=request, template_name="doghub_app/dog_profile_delete.html")

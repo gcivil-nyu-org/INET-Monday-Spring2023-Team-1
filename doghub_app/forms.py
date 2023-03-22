@@ -46,3 +46,6 @@ class DogProfileForm(forms.ModelForm):
     class Meta:
         model = DogProfile
         fields = ("name", "bio", "dob")
+        widgets = {
+            "dob": forms.DateInput(attrs={"type": "date"}),
+        }
