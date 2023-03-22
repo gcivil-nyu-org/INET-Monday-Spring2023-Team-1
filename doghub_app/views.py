@@ -156,6 +156,7 @@ def dog_profile_edit(request, pk):
         context={"form": form},
     )
 
+
 @login_required
 def dog_profile_add(request):
     if request.method == "POST":
@@ -167,12 +168,17 @@ def dog_profile_add(request):
             return redirect("user_profile")
     else:
         dog_profile_form = DogProfileForm()
-        
-    context = {'dog_profile_form': dog_profile_form}
-    if dog_profile_form.errors:
-        context['form_errors'] = dog_profile_form.errors
 
-    return render(request=request, template_name="doghub_app/dog_profile_add.html", context=context)
+    context = {"dog_profile_form": dog_profile_form}
+    if dog_profile_form.errors:
+        context["form_errors"] = dog_profile_form.errors
+
+    return render(
+        request=request,
+        template_name="doghub_app/dog_profile_add.html",
+        context=context,
+    )
+
 
 @login_required
 def dog_profile_delete(request, pk):
@@ -181,4 +187,3 @@ def dog_profile_delete(request, pk):
         dog_profile.delete()
         return redirect("user_profile")
     return render(request=request, template_name="doghub_app/dog_profile_delete.html")
-

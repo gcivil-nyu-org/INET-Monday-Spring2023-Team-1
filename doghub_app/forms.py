@@ -47,5 +47,5 @@ class DogProfileForm(forms.ModelForm):
         model = DogProfile
         fields = ("name", "bio", "dob")
         widgets = {
-            'dob': forms.DateInput(attrs={'type': 'date'}),
+            "dob": forms.DateInput(attrs={"type": "date"}),
         }
