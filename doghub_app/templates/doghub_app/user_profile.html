@@ -15,14 +15,15 @@
 
 
         <div class="dog-info">
-          <h1>Dog Profile</h1>
+          <h1>Dog Profile <a href="{% url 'dog_profile_add'%}" class="btn btn-primary">Add</a></h1>
           {% if dogprof %}
             {% for dog in dogprof %}
               <p>Name: {{ dog.name }}</p>
               <p>Date Of Birth: {{ dog.dob }}</p>
               <p>Bio: {{dog.bio}}</p>
               <a href="{% url 'dog_profile_edit' dog.pk%}" class="btn btn-primary">Edit</a>
-            {% endfor %}
+              <a href="{% url 'dog_profile_delete' dog.pk %}">Delete Dog Profile</a>
+              {% endfor %}
           {% else %}
             <p>No dog profile information found.</p>
           {% endif %}
