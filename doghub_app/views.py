@@ -48,7 +48,9 @@ def forgot_password_email(request):
             email.fail_silently = False
             email.send()
         else:
-            messages.error(request, "The email you provided is not associated with an account.")
+            messages.error(
+                request, "The email you provided is not associated with an account."
+            )
 
     return render(request=request, template_name="doghub_app/login.html")
 
