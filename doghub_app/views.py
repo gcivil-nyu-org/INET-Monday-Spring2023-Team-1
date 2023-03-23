@@ -37,20 +37,19 @@ def forgot_password_email(request):
         if user:
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = PasswordResetTokenGenerator().make_token(user)
-            print("uidb64:", uidb64)
-            print("token:", token)
             reset_url = f"http://127.0.0.1:8000/reset_password/confirm/{uidb64}/{token}"
-            print(reset_url)
 
-        print("SENDING EMAIL")
-        email = EmailMessage(
-            "Reset Password",
-            "Click the link to reset your password",
-            settings.EMAIL_HOST_USER,
-            [user_email],
-        )
-        email.fail_silently = False
-        email.send()
+            email = EmailMessage(
+                "Reset Password",
+                f"Click the link to reset your password: {reset_url}",
+                settings.EMAIL_HOST_USER,
+                [user_email],
+            )
+            email.fail_silently = False
+            email.send()
+        else:
+            messages.error(request, "The email you provided is not associated with an account.")
+
     return render(request=request, template_name="doghub_app/login.html")
 
 
