@@ -7,10 +7,9 @@ from django.contrib.auth import logout
 from django.http import Http404
 from django.core.mail import EmailMessage
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 
 from .forms import (
@@ -26,27 +25,27 @@ from _version import __version__
 def home(request):
     return HttpResponse(f"Welcome to DogHub {__version__}")
 
+
 def forgot_password_page(request):
     return render(request=request, template_name="doghub_app/forgot_password_page.html")
 
 
 def forgot_password_email(request):
-    
     if request.method == "POST":
         user_email = request.POST.get("email_id")
         user = CustomUser.objects.filter(email=user_email).first()
         if user:
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = PasswordResetTokenGenerator().make_token(user)
-            print("uidb64:",uidb64)
-            print("token:",token)
+            print("uidb64:", uidb64)
+            print("token:", token)
             reset_url = f"http://127.0.0.1:8000/reset_password/confirm/{uidb64}/{token}"
             print(reset_url)
 
         print("SENDING EMAIL")
         email = EmailMessage(
-            'Reset Password',
-            'Click the link to reset your password',
+            "Reset Password",
+            "Click the link to reset your password",
             settings.EMAIL_HOST_USER,
             [user_email],
         )
