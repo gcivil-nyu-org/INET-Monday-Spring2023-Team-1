@@ -22,6 +22,8 @@ def home(request):
 
 
 def register_request(request):
+    context = {}
+    context['version'] = __version__
     if request.method == "POST":
         user_email = request.POST.get("reg_uemail")
         password = request.POST.get("reg_psw")
@@ -35,7 +37,7 @@ def register_request(request):
             request.session["uemail"] = user_email
             return redirect("register_details")
 
-    return render(request=request, template_name="doghub_app/login.html")
+    return render(request=request, template_name="doghub_app/login.html",context=context)
 
 
 def register_details_request(request):
@@ -60,8 +62,7 @@ def register_details_request(request):
             print(dog.pic)
     context['version'] = __version__
     return render(
-        request=request, template_name="doghub_app/register.html", context=context
-    )
+        request=request, template_name="doghub_app/register.html", context=context)
 
 
 def dog_profile_create(request):
@@ -82,6 +83,7 @@ def dog_profile_create(request):
 
 def login_request(request):
     context = {}
+    context['version'] = __version__
     if request.method == "POST":
         user_email = request.POST.get("uemail")
         password = request.POST.get("psw")
@@ -96,7 +98,6 @@ def login_request(request):
             return redirect("events")
         else:
             messages.error(request, "Wrong User Email or Password")
-    context['version'] = __version__
     return render(request=request, template_name="doghub_app/login.html", context=context)
 
 
