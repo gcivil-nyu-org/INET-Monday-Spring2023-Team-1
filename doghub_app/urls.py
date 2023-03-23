@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.views import PasswordResetCompleteView
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -40,3 +43,5 @@ urlpatterns = [
         name="password_reset_complete",
     ),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

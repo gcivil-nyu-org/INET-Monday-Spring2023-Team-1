@@ -26,7 +26,9 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    pic = models.ImageField(upload_to="user/")
+    pic = models.ImageField(
+        upload_to="user/", default="../static/images/profile1.jpg", null=True
+    )
     fname = models.CharField(max_length=CHAR_MAX_LENGTH)
     lname = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField(null=True)
@@ -42,7 +44,9 @@ class DogProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
     )
 
-    pic = models.ImageField(upload_to="dog/", null=True)
+    pic = models.ImageField(
+        upload_to="dog/", default="../static/images/dog_profile.jpeg", null=True
+    )
     name = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField()
     bio = models.CharField(max_length=BIO_MAX_LENGTH)
@@ -53,6 +57,3 @@ class DogProfile(models.Model):
                 name="dog_profile_composite_pk", fields=["dog_id", "user_id"]
             )
         ]
-
-    def __str__(self):
-        return self.name

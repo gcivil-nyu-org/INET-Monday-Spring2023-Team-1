@@ -60,6 +60,8 @@ def reset_password_page(request, uidb64, token):
 
 
 def register_request(request):
+    context = {}
+    context["version"] = __version__
     if request.method == "POST":
         user_email = request.POST.get("reg_uemail")
         password = request.POST.get("reg_psw")
@@ -73,7 +75,9 @@ def register_request(request):
             request.session["uemail"] = user_email
             return redirect("register_details")
 
-    return render(request=request, template_name="doghub_app/login.html")
+    return render(
+        request=request, template_name="doghub_app/login.html", context=context
+    )
 
 
 def register_details_request(request):
@@ -84,13 +88,19 @@ def register_details_request(request):
             fname=request.POST.get("ufirstname"),
             lname=request.POST.get("ulastname"),
             bio=request.POST.get("uBio"),
-            dob=request.POST.get("uDOB"),
         )
+        if "upic" in request.FILES:
+            user_profile.pic = request.FILES["upic"]
+        if request.POST.get("uDOB") != "":
+            user_profile.dob = request.POST.get("uDOB")
         user_profile.save()
         return redirect("events")
     if DogProfile.objects.filter(user_id=request.user).exists():
         dogprofiles = DogProfile.objects.filter(user_id=request.user)
-        context = {"dogList": list(dogprofiles)}
+        context = {"dogList": list(dogprofiles), "media_url": settings.MEDIA_URL}
+        for dog in dogprofiles:
+            print(dog.pic)
+    context["version"] = __version__
     return render(
         request=request, template_name="doghub_app/register.html", context=context
     )
@@ -102,14 +112,19 @@ def dog_profile_create(request):
             user_id=request.user,
             name=request.POST.get("dogName"),
             bio=request.POST.get("dogBio"),
-            dob=request.POST.get("dogDOB"),
         )
+        if "dogPic" in request.FILES:
+            dog_profile.pic = request.FILES["dogPic"]
+        if request.POST.get("dogDOB") != "":
+            dog_profile.dob = request.POST.get("dogDOB")
         dog_profile.save()
         return redirect("register_details")
     return render(request=request, template_name="doghub_app/register.html")
 
 
 def login_request(request):
+    context = {}
+    context["version"] = __version__
     if request.method == "POST":
         user_email = request.POST.get("uemail")
         password = request.POST.get("psw")
@@ -124,7 +139,9 @@ def login_request(request):
             return redirect("events")
         else:
             messages.error(request, "Wrong User Email or Password")
-    return render(request=request, template_name="doghub_app/login.html")
+    return render(
+        request=request, template_name="doghub_app/login.html", context=context
+    )
 
 
 @login_required

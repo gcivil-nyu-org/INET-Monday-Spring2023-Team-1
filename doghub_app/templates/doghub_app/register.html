@@ -13,7 +13,7 @@
   <body >
     <div class="container" id="container">
       <div class="form-container sign-up-container">
-        <form action=""  method="post">
+        <form action=""  method="post" enctype="multipart/form-data">
           {% csrf_token %} 
           {% if messages %}
           {% for message in messages %}
@@ -21,9 +21,25 @@
           {% endfor %}
           {% endif %}
           <h1 class="profile-head">User Profile</h1>
-          <input type="text" name = 'ufirstname' placeholder="First Name" required />
-          <input type="text" name = 'ulastname' placeholder="Last Name"  required/>
 
+          <div class="avatar" id="avatar_human">
+            <div id="preview_human"><img src="{% static 'images/profile1.jpg' %}" id="avatar-image" class="avatar_img">
+            </div>
+            <div class="avatar_upload">
+              <label class="upload_label">Upload
+                      <input type="file" id="upload_human" name="upic">
+                    </label>
+            </div>
+          </div>
+
+          <div class = "input-inline">
+            <label>First Name</label> 
+            <input type="text" name = 'ufirstname' placeholder="First Name" required />
+          </div>
+          <div class = "input-inline">
+            <label>Last Name</label> 
+            <input type="text" name = 'ulastname' placeholder="Last Name"  required/>
+          </div>
           <div class = "input-bio-inline">
           <label>Bio</label> 
           <input class="bio-input" type="text" name='uBio'>
@@ -36,7 +52,7 @@
         </form>
       </div>
       <div class="form-container sign-in-container">
-        <form action="/dogProfilesCreate" method="post">
+        <form action="/dogProfilesCreate" method="post" enctype="multipart/form-data">
           {% csrf_token %} 
           {% if messages %}
           {% for message in messages %}
@@ -44,15 +60,28 @@
           {% endfor %}
           {% endif %}
           <h1 class="profile-head">Dog Profile</h1>
+          
+          <div class="avatar" id="avatar">
+            <div id="preview"><img src="{% static 'images/dog_profile.jpeg' %}" id="avatar-image" class="avatar_img">
+            </div>
+            <div class="avatar_upload">
+              <label class="upload_label">Upload
+                      <input type="file" id="upload" name = "dogPic">
+                    </label>
+            </div>
+          </div>
           <!-- <span>or use your email for registration</span> -->
-          <input type="text" name = 'dogName' placeholder="Dog Name" />
+          <div class = "input-inline">
+            <label>Name</label> 
+            <input type="text" name = 'dogName'required/>
+          </div>
           <div class = "input-bio-inline">
-          <label>Bio</label> 
-          <input class="bio-input" type="text" name='dogBio'/>
+            <label>Bio</label> 
+            <input class="bio-input" type="text" name='dogBio' required/>
           </div>
           <div class = "input-inline">
-          <label>Date of Birth</label> 
-          <input type="date" name="dogDOB">
+            <label>Date of Birth</label> 
+            <input type="date" name="dogDOB" required>
           </div>
           <button>Finish</button>
         </form>
@@ -70,8 +99,8 @@
               {% for dog in dogList %}
               <li class="profile-list--item">
                 <header class="profile-details">
-                  <img src="{% static 'images/profile1.jpg' %}" alt="DOG" class="profile-img" />
-                  <h3 class="profile-name">{{dog}}</h3>
+                  <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="profile-img" />
+                  <h3 class="profile-name">{{dog.name}}</h3>
                 </header>
              </li>
              {% endfor %}
