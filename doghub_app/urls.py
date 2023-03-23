@@ -18,5 +18,4 @@ urlpatterns = [
     # path("dog_profile_delete", views.dog_profile_delete, name="dog_profile_delete"),
 ]
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
