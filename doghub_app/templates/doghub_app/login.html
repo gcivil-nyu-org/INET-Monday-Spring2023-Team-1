@@ -50,7 +50,7 @@
           {% endfor %} {% endif %}
           <input type="email" name="uemail" placeholder="Email" />
           <input type="password" name="psw" placeholder="Password" />
-          <a href="">Forgot your password?</a>
+          <a href="{% url 'forgot_password_page' %}">Forgot your password?</a>
           <button>Sign In</button>
         </form>
       </div>
