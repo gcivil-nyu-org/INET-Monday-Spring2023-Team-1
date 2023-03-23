@@ -47,9 +47,6 @@ function handleFiles(upload, preview,avatar){
     var img = document.createElement("img");
     img.file = file;
     img.src = window.URL.createObjectURL(file);
-    img.onload = function() {
-      // window.URL.revokeObjectURL(this.src);
-    };
     img.className = "avatar_img";
 
     /* Clear focus and any text editing mode */
