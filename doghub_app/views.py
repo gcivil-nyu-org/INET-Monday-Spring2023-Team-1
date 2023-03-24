@@ -6,11 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import Http404
 from django.core.mail import EmailMessage
-from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
 
@@ -62,11 +60,12 @@ def forgot_password_email(request):
 def reset_password_page(request, uidb64, token):
     return render(request=request, template_name="doghub_app/reset_password.html")
 
+
 def send_verification_email(user):
     token = verification_token_generator.make_token(user)
-    verification_url = reverse('verify-email', kwargs={'token': token})
-    subject = 'Verify your email address'
-    message = f'Hi {user.username},\n\nPlease click the following link to verify your email address:\n\n{settings.BASE_URL}{verification_url}'
+    verification_url = reverse("verify-email", kwargs={"token": token})
+    subject = "Verify your email address"
+    message = f"Hi {user.username},\n\nPlease click the following link to verify your email address:\n\n{settings.BASE_URL}{verification_url}"  # noqa: E501
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [user.email]
     email = EmailMessage(
@@ -85,10 +84,11 @@ def verify_email(request, token):
     if verification_token_generator.check_token(user, token):
         user.email_verified = True
         user.save()
-        return redirect('register_details')
+        return redirect("register_details")
     else:
-        return redirect('login')
-    
+        return redirect("login")
+
+
 def register_request(request):
     context = {}
     context["version"] = __version__
