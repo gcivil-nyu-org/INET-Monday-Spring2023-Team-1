@@ -9,11 +9,13 @@ BIO_MAX_LENGTH = 500
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_("email"), unique=True)
+    email_verified = models.BooleanField(default=False)
     id = models.AutoField(primary_key=True, editable=False)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     ID_FIELD = "id"
     REQUIRED_FIELDS = ["password", "username"]
+    
 
     def __str__(self):
         return self.email
