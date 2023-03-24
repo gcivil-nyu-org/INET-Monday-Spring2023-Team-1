@@ -128,7 +128,7 @@ def logout_request(request):
 def user_profile(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
     dog_prof = DogProfile.objects.filter(user_id=request.user)
-    context = {"userprof": user_prof, "dogprof": dog_prof}
+    context = {"userprof": user_prof, "dogprof": list(dog_prof), "media_url": settings.MEDIA_URL}
     return render(
         request=request, template_name="doghub_app/user_profile.html", context=context
     )

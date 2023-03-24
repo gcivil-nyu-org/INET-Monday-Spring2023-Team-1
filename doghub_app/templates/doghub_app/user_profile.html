@@ -1,6 +1,7 @@
 
 {% block content %}
-  <div class="container">
+{% load static %}
+  <!-- <div class="container">
     <div class="row">
       <div class="col-md-6">
         <div class="profile-info">
@@ -35,6 +36,146 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+  <html>
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+      <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
+      <title>Log In</title>
+  </head>
+  <body>
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-img">
+        <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
+      </div>
+      <div class="profile-nav-info">
+        <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
+        <div class="userTag">
+          <p id="state" >Dog Owner</p>
+          <!-- <span id="country" >USA.</span> -->
+        </div>
+  
+      </div>
+      <div class="profile-option">
+        <div class="notification">
+          <i class="fa fa-pencil-square-o"></i>
+        </div>
+      </div>
+    </div>
+  
+    <div class="main-bd">
+      <div class="left-side">
+        <div class="profile-side">
+          <!-- <p class="mobile-no"><i class="fa fa-phone"></i> +23470xxxxx700</p> -->
+          <p class="user-mail"><i class="fa fa-envelope"></i> {{ user.email }}</p>
+          <div class="user-bio">
+            <h3>Bio</h3>
+            <p class="bio">
+              {{userprof.bio}}
+              <!-- Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m111 -->
+            </p>
+          </div>
+          <div class="profile-btn">
+            <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
+            <button class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Follow</button>
+          </div>
+          <!-- <div class="user-rating">
+            <h3 class="rating">4.5</h3>
+            <div class="rate">
+              <div class="star-outer">
+                <div class="star-inner">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                </div>
+              </div>
+              <span class="no-of-user-rate"><span>123</span>&nbsp;&nbsp;reviews</span>
+            </div>
+  
+          </div> -->
+        </div>
+  
+      </div>
+      <div class="right-side">
+  
+        <div class="nav">
+          <ul>
+            <li onclick="tabs(0)" class="user-post">Dogs</li>
+            <li onclick="tabs(1)" class="user-review active">Reviews</li>
+            <li onclick="tabs(2)" class="user-setting"> Settings</li>
+          </ul>
+        </div>
+        <div class="profile-body">
+          <div class="profile-posts tab">
+            {% if dogprof %}
+            <ul class="proflist">
+              {% for dog in dogprof %}
+              <li class="">
+                <header class="proflist--item">
+                  <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
+                  <h3 class="prof-name">{{dog.name}}</h3>
+                  <span class="toggle">
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                  </span>
+                  <ul>
+                    <li>Bio: {{dog.bio}}</a></li>
+                    <li>DOB: {{dog.dob}}</a></li>
+                </ul>
+                </header>
+         
 
+                <!-- <div class="proflist_item">
+                  <div class="dogcard">
+                      <div class="dogcard-img">
+                          <img src="{{media_url}}{{dog.pic}}" alt="DOG">
+                      </div>
+                      <h2>{{dog.name}} <br/><span>{{dog.bio}}</span></h2>
+                  </div>
+                  <ul>
+                      <li><a href=""><i class="fa fa-twitter" aria-hidden="true"></i>Twitter</a></li>
+                  </ul>
+                  <div class="toggle">
+                      <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                  </div>
+              </div> -->
+
+
+
+
+             </li>
+             {% endfor %}
+            </ul>
+            {% else %}
+            <h1 id = 'demo'>Add Dog Profiles</h1>
+            <p>You can add profiles for your dogs or continue on your profile</p>
+            <button class="ghost" id="addDogProfile">Continue User Profile</button>
+            {% endif %}
+          </div>
+          <div class="profile-reviews tab">
+            <h1>User reviews</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
+              repellendus excepturi quisquam temporibus quam nobis voluptatem, reiciendis distinctio deserunt vitae! Maxime provident, distinctio animi commodi nemo, eveniet fugit porro quos nesciunt quidem a, corporis nisi dolorum minus sit eaque error
+              sequi ullam. Quidem ut fugiat, praesentium velit aliquam!</p>
+          </div>
+          <div class="profile-settings tab">
+            <div class="account-setting">
+              <h1>Acount Setting</h1>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
+                animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
+                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src= "{% static 'scripts/user_profile.js' %}" ></script>
+</body>
+</html>
 {% endblock %}
