@@ -410,7 +410,7 @@ button.createbtn i {
   .proflist--item {
     display: inline-block;
     width: 55%;
-    height: 80px;
+    height: 82px;
     top:0;
     background-color:  #fff   ;
     border-color: #FFFFFF;
@@ -444,8 +444,11 @@ button.createbtn i {
     }
   }
   .prof-name {
-    padding-top: 0.5em;
-    font-size: 25px ;
+    padding: 0em;
+    top:0px;
+    width:65%;
+   
+    font-size: 23px ;
     @media screen and (min-width: 24em) {
       font-size: 1.875em;
     }
@@ -464,14 +467,15 @@ button.createbtn i {
     top: 0px;
     left: 65.5%;
 
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.35rem;
+    height: 1.35rem;
     border-radius: 50%;
     background-color: #6F36A8;
     display: inline-block;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    
 }
 
 .toggle > .fa{
@@ -480,21 +484,113 @@ button.createbtn i {
     text-align: center;
     cursor: pointer;
     transition: 0.25s;
-   font-size: 1.5rem;
-   width: 1.5rem;
-   height: 1.5rem;
+   font-size: 1.3rem;
+   width: 1.35rem;
+   height: 1.35rem;
+  
+   top:0px;
 }
 .proflist--item.active{
     height: auto;
     overflow: auto;
-    box-shadow: 0 2px 5px #73BEF5;
+    box-shadow: 0 2px 5px #5886A8 ;
     
 }
 .proflist--item.active .toggle > .fa{
     transform: rotate(-540deg);
-    background-color: #73BEF5;
+    background-color: #5886A8 ;
     border-radius: 50%;
 } 
 
- 
+.delete-bin{
+    position: relative;
+    top: 0px;
+    left: 65.5%;
 
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.delete-bin > .fa{
+    margin: auto;
+    color: #6F36A8;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s;
+   font-size: 1.1rem;
+   width: 1.1rem;
+   height: 1.1rem;
+  
+   top:0px;
+}
+
+.delete-bin> .fa:hover{
+    color: #73BEF5;
+}
+
+.dog-edit{ 
+    position: relative;
+    top: 0px;
+    left: 96.5%;
+
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dog-edit > .fa{
+    margin: auto;
+    color: #6F36A8;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s;
+   font-size: 1.1rem;
+   width: 1.1rem;
+   height: 1.1rem;
+  
+   top:0px;
+}
+
+.dog-edit> .fa:hover{
+    color: #73BEF5;
+}
+
+
+.add-dog-pof{
+    position: relative;
+    top: 0px;
+    left: 30.5%;
+
+    width: 1.9rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #6F36A8;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-dog-pof > .fa{
+    margin: auto;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s;
+   font-size: 2rem;
+   width: 2rem;
+   height: 2rem;
+   top:0px;
+}
+.add-dog-pof:hover{
+     background: #73BEF5 ;
+}

@@ -69,7 +69,7 @@
     }
     return -1;
 }
-
+;
 
   toggle.forEach(el=> el.addEventListener('click', () => {
     console.log("here")
