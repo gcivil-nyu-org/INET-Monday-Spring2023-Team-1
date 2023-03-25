@@ -182,3 +182,6 @@ def dog_profile_delete(request, pk):
         return redirect("user_profile")
     return render(request=request, template_name="doghub_app/dog_profile_delete.html")
 
+#save every feature manually instead of form cause you cannot add a template
+#look at the register page
+

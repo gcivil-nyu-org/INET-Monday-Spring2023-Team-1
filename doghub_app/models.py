@@ -5,6 +5,7 @@ from django.conf import settings
 
 CHAR_MAX_LENGTH = 30
 BIO_MAX_LENGTH = 500
+EVENT_TITLE_MAX_LENGTH = 50
 
 
 class CustomUser(AbstractUser):
@@ -56,3 +57,27 @@ class DogProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class EventPost(models.Model):
+    event_id = models.AutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
+    user_id = models.ForeignKey(
+    settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
+    )
+    event_title = models.CharField(max_length=EVENT_TITLE_MAX_LENGTH)
+    event_description=models.CharField(max_length=BIO_MAX_LENGTH)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                name="event_post_composite_pk", fields=["event_id", "user_id"]
+            )
+        ]
+
+    def get_first_name(self):
+        return self.user_id.fname
+
+
+    def __str__(self):
+        return self.event_title + ' | ' + self.name
