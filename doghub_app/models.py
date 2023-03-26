@@ -62,7 +62,7 @@ class DogProfile(models.Model):
 
 class EventPost(models.Model):
     event_id = models.AutoField(primary_key=True, editable=False)
-    name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
+    #name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
     user_id = models.ForeignKey(
     settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
     )
@@ -82,4 +82,5 @@ class EventPost(models.Model):
 
 
     def __str__(self):
-        return self.event_title + ' | ' + self.name
+        return self.event_title 
+        #return self.event_title + ' | ' + self.name

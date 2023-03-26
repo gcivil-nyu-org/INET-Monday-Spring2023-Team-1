@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, UserProfile, DogProfile
+from .models import CustomUser, UserProfile, DogProfile, EventPost
+from django.forms import DateTimeInput
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -48,4 +49,14 @@ class DogProfileForm(forms.ModelForm):
         fields = ("name", "bio", "dob")
         widgets = {
             'dob': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class EventPostForm(forms.ModelForm):
+    
+
+    class Meta:
+        model = EventPost
+        fields=("event_title", "event_description", "event_time")
+        widgets = {
+            'event_time': DateTimeInput(attrs={'type': 'datetime-local'})
         }

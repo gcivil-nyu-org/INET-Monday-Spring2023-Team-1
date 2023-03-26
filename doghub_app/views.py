@@ -11,6 +11,7 @@ from .forms import (
     CustomUserChangeForm,
     UserProfileForm,
     DogProfileForm,
+    EventPostForm,
 )
 from .models import CustomUser, UserProfile, DogProfile, EventPost
 from _version import __version__
@@ -185,6 +186,20 @@ def dog_profile_delete(request, pk):
         return redirect("user_profile")
     return render(request=request, template_name="doghub_app/dog_profile_delete.html")
 
+
+@login_required
+def add_post(request):
+    if request.method == 'POST':
+        event_post_form = EventPostForm(request.POST)
+        if event_post_form.is_valid():
+            event_post_form.user_id = request.user
+            event_post_form.save()
+            return redirect("events")
+    else:
+        event_post_form = EventPostForm()
+
+    context={'event_post_form': event_post_form}
+    return render(request=request, template_name='doghub_app/add_event.html', context=context)
 #save every feature manually instead of form cause you cannot add a template
 #look at the register page
 
