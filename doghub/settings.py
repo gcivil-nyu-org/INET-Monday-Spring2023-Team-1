@@ -101,6 +101,20 @@ if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
         }
     }
 
+
+elif "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "doghub_dev",  # database name, must exist
+            "USER": os.getenv("AWS_MYSQL_DOGHUB_USERNAME"),
+            "PASSWORD": os.getenv("AWS_MYSQL_DOGHUB_PWD"),
+            "HOST": os.getenv("AWS_MYSQL_HOST"),
+            "PORT": "3306",
+        }
+    }
+
+
 elif "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "LOCAL":
     DATABASES = {
         "default": {
