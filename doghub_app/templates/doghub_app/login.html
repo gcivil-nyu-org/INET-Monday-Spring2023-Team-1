@@ -35,6 +35,16 @@
           <span>or use your email for registration</span>
           <input type="email" name="reg_uemail" placeholder="Email" />
           <input type="password" name="reg_psw" placeholder="Password" />
+          {% if errors %}
+          <ul>
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if messages %} {% for message in messages %}
+          <h5>{{ message }}</h5>
+          {% endfor %} {% endif %}
           <button>Sign Up</button>
         </form>
       </div>
