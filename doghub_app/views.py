@@ -12,7 +12,7 @@ from .forms import (
     UserProfileForm,
     DogProfileForm,
 )
-from .models import CustomUser, UserProfile, DogProfile
+from .models import CustomUser, UserProfile, DogProfile, EventPos
 from _version import __version__
 
 
