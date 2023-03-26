@@ -62,12 +62,12 @@ class DogProfile(models.Model):
 
 class EventPost(models.Model):
     event_id = models.AutoField(primary_key=True, editable=False)
-    #name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
+    # name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
     user_id = models.ForeignKey(
-    settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
     )
     event_title = models.CharField(max_length=EVENT_TITLE_MAX_LENGTH)
-    event_description=models.CharField(max_length=BIO_MAX_LENGTH)
+    event_description = models.CharField(max_length=BIO_MAX_LENGTH)
     event_time = models.DateTimeField(default=datetime.now)
 
     class Meta:
@@ -80,7 +80,6 @@ class EventPost(models.Model):
     def get_first_name(self):
         return self.user_id.fname
 
-
     def __str__(self):
-        return self.event_title 
-        #return self.event_title + ' | ' + self.name
+        return self.event_title
+        # return self.event_title + ' | ' + self.name

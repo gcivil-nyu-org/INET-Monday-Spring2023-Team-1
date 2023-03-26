@@ -48,15 +48,12 @@ class DogProfileForm(forms.ModelForm):
         model = DogProfile
         fields = ("name", "bio", "dob")
         widgets = {
-            'dob': forms.DateInput(attrs={'type': 'date'}),
+            "dob": forms.DateInput(attrs={"type": "date"}),
         }
+
 
 class EventPostForm(forms.ModelForm):
-    
-
     class Meta:
         model = EventPost
-        fields=("event_title", "event_description", "event_time")
-        widgets = {
-            'event_time': DateTimeInput(attrs={'type': 'datetime-local'})
-        }
+        fields = ("event_title", "event_description", "event_time")
+        widgets = {"event_time": DateTimeInput(attrs={"type": "datetime-local"})}

@@ -93,16 +93,20 @@ def login_request(request):
 @login_required
 def events(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
-    context = {"userprof": user_prof}
+    context = {"userprof": user_prof}  # noqa: F841
 
-    event_posts=EventPost.objects.all()
-    return render(request, 'doghub_app/events_homepage.html', {'event_posts': event_posts})
-   # if request.method == "GET":
-    #    return render(
-     #       request=request,
-      #      template_name="doghub_app/events_homepage.html",
-       #     context=context,
-        #)
+    event_posts = EventPost.objects.all()
+    return render(
+        request, "doghub_app/events_homepage.html", {"event_posts": event_posts}
+    )
+
+
+# if request.method == "GET":
+#    return render(
+#       request=request,
+#      template_name="doghub_app/events_homepage.html",
+#     context=context,
+# )
 
 
 def logout_request(request):
@@ -160,6 +164,7 @@ def dog_profile_edit(request, pk):
         context={"form": form},
     )
 
+
 @login_required
 def dog_profile_add(request):
     if request.method == "POST":
@@ -171,12 +176,17 @@ def dog_profile_add(request):
             return redirect("user_profile")
     else:
         dog_profile_form = DogProfileForm()
-        
-    context = {'dog_profile_form': dog_profile_form}
-    if dog_profile_form.errors:
-        context['form_errors'] = dog_profile_form.errors
 
-    return render(request=request, template_name="doghub_app/dog_profile_add.html", context=context)
+    context = {"dog_profile_form": dog_profile_form}
+    if dog_profile_form.errors:
+        context["form_errors"] = dog_profile_form.errors
+
+    return render(
+        request=request,
+        template_name="doghub_app/dog_profile_add.html",
+        context=context,
+    )
+
 
 @login_required
 def dog_profile_delete(request, pk):
@@ -189,7 +199,7 @@ def dog_profile_delete(request, pk):
 
 @login_required
 def add_post(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
             event_post_form.user_id = request.user
@@ -198,8 +208,11 @@ def add_post(request):
     else:
         event_post_form = EventPostForm()
 
-    context={'event_post_form': event_post_form}
-    return render(request=request, template_name='doghub_app/add_event.html', context=context)
-#save every feature manually instead of form cause you cannot add a template
-#look at the register page
+    context = {"event_post_form": event_post_form}
+    return render(
+        request=request, template_name="doghub_app/add_event.html", context=context
+    )
 
+
+# save every feature manually instead of form cause you cannot add a template
+# look at the register page
