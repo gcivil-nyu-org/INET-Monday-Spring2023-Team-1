@@ -12,7 +12,7 @@ from .forms import (
     UserProfileForm,
     DogProfileForm,
 )
-from .models import CustomUser, UserProfile, DogProfile
+from .models import CustomUser, UserProfile, DogProfile, EventPost
 from _version import __version__
 
 
@@ -93,12 +93,15 @@ def login_request(request):
 def events(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
     context = {"userprof": user_prof}
-    if request.method == "GET":
-        return render(
-            request=request,
-            template_name="doghub_app/events_homepage.html",
-            context=context,
-        )
+
+    event_posts=EventPost.objects.all()
+    return render(request, 'doghub_app/events_homepage.html', {'event_posts': event_posts})
+   # if request.method == "GET":
+    #    return render(
+     #       request=request,
+      #      template_name="doghub_app/events_homepage.html",
+       #     context=context,
+        #)
 
 
 def logout_request(request):

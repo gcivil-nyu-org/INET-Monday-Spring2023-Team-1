@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from datetime import datetime
 
 CHAR_MAX_LENGTH = 30
 BIO_MAX_LENGTH = 500
@@ -67,6 +68,7 @@ class EventPost(models.Model):
     )
     event_title = models.CharField(max_length=EVENT_TITLE_MAX_LENGTH)
     event_description=models.CharField(max_length=BIO_MAX_LENGTH)
+    event_time = models.DateTimeField(default=datetime.now)
 
     class Meta:
         constraints = [
