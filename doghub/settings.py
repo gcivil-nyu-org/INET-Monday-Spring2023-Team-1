@@ -102,7 +102,7 @@ if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
     }
 
 
-if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
+elif "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",

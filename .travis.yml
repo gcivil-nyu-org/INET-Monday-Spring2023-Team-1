@@ -9,10 +9,10 @@ services:
   - mysql
 
 before_install:
-  - if [ $DOGHUB_DB_ENV == "PROD" ]; then DOGHUB_DB_NAME="doghub"; else DOGHUB_DB_NAME="doghub_dev"; fi
+  - if [ $DOGHUB_DB_ENV == "DEV" ]; then DOGHUB_DB_NAME="doghub_dev"; else DOGHUB_DB_NAME="doghub"; fi
   - echo $DOGHUB_DB_ENV
   - echo $DOGHUB_DB_NAME
-  - mysql -e 'CREATE DATABASE $DOGHUB_DB_NAME;'
+  - mysql -e "CREATE DATABASE $DOGHUB_DB_NAME;"
 
 before_script:
   - python manage.py makemigrations
