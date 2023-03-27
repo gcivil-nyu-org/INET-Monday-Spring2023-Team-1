@@ -89,6 +89,7 @@ def verify_email(request, token):
     else:
         return redirect("login")
 
+
 def register_request(request):
     context = {}
     context["version"] = __version__
@@ -103,8 +104,11 @@ def register_request(request):
             messages.error(request, "Password is required")
         elif errors:
             context["errors"] = errors
-            if len(errors)>0:
-                messages.error(request,"There was an issue with your password. Please try again with a stronger password.")
+            if len(errors) > 0:
+                messages.error(
+                    request,
+                    "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
+                )
         else:
             user = CustomUser.objects.create_user(
                 username=user_email, email=user_email, password=password
