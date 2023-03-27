@@ -202,8 +202,9 @@ def add_post(request):
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
-            event_post_form.user_id = request.user
-            event_post_form.save()
+            event_post= event_post_form.save(commit=False)
+            event_post.user_id = request.user
+            event_post.save()
             return redirect("events")
     else:
         event_post_form = EventPostForm()
