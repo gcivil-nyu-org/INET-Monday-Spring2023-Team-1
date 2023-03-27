@@ -1,0 +1,9 @@
+{% block content %}
+  <h1>Confirm deletion of {{ dog_profile.name }}</h1>
+  <p>Are you sure you want to delete this dog profile?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+    <a href="{% url 'user_profile' %}">Cancel</a>
+  </form>
+{% endblock %}

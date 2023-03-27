@@ -2,13 +2,16 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from datetime import datetime
 
 CHAR_MAX_LENGTH = 30
 BIO_MAX_LENGTH = 500
+EVENT_TITLE_MAX_LENGTH = 50
 
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_("email"), unique=True)
+    email_verified = models.BooleanField(default=False)
     id = models.AutoField(primary_key=True, editable=False)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
@@ -26,7 +29,9 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    pic = models.ImageField(upload_to="user/")
+    pic = models.ImageField(
+        upload_to="user/", default="../static/images/profile1.jpg", null=True
+    )
     fname = models.CharField(max_length=CHAR_MAX_LENGTH)
     lname = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField(null=True)
@@ -42,7 +47,9 @@ class DogProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
     )
 
-    pic = models.ImageField(upload_to="dog/", null=True)
+    pic = models.ImageField(
+        upload_to="dog/", default="../static/images/dog_profile.jpeg", null=True
+    )
     name = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField()
     bio = models.CharField(max_length=BIO_MAX_LENGTH)
@@ -56,3 +63,28 @@ class DogProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class EventPost(models.Model):
+    event_id = models.AutoField(primary_key=True, editable=False)
+    # name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
+    user_id = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
+    )
+    event_title = models.CharField(max_length=EVENT_TITLE_MAX_LENGTH)
+    event_description = models.CharField(max_length=BIO_MAX_LENGTH)
+    event_time = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                name="event_post_composite_pk", fields=["event_id", "user_id"]
+            )
+        ]
+
+    def get_first_name(self):
+        return self.user_id.fname
+
+    def __str__(self):
+        return self.event_title
+        # return self.event_title + ' | ' + self.name

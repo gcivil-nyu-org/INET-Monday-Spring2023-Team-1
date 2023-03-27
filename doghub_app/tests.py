@@ -1,7 +1,13 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from mock import patch
 from doghub_app.models import CustomUser, UserProfile, DogProfile
+from doghub_app.tokens import verification_token_generator
+from . import validators
+from django.core import mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.messages import get_messages
 
 
 class HomeViewTestCase(TestCase):
@@ -16,7 +22,7 @@ class HomeViewTestCase(TestCase):
 class ResgisterViewTestCase(TestCase):
     def setUp(self):
         self.user_email = "testuser@example.com"
-        self.password = "testpassword"
+        self.password = "Test@password1"
 
     def test_register_request_valid(self):
         data = {
@@ -118,3 +124,129 @@ class LoginTestCase(TestCase):
         self.assertFalse(
             CustomUser.objects.filter(email=self.user_data["uemail"]).exists()
         )
+
+
+class ValidatorTestCase(TestCase):
+    def test_validate_password(self):
+        # Test a valid password
+        assert validators.validate_password("Abcdefg1!") == []
+
+        # Test a password with less than 8 characters
+        assert validators.validate_password("Abcd1!") == [
+            "Password must be at least 8 characters long."
+        ]
+
+        # Test a password with no digits
+        assert validators.validate_password("Abcdefg!") == [
+            "Password must contain at least one digit."
+        ]
+
+        # Test a password with no uppercase letters
+        assert validators.validate_password("abcdefg1!") == [
+            "Password must contain at least one uppercase letter."
+        ]
+
+        # Test a password with no lowercase letters
+        assert validators.validate_password("ABCDEFG1!") == [
+            "Password must contain at least one lowercase letter."
+        ]
+
+        # Test a password with no special characters
+        assert validators.validate_password("Abcdefg1") == [
+            "Password must contain at least one special character."
+        ]
+
+        # Test a password with multiple errors
+        assert validators.validate_password("abc12") == [
+            "Password must be at least 8 characters long.",
+            "Password must contain at least one uppercase letter.",
+            "Password must contain at least one special character.",
+        ]
+
+
+class ForgotPasswordTestDemo(TestCase):
+    def test_forgot_password_page(self):
+        # Test that the view returns a status code of 200
+        response = self.client.get(reverse("forgot_password_page"))
+        self.assertEqual(response.status_code, 200)
+
+        # Test that the correct template is used
+        response = self.client.get(reverse("forgot_password_page"))
+        self.assertTemplateUsed(response, "doghub_app/forgot_password_page.html")
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("forgot_password_email")
+        self.user = CustomUser.objects.create_user(
+            email="test@example.com", username="testuser", password="testpassword"
+        )
+
+    def test_forgot_password_email_success(self):
+        # Test sending a password reset email successfully
+        with patch.object(
+            PasswordResetTokenGenerator, "make_token", return_value="testtoken"
+        ):
+            response = self.client.post(self.url, {"email_id": "test@example.com"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Reset Password", mail.outbox[0].subject)
+        self.assertIn(
+            "http://127.0.0.1:8000/reset_password/confirm", mail.outbox[0].body
+        )
+
+    def test_forgot_password_email_invalid_email(self):
+        # Test providing an invalid email address
+        with patch.object(
+            PasswordResetTokenGenerator, "make_token", return_value="testtoken"
+        ):
+            response = self.client.post(self.url, {"email_id": "invalid@example.com"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertContains(
+            response, "The email you provided is not associated with an account."
+        )
+
+
+class VerifyEmailViewTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", email="test@example.com", password="testpass"
+        )
+        self.token = verification_token_generator.make_token(self.user)
+        self.url = reverse("verify-email", kwargs={"token": self.token})
+
+    def test_verify_email_valid_token(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("register_details"))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.email_verified)
+
+    def test_verify_email_invalid_token(self):
+        self.client.force_login(self.user)
+        response = self.client.get(
+            reverse("verify-email", kwargs={"token": "invalid-token"})
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("login"))
+        self.user.refresh_from_db()
+        self.assertFalse(self.user.email_verified)
+
+
+class LogoutRequestViewTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", email="test@example.com", password="testpass"
+        )
+        self.login_url = reverse("login")
+        self.logout_url = reverse("logout")
+
+    def test_logout_request(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.logout_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.login_url)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "You have successfully logged out.")
