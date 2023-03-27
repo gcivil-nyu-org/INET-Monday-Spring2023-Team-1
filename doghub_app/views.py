@@ -25,7 +25,16 @@ from _version import __version__
 
 # Create your views here.
 def home(request):
-    return HttpResponse(f"Welcome to DogHub {__version__}")
+    import os
+
+    if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
+        from settings import DATABASES
+
+        db_name = DATABASES["NAME"]
+    else:
+        db_name = ""
+
+    return HttpResponse(f"Welcome to DogHub {__version__} {db_name}")
 
 
 def forgot_password_page(request):
