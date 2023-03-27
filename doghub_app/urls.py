@@ -24,6 +24,7 @@ urlpatterns = [
         views.dog_profile_delete,
         name="dog_profile_delete",
     ),
+    path("add_post", views.add_post, name="add_post"),
     path(
         "forgot_password_email",
         views.forgot_password_email,

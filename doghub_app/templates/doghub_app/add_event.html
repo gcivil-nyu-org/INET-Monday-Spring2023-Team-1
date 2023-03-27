@@ -1,0 +1,9 @@
+
+{% block content %}
+<h1> Add Event</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ event_post_form.as_p }}
+    <button type = "submit">Submit</button>
+</form>
+{% endblock %}

@@ -38,13 +38,10 @@
           {% if errors %}
           <ul>
             {% for error in errors %}
-              <li>{{ error }}</li>
+              <li><span>{{ error }}</span></li>
             {% endfor %}
           </ul>
           {% endif %}
-          {% if messages %} {% for message in messages %}
-          <h5>{{ message }}</h5>
-          {% endfor %} {% endif %}
           <button>Sign Up</button>
         </form>
       </div>
