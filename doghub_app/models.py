@@ -11,6 +11,7 @@ EVENT_TITLE_MAX_LENGTH = 50
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_("email"), unique=True)
+    email_verified = models.BooleanField(default=False)
     id = models.AutoField(primary_key=True, editable=False)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
@@ -28,7 +29,9 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    pic = models.ImageField(upload_to="user/")
+    pic = models.ImageField(
+        upload_to="user/", default="../static/images/profile1.jpg", null=True
+    )
     fname = models.CharField(max_length=CHAR_MAX_LENGTH)
     lname = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField(null=True)
@@ -44,7 +47,9 @@ class DogProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
     )
 
-    pic = models.ImageField(upload_to="dog/", null=True)
+    pic = models.ImageField(
+        upload_to="dog/", default="../static/images/dog_profile.jpeg", null=True
+    )
     name = models.CharField(max_length=CHAR_MAX_LENGTH)
     dob = models.DateField()
     bio = models.CharField(max_length=BIO_MAX_LENGTH)
