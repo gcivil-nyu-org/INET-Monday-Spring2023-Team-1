@@ -28,9 +28,7 @@ def home(request):
     import os
 
     if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
-        from settings import DATABASES
-
-        db_name = DATABASES["NAME"]
+        db_name = settings.DATABASES["NAME"]
     else:
         db_name = ""
 
