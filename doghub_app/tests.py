@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from doghub_app.models import CustomUser, UserProfile, DogProfile
-
+from . import validators
 
 class HomeViewTestCase(TestCase):
     def test_home_view(self):
@@ -118,3 +118,28 @@ class LoginTestCase(TestCase):
         self.assertFalse(
             CustomUser.objects.filter(email=self.user_data["uemail"]).exists()
         )
+
+class ValidatorTestCase(TestCase):
+    def test_validate_password(self):
+    # Test a valid password
+        assert validators.validate_password("Abcdefg1!") == []
+
+        # Test a password with less than 8 characters
+        assert validators.validate_password("Abcd1!") == ["Password must be at least 8 characters long."]
+
+        # Test a password with no digits
+        assert validators.validate_password("Abcdefg!") == ["Password must contain at least one digit."]
+
+        # Test a password with no uppercase letters
+        assert validators.validate_password("abcdefg1!") == ["Password must contain at least one uppercase letter."]
+
+        # Test a password with no lowercase letters
+        assert validators.validate_password("ABCDEFG1!") == ["Password must contain at least one lowercase letter."]
+
+        # Test a password with no special characters
+        assert validators.validate_password("Abcdefg1") == ["Password must contain at least one special character."]
+
+        # Test a password with multiple errors
+        assert validators.validate_password("abc12") == ["Password must be at least 8 characters long.", 
+                                            "Password must contain at least one uppercase letter.", 
+                                            "Password must contain at least one special character."]
