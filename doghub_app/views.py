@@ -95,7 +95,8 @@ def events(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
     context = {"userprof": user_prof}  # noqa: F841
 
-    event_posts = EventPost.objects.all()
+    event_posts = list(EventPost.objects.all())
+    event_posts.reverse()
     return render(
         request, "doghub_app/events_homepage.html", {"event_posts": event_posts}
     )
