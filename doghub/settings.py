@@ -20,11 +20,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-uc^-qkv@gaz58e7qmc@2*+$pvognknbewiw2t*hb(k!4#j^-jw"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
+    DEBUG = True
+else:
+    DEBUG = False
 
 
 ALLOWED_HOSTS = [
