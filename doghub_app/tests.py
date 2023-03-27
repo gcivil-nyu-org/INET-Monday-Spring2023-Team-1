@@ -1,19 +1,13 @@
-from base64 import encode, urlsafe_b64encode
-from email.message import EmailMessage
-from django.conf import settings
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from mock import patch
 from doghub_app.models import CustomUser, UserProfile, DogProfile
-from doghub_app.tokens import VerificationTokenGenerator
 from doghub_app.tokens import verification_token_generator
-from doghub_app.views import send_verification_email
 from . import validators
 from django.core import mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from base64 import urlsafe_b64encode
-from django.utils.encoding import force_str
+from django.contrib.messages import get_messages
 
 
 class HomeViewTestCase(TestCase):
@@ -220,7 +214,7 @@ class VerifyEmailViewTestCase(TestCase):
         )
         self.token = verification_token_generator.make_token(self.user)
         self.url = reverse("verify-email", kwargs={"token": self.token})
-        
+
     def test_verify_email_valid_token(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
@@ -228,11 +222,31 @@ class VerifyEmailViewTestCase(TestCase):
         self.assertRedirects(response, reverse("register_details"))
         self.user.refresh_from_db()
         self.assertTrue(self.user.email_verified)
-        
+
     def test_verify_email_invalid_token(self):
         self.client.force_login(self.user)
-        response = self.client.get(reverse("verify-email", kwargs={"token": "invalid-token"}))
+        response = self.client.get(
+            reverse("verify-email", kwargs={"token": "invalid-token"})
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("login"))
         self.user.refresh_from_db()
         self.assertFalse(self.user.email_verified)
+
+
+class LogoutRequestViewTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", email="test@example.com", password="testpass"
+        )
+        self.login_url = reverse("login")
+        self.logout_url = reverse("logout")
+
+    def test_logout_request(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.logout_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.login_url)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "You have successfully logged out.")
