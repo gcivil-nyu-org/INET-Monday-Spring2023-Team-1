@@ -80,7 +80,6 @@ def send_verification_email(user):
     email.send()
 
 
-@login_required
 def verify_email(request, token):
     user = request.user
     if verification_token_generator.check_token(user, token):
@@ -89,7 +88,6 @@ def verify_email(request, token):
         return redirect("register_details")
     else:
         return redirect("login")
-
 
 def register_request(request):
     context = {}
@@ -105,6 +103,8 @@ def register_request(request):
             messages.error(request, "Password is required")
         elif errors:
             context["errors"] = errors
+            if len(errors)>0:
+                messages.error(request,"There was an issue with your password. Please try again with a stronger password.")
         else:
             user = CustomUser.objects.create_user(
                 username=user_email, email=user_email, password=password
@@ -213,11 +213,7 @@ def logout_request(request):
 def user_profile(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
     dog_prof = DogProfile.objects.filter(user_id=request.user)
-    context = {
-        "userprof": user_prof,
-        "dogprof": list(dog_prof),
-        "media_url": settings.MEDIA_URL,
-    }
+    context = {"userprof": user_prof, "dogprof": dog_prof}
     return render(
         request=request, template_name="doghub_app/user_profile.html", context=context
     )
