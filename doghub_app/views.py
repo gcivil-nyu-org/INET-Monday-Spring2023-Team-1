@@ -18,8 +18,9 @@ from .forms import (
     CustomUserChangeForm,
     UserProfileForm,
     DogProfileForm,
+    EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile
+from .models import CustomUser, UserProfile, DogProfile, EventPost
 from _version import __version__
 
 
@@ -178,13 +179,21 @@ def login_request(request):
 @login_required
 def events(request):
     user_prof = UserProfile.objects.get(user_id=request.user)
-    context = {"userprof": user_prof}
-    if request.method == "GET":
-        return render(
-            request=request,
-            template_name="doghub_app/events_homepage.html",
-            context=context,
-        )
+    context = {"userprof": user_prof}  # noqa: F841
+
+    event_posts = list(EventPost.objects.all())
+    event_posts.reverse()
+    return render(
+        request, "doghub_app/events_homepage.html", {"event_posts": event_posts}
+    )
+
+
+# if request.method == "GET":
+#    return render(
+#       request=request,
+#      template_name="doghub_app/events_homepage.html",
+#     context=context,
+# )
 
 
 def logout_request(request):
@@ -273,3 +282,25 @@ def dog_profile_delete(request, pk):
         dog_profile.delete()
         return redirect("user_profile")
     return render(request=request, template_name="doghub_app/dog_profile_delete.html")
+
+
+@login_required
+def add_post(request):
+    if request.method == "POST":
+        event_post_form = EventPostForm(request.POST)
+        if event_post_form.is_valid():
+            event_post = event_post_form.save(commit=False)
+            event_post.user_id = request.user
+            event_post.save()
+            return redirect("events")
+    else:
+        event_post_form = EventPostForm()
+
+    context = {"event_post_form": event_post_form}
+    return render(
+        request=request, template_name="doghub_app/add_event.html", context=context
+    )
+
+
+# save every feature manually instead of form cause you cannot add a template
+# look at the register page

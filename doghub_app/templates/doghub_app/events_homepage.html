@@ -15,5 +15,20 @@
       {% csrf_token %}
       <button type="submit">Sign Out</button>
     </form>
+    <h1>Post List</h1>
+    <form action="{% url 'add_post' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Add Event</button>
+    </form>
+
+    <ul>
+    {% for eventpost in event_posts %}
+    <li>{{eventpost.event_title}} - {{eventpost.event_time}}</li>
+      {% empty %}
+        <li>No posts yet.</li>
+      {% endfor %}
+    </ul>
+  
+
   </body>
 </html>
