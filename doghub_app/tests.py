@@ -1,8 +1,11 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from mock import patch
 from doghub_app.models import CustomUser, UserProfile, DogProfile
 from . import validators
+from django.core import mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 class HomeViewTestCase(TestCase):
     def test_home_view(self):
@@ -143,3 +146,40 @@ class ValidatorTestCase(TestCase):
         assert validators.validate_password("abc12") == ["Password must be at least 8 characters long.", 
                                             "Password must contain at least one uppercase letter.", 
                                             "Password must contain at least one special character."]
+
+class ForgotPasswordTestDemo(TestCase):
+
+    def test_forgot_password_page(self):
+        # Test that the view returns a status code of 200
+        response = self.client.get(reverse("forgot_password_page"))
+        self.assertEqual(response.status_code, 200)
+
+        # Test that the correct template is used
+        response = self.client.get(reverse("forgot_password_page"))
+        self.assertTemplateUsed(response, "doghub_app/forgot_password_page.html")
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("forgot_password_email")
+        self.user = CustomUser.objects.create_user(
+            email="test@example.com",
+            username="testuser",
+            password="testpassword"
+        )
+
+    def test_forgot_password_email_success(self):
+        # Test sending a password reset email successfully
+        with patch.object(PasswordResetTokenGenerator, "make_token", return_value="testtoken"):
+            response = self.client.post(self.url, {"email_id": "test@example.com"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Reset Password", mail.outbox[0].subject)
+        self.assertIn("http://127.0.0.1:8000/reset_password/confirm", mail.outbox[0].body)
+        
+    def test_forgot_password_email_invalid_email(self):
+        # Test providing an invalid email address
+        with patch.object(PasswordResetTokenGenerator, "make_token", return_value="testtoken"):
+            response = self.client.post(self.url, {"email_id": "invalid@example.com"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertContains(response, "The email you provided is not associated with an account.")
