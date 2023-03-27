@@ -16,7 +16,7 @@ class HomeViewTestCase(TestCase):
 class ResgisterViewTestCase(TestCase):
     def setUp(self):
         self.user_email = "testuser@example.com"
-        self.password = "testpassword"
+        self.password = "Test@password1"
 
     def test_register_request_valid(self):
         data = {

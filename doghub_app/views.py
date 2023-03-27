@@ -11,6 +11,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.urls import reverse
 from django.conf import settings
+from .validators import validate_password
 
 from doghub_app.tokens import verification_token_generator
 
@@ -96,8 +97,14 @@ def register_request(request):
     if request.method == "POST":
         user_email = request.POST.get("reg_uemail")
         password = request.POST.get("reg_psw")
+        errors = validate_password(password)
+
         if CustomUser.objects.filter(email=user_email).exists():
             messages.error(request, "User Exists")
+        elif not password:
+            messages.error(request, "Password is required")
+        elif errors:
+            context["errors"] = errors
         else:
             user = CustomUser.objects.create_user(
                 username=user_email, email=user_email, password=password
