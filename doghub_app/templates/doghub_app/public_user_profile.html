@@ -1,0 +1,140 @@
+
+{% block content %}
+{% load static %}
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="profile-info">
+          <h1>Profile</h1>
+        </div>
+        <p>Email: {{ user.email }}</p>
+        <p>First Name: {{ userprof.fname }}</p>
+        <p>Last Name: {{ userprof.lname }}</p>
+        <p>Bio: {{userprof.bio}}</p>
+        <p>Date Of Birth: {{userprof.dob}}</p>
+        <a href="{% url 'user_profile_edit' %}" class="btn btn-primary">Edit</a>
+
+
+        <div class="dog-info">
+          <h1>Dog Profile <a href="{% url 'dog_profile_add'%}" class="btn btn-primary">Add</a></h1>
+          {% if dogprof %}
+            {% for dog in dogprof %}
+              <p>Name: {{ dog.name }}</p>
+              <p>Date Of Birth: {{ dog.dob }}</p>
+              <p>Bio: {{dog.bio}}</p>
+              <a href="{% url 'dog_profile_edit' dog.pk%}" class="btn btn-primary">Edit</a>
+              <a href="{% url 'dog_profile_delete' dog.pk %}">Delete Dog Profile</a>
+              {% endfor %}
+          {% else %}
+            <p>No dog profile information found.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="profile-image">
+          <img src="{{ user.profile.image.url }}" alt="Profile Image">
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <html>
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+      <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
+      <title>Log In</title>
+  </head>
+  <body>
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-img">
+        <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
+      </div>
+      <div class="profile-nav-info">
+        <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
+        <div class="userTag">
+          <p id="state" >Dog Owner</p>
+          <!-- <span id="country" >USA.</span> -->
+        </div>
+  
+      </div>
+      </a>
+    </div>
+  
+    <div class="main-bd">
+      <div class="left-side">
+        <div class="profile-side">
+          <!-- <p class="mobile-no"><i class="fa fa-phone"></i> +23470xxxxx700</p> -->
+          <p class="user-mail"><i class="fa fa-envelope"></i> {{ user.email }}</p>
+          <div class="user-bio">
+            <h3>Bio</h3>
+            <p class="bio">
+              {{userprof.bio}}
+            </p>
+          </div>
+          <div class="profile-btn">
+            <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
+            <button class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Follow</button>
+          </div>
+          <!-- <div class="user-rating">
+            <h3 class="rating">4.5</h3>
+            <div class="rate">
+              <div class="star-outer">
+                <div class="star-inner">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                </div>
+              </div>
+              <span class="no-of-user-rate"><span>123</span>&nbsp;&nbsp;reviews</span>
+            </div>
+  
+          </div> -->
+        </div>
+  
+      </div>
+      <div class="right-side">
+  
+        <div class="nav">
+          <ul>
+            <li onclick="tabs(0)" class="user-post">Dogs</li>
+          </ul>
+        </div>
+        <div class="profile-body">
+          <div class="profile-posts tab">
+            {% if dogprof %}
+            <ul class="proflist">
+              {% for dog in dogprof %}
+              <li class="">
+                <header class="proflist--item">
+                  <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
+                  <h3 class="prof-name">{{dog.name}}</h3>
+                  <span class="toggle">
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                  </span>
+                  <ul>
+                    <li>Bio: {{dog.bio}}</a></li>
+                    <li>DOB: {{dog.dob}}</a></li>
+                </ul>
+                </header>
+             </li>
+             {% endfor %}
+            </ul>
+            {% else %}
+            <h1 id = 'demo'>Add Dog Profiles</h1>
+            <p>You can add profiles for your dogs or continue on your profile</p>
+            <button class="ghost" id="addDogProfile">Continue User Profile</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src= "{% static 'scripts/user_profile.js' %}" ></script>
+</body>
+</html>
+{% endblock %}
