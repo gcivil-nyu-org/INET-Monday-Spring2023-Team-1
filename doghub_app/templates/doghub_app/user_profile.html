@@ -47,6 +47,7 @@
       <title>Log In</title>
   </head>
   <body>
+
   <div class="container">
     <div class="profile-header">
       <div class="profile-img">
@@ -118,11 +119,24 @@
             {% if dogprof %}
             <ul class="proflist">
               {% for dog in dogprof %}
+              <div id="pop-up" class="wind">
+                <div>
+                  <div onclick="closeWind()" class = "closewind">
+                    <i class="fa fa-times"></i>
+                  </div>
+                  <div class = "windprompt">
+                  <h3>Are you sure you want to delete this dog profile?</h3>
+                </div>
+                <a href="{% url 'dog_profile_delete' dog.pk %}">
+                  <button class="deletebtn">Delete</button>
+                </a>
+                </div>
+              </div>
               <li class="">
                 <header class="proflist--item">
-                  <a href="{% url 'dog_profile_delete' dog.pk %}" class="delete-bin">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </a>
+                  <div class="delete-bin" onclick="funcWind()">
+                    <i class="fa fa-trash" aria-hidden="true" onclick="funcWind()"></i>
+                  </div>
                   <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
                   <span class="toggle">
@@ -141,8 +155,7 @@
             </ul>
             {% else %}
             <h1 id = 'demo'>Add Dog Profiles</h1>
-            <p>You can add profiles for your dogs or continue on your profile</p>
-            <button class="ghost" id="addDogProfile">Continue User Profile</button>
+            <p>You can add profiles for your dogs here</p>
             {% endif %}
           </div>
           <div class="profile-reviews tab">
