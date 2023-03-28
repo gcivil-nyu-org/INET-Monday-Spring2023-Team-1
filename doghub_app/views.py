@@ -324,9 +324,10 @@ def add_post(request):
 
 def public_profile(request, email):
     user = CustomUser.objects.get(email=email)
-    user_prof = UserProfile.objects.get(user_id=user)
-    dog_prof = DogProfile.objects.filter(user_id=user)
+    user_prof = UserProfile.objects.get(user_id=user.id)
+    dog_prof = DogProfile.objects.filter(user_id=user.id)
     context = {
+        "user": user,
         "userprof": user_prof,
         "dogprof": list(dog_prof),
         "media_url": settings.MEDIA_URL,
