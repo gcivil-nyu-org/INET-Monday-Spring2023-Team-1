@@ -22,10 +22,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "DEV":
-    DEBUG = True
-else:
+if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
     DEBUG = False
+else:
+    DEBUG = True
 
 
 ALLOWED_HOSTS = [

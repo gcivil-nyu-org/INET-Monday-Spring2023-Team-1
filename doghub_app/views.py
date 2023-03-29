@@ -320,3 +320,20 @@ def add_post(request):
 
 # save every feature manually instead of form cause you cannot add a template
 # look at the register page
+
+
+def public_profile(request, email):
+    user = CustomUser.objects.get(email=email)
+    user_prof = UserProfile.objects.get(user_id=user.id)
+    dog_prof = DogProfile.objects.filter(user_id=user.id)
+    context = {
+        "user": user,
+        "userprof": user_prof,
+        "dogprof": list(dog_prof),
+        "media_url": settings.MEDIA_URL,
+    }
+    return render(
+        request=request,
+        template_name="doghub_app/public_user_profile.html",
+        context=context,
+    )
