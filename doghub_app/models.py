@@ -4,9 +4,10 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from datetime import datetime
 
-CHAR_MAX_LENGTH = 30
-BIO_MAX_LENGTH = 500
-EVENT_TITLE_MAX_LENGTH = 50
+AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "doghub_app.CustomUser")
+
+MID_CHAR_SIZE = 50
+LARGE_CHAR_SIZE = 500
 
 
 class CustomUser(AbstractUser):
@@ -18,69 +19,90 @@ class CustomUser(AbstractUser):
     ID_FIELD = "id"
     REQUIRED_FIELDS = ["password", "username"]
 
+    class Meta:
+        db_table = "custom_user"
+
     def __str__(self):
         return self.email
 
 
 class UserProfile(models.Model):
     user_id = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        AUTH_USER_MODEL,
         db_column="user_id",
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         primary_key=True,
     )
     pic = models.ImageField(
         upload_to="user/", default="../static/images/profile1.jpg", null=True
     )
-    fname = models.CharField(max_length=CHAR_MAX_LENGTH)
-    lname = models.CharField(max_length=CHAR_MAX_LENGTH)
-    dob = models.DateField(null=True)
-    bio = models.CharField(max_length=BIO_MAX_LENGTH, null=True)
+    fname = models.CharField(max_length=MID_CHAR_SIZE)
+    lname = models.CharField(max_length=MID_CHAR_SIZE)
+    dob = models.DateField()
+    bio = models.CharField(max_length=LARGE_CHAR_SIZE, null=True, blank=True)
+
+    class Meta:
+        db_table = "user_profile"
 
     def get_first_name(self):
         return self.user_id.fname
 
 
+class DogBreed(models.Model):
+    bre_id = models.AutoField(primary_key=True)
+    bre_name = models.CharField(max_length=MID_CHAR_SIZE)
+    bre_size_lbs = models.SmallIntegerField()
+
+    class Meta:
+        db_table = "dog_breed"
+
+
 class DogProfile(models.Model):
     dog_id = models.AutoField(primary_key=True, editable=False)
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
-    )
-
     pic = models.ImageField(
         upload_to="dog/", default="../static/images/dog_profile.jpeg", null=True
     )
-    name = models.CharField(max_length=CHAR_MAX_LENGTH)
+    name = models.CharField(max_length=MID_CHAR_SIZE)
     dob = models.DateField()
-    bio = models.CharField(max_length=BIO_MAX_LENGTH)
+    bio = models.CharField(max_length=LARGE_CHAR_SIZE)
+    user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+    bre_id = models.ForeignKey(
+        DogBreed, models.DO_NOTHING, db_column="bre_id", null=True, blank=True
+    )
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                name="dog_profile_composite_pk", fields=["dog_id", "user_id"]
-            )
-        ]
+        db_table = "dog_profile"
 
     def __str__(self):
         return self.name
 
 
-class EventPost(models.Model):
-    event_id = models.AutoField(primary_key=True, editable=False)
-    # name = models.CharField(max_length=CHAR_MAX_LENGTH, default='Name of User')
-    user_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="user_id"
-    )
-    event_title = models.CharField(max_length=EVENT_TITLE_MAX_LENGTH)
-    event_description = models.CharField(max_length=BIO_MAX_LENGTH)
-    event_time = models.DateTimeField(default=datetime.now)
+class Park(models.Model):
+    park_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=MID_CHAR_SIZE)
+    street = models.CharField(max_length=MID_CHAR_SIZE)
+    city = models.CharField(max_length=MID_CHAR_SIZE)
+    state = models.CharField(max_length=2)
+    zipcode = models.CharField(max_length=5)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                name="event_post_composite_pk", fields=["event_id", "user_id"]
-            )
-        ]
+        db_table = "park"
+
+
+class EventPost(models.Model):
+    event_id = models.AutoField(primary_key=True, editable=False)
+    user_id = models.ForeignKey(
+        AUTH_USER_MODEL, on_delete=models.DO_NOTHING, db_column="user_id"
+    )
+    event_title = models.CharField(max_length=MID_CHAR_SIZE)
+    event_description = models.CharField(max_length=LARGE_CHAR_SIZE)
+    event_time = models.DateTimeField(default=datetime.now)
+    park_id = models.ForeignKey(
+        "Park", models.DO_NOTHING, blank=True, null=True, db_column="park_id"
+    )
+
+    class Meta:
+        db_table = "event_post"
 
     def get_first_name(self):
         return self.user_id.fname
@@ -88,3 +110,71 @@ class EventPost(models.Model):
     def __str__(self):
         return self.event_title
         # return self.event_title + ' | ' + self.name
+
+
+class Tag(models.Model):
+    tag_id = models.AutoField(primary_key=True)
+    tag_name = models.CharField(max_length=MID_CHAR_SIZE)
+    tag_type = models.CharField(max_length=1)
+
+    class Meta:
+        db_table = "tag"
+
+
+class DogTag(models.Model):
+    dtag_id = models.AutoField(primary_key=True)
+    dog_id = models.ForeignKey(DogProfile, models.DO_NOTHING, db_column="dog_id")
+    tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+
+    class Meta:
+        db_table = "dog_tag"
+        unique_together = (("dog_id", "tag_id"),)
+
+
+class EventTag(models.Model):
+    etag_id = models.AutoField(primary_key=True)
+    event_id = models.ForeignKey(EventPost, models.DO_NOTHING, db_column="event_id")
+    tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
+
+    class Meta:
+        db_table = "event_tag"
+        unique_together = (("event_id", "tag_id"),)
+
+
+class Attendee(models.Model):
+    attendee_id = models.AutoField(primary_key=True)
+    event_id = models.ForeignKey(EventPost, models.DO_NOTHING, db_column="event_id")
+    user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+
+    class Meta:
+        db_table = "attendee"
+        unique_together = (("event_id", "user_id"),)
+
+
+class ParkTag(models.Model):
+    ptag_id = models.AutoField(primary_key=True)
+    park_id = models.ForeignKey(Park, models.DO_NOTHING, db_column="park_id")
+    tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
+
+    class Meta:
+        db_table = "park_tag"
+        unique_together = (("park_id", "tag_id"),)
+
+
+class Service(models.Model):
+    ser_id = models.AutoField(primary_key=True)
+    ser_name = models.CharField(max_length=MID_CHAR_SIZE)
+    tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+
+    class Meta:
+        db_table = "service"
+
+
+class UserTag(models.Model):
+    utag_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+    tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
+
+    class Meta:
+        db_table = "user_tag"
+        unique_together = (("user_id", "tag_id"),)
