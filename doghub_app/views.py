@@ -12,7 +12,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
-import logging
 from doghub_app.tokens import verification_token_generator
 
 from .forms import (
@@ -192,9 +191,8 @@ def login_request(request):
 def events(request):
     try:
         user_prof = UserProfile.objects.get(user_id=request.user)
-    except:
-        return render(
-    request, "doghub_app/register.html")
+    except:  # noqa: E722
+        return render(request, "doghub_app/register.html")
 
     context = {"userprof": user_prof}  # noqa: F841
 
@@ -223,9 +221,8 @@ def logout_request(request):
 def user_profile(request):
     try:
         user_prof = UserProfile.objects.get(user_id=request.user)
-    except:
-        return render(
-    request, "doghub_app/register.html")
+    except:  # noqa: E722
+        return render(request, "doghub_app/register.html")
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     context = {
         "userprof": user_prof,
