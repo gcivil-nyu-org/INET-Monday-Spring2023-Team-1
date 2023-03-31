@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
-
+import logging
 from doghub_app.tokens import verification_token_generator
 
 from .forms import (
@@ -190,7 +190,12 @@ def login_request(request):
 
 @login_required
 def events(request):
-    user_prof = UserProfile.objects.get(user_id=request.user)
+    try:
+        user_prof = UserProfile.objects.get(user_id=request.user)
+    except:
+        return render(
+    request, "doghub_app/register.html")
+
     context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
@@ -216,7 +221,11 @@ def logout_request(request):
 
 @login_required
 def user_profile(request):
-    user_prof = UserProfile.objects.get(user_id=request.user)
+    try:
+        user_prof = UserProfile.objects.get(user_id=request.user)
+    except:
+        return render(
+    request, "doghub_app/register.html")
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     context = {
         "userprof": user_prof,
@@ -232,6 +241,7 @@ def user_profile(request):
 def user_profile_edit(request):
     user = request.user
     user_prof = UserProfile.objects.get(user_id=request.user)
+
     if request.method == "POST":
         user_form = CustomUserChangeForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user_prof)
