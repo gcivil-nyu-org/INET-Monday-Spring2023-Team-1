@@ -33,6 +33,9 @@
             <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for registration</span>
+          {% if errors %}
+            <span style="font-weight:bold">{{ errorTitle }}</span>
+          {% endif %}
           <input type="email" name="reg_uemail" placeholder="Email" />
           <input type="password" name="reg_psw" placeholder="Password" />
           {% if errors %}
