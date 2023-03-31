@@ -36,7 +36,7 @@
           <input type="email" name="reg_uemail" placeholder="Email" />
           <input type="password" name="reg_psw" placeholder="Password" />
           {% if errors %}
-          <ul>
+          <ul id="err_ls">
             {% for error in errors %}
               <li><span>{{ error }}</span></li>
             {% endfor %}
