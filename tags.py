@@ -1,4 +1,7 @@
 import django
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "doghub.settings")
 
 django.setup()
 from doghub_app.models import Tag  # noqa: E402
