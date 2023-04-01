@@ -44,13 +44,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
-      <link  rel = "stylesheet" type = 'text/css' href="{% static 'styles/tags.css' %}" />
-
       <title>Log In</title>
-
   </head>
   <body>
-
   <div class="container">
     <div class="profile-header">
       <div class="profile-img">
@@ -59,17 +55,11 @@
       <div class="profile-nav-info">
         <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
         <div class="userTag">
-          {% if dogprof %}
-          <p id="state" class="button-85" >Dog Owner</p>
-          {% endif %}
+          <p id="state" >Dog Owner</p>
           <!-- <span id="country" >USA.</span> -->
         </div>
   
       </div>
-      <a href="{% url 'user_profile_edit' %}" class="profile-option">
-        <div  class="notification">
-          <i class="fa fa-pencil-square-o"></i>
-        </div>
       </a>
     </div>
   
@@ -112,36 +102,15 @@
         <div class="nav">
           <ul>
             <li onclick="tabs(0)" class="user-post">Dogs</li>
-            <li onclick="tabs(1)" class="user-review active">Events</li>
-            <li onclick="tabs(2)" class="user-setting"> Settings</li>
           </ul>
         </div>
         <div class="profile-body">
           <div class="profile-posts tab">
-            <a  href="{% url 'dog_profile_add'%}" class="add-dog-pof">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </a>
             {% if dogprof %}
             <ul class="proflist">
               {% for dog in dogprof %}
-              <div id="pop-up" class="wind">
-                <div>
-                  <div onclick="closeWind()" class = "closewind">
-                    <i class="fa fa-times"></i>
-                  </div>
-                  <div class = "windprompt">
-                  <h3>Are you sure you want to delete this dog profile?</h3>
-                </div>
-                <a href="{% url 'dog_profile_delete' dog.pk %}">
-                  <button class="deletebtn">Delete</button>
-                </a>
-                </div>
-              </div>
               <li class="">
                 <header class="proflist--item">
-                  <div class="delete-bin" onclick="funcWind()">
-                    <i class="fa fa-trash" aria-hidden="true" onclick="funcWind()"></i>
-                  </div>
                   <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
                   <span class="toggle">
@@ -151,31 +120,15 @@
                     <li>Bio: {{dog.bio}}</a></li>
                     <li>DOB: {{dog.dob}}</a></li>
                 </ul>
-                <a href="{% url 'dog_profile_edit' dog.pk %}" class="dog-edit">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </a>
                 </header>
              </li>
              {% endfor %}
             </ul>
             {% else %}
             <h1 id = 'demo'>Add Dog Profiles</h1>
-            <p>You can add profiles for your dogs here</p>
+            <p>You can add profiles for your dogs or continue on your profile</p>
+            <button class="ghost" id="addDogProfile">Continue User Profile</button>
             {% endif %}
-          </div>  
-          <div class="profile-reviews tab">
-            <h1>Events</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
-              repellendus excepturi quisquam temporibus quam nobis voluptatem, reiciendis distinctio deserunt vitae! Maxime provident, distinctio animi commodi nemo, eveniet fugit porro quos nesciunt quidem a, corporis nisi dolorum minus sit eaque error
-              sequi ullam. Quidem ut fugiat, praesentium velit aliquam!</p>
-          </div>
-          <div class="profile-settings tab">
-            <div class="account-setting">
-              <h1>Acount Setting</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
-                animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
-                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>
-            </div>
           </div>
         </div>
       </div>
