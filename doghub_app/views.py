@@ -70,12 +70,7 @@ def send_verification_email(user):
     message = f"Hi {user.username},\n\nPlease click the following link to verify your email address:\n\n{settings.BASE_URL}{verification_url}"  # noqa: E501
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [user.email]
-    email = EmailMessage(
-        subject,
-        message,
-        from_email,
-        recipient_list,
-    )
+    email = EmailMessage(subject, message, from_email, recipient_list,)
     email.fail_silently = False
     email.send()
 
@@ -106,7 +101,7 @@ def register_request(request):
         elif errors:
             context["errors"] = errors
             if len(errors) > 0:
-                context['errorTitle'] = "Invalid Password"
+                context["errorTitle"] = "Invalid Password"
                 # messages.error(
                 #     request,
                 #     "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
