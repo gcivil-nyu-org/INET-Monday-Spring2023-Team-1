@@ -70,7 +70,12 @@ def send_verification_email(user):
     message = f"Hi {user.username},\n\nPlease click the following link to verify your email address:\n\n{settings.BASE_URL}{verification_url}"  # noqa: E501
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [user.email]
-    email = EmailMessage(subject, message, from_email, recipient_list,)
+    email = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recipient_list,
+    )
     email.fail_silently = False
     email.send()
 
