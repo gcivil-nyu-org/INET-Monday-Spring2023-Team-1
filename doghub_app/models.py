@@ -117,6 +117,9 @@ class Tag(models.Model):
     tag_name = models.CharField(max_length=MID_CHAR_SIZE)
     tag_type = models.CharField(max_length=1)
 
+    def __str__(self):
+        return f"{self.tag_name} , type:{self.tag_type}"
+
     class Meta:
         db_table = "tag"
 
