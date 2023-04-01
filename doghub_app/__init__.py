@@ -1,1 +1,1 @@
-default_app_config = 'doghub_app.apps.DoghubAppConfig'
+default_app_config = "doghub_app.apps.DoghubAppConfig"

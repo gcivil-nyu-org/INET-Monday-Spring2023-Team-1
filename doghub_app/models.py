@@ -178,6 +178,9 @@ class UserTag(models.Model):
     user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
     tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
 
+    def __str__(self):
+        return f"{self.user_id}, {self.tag_id.tag_name}"
+
     class Meta:
         db_table = "user_tag"
         unique_together = (("user_id", "tag_id"),)

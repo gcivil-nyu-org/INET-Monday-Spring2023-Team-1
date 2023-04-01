@@ -1,8 +1,5 @@
 from django.apps import AppConfig
-""" from django.db.models.signals import post_save
-from .models import DogProfile
-from .signals import create_user_tag """
-
+from django.db.models.signals import post_save
 
 
 class DoghubAppConfig(AppConfig):
@@ -10,5 +7,7 @@ class DoghubAppConfig(AppConfig):
     name = "doghub_app"
 
     def ready(self):
-        from . import signals
-        #post_save.connect(create_user_tag, sender=DogProfile)
+        from .models import DogProfile
+        from .signals import create_user_tag
+
+        post_save.connect(create_user_tag, sender=DogProfile)
