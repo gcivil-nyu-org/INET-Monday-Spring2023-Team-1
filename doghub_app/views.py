@@ -14,9 +14,6 @@ from django.conf import settings
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
 from .forms import (
-    CustomUserChangeForm,
-    UserProfileForm,
-    DogProfileForm,
     EventPostForm,
 )
 from .models import CustomUser, UserProfile, DogProfile, EventPost
@@ -325,7 +322,6 @@ def dog_profile_delete(request, pk):
     return redirect("user_profile")
 
 
-
 @login_required
 def add_post(request):
     if request.method == "POST":
@@ -363,4 +359,3 @@ def public_profile(request, email):
         template_name="doghub_app/public_user_profile.html",
         context=context,
     )
-
