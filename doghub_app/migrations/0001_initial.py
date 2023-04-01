@@ -10,187 +10,407 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0011_update_proxy_permissions'),
+        ("auth", "0011_update_proxy_permissions"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=30, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('email', models.EmailField(max_length=254, unique=True, verbose_name='email')),
-                ('email_verified', models.BooleanField(default=False)),
-                ('id', models.AutoField(editable=False, primary_key=True, serialize=False)),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=30, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        max_length=254, unique=True, verbose_name="email"
+                    ),
+                ),
+                ("email_verified", models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.AutoField(editable=False, primary_key=True, serialize=False),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'custom_user',
+                "db_table": "custom_user",
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='DogBreed',
+            name="DogBreed",
             fields=[
-                ('bre_id', models.AutoField(primary_key=True, serialize=False)),
-                ('bre_name', models.CharField(max_length=50)),
-                ('bre_size_lbs', models.SmallIntegerField()),
+                ("bre_id", models.AutoField(primary_key=True, serialize=False)),
+                ("bre_name", models.CharField(max_length=50)),
+                ("bre_size_lbs", models.SmallIntegerField()),
             ],
             options={
-                'db_table': 'dog_breed',
+                "db_table": "dog_breed",
             },
         ),
         migrations.CreateModel(
-            name='DogProfile',
+            name="DogProfile",
             fields=[
-                ('dog_id', models.AutoField(editable=False, primary_key=True, serialize=False)),
-                ('pic', models.ImageField(default='../static/images/dog_profile.jpeg', null=True, upload_to='dog/')),
-                ('name', models.CharField(max_length=50)),
-                ('dob', models.DateField()),
-                ('bio', models.CharField(max_length=500)),
-                ('bre_id', models.ForeignKey(blank=True, db_column='bre_id', null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.DogBreed')),
-                ('user_id', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
+                (
+                    "dog_id",
+                    models.AutoField(editable=False, primary_key=True, serialize=False),
+                ),
+                (
+                    "pic",
+                    models.ImageField(
+                        default="../static/images/dog_profile.jpeg",
+                        null=True,
+                        upload_to="dog/",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("dob", models.DateField()),
+                ("bio", models.CharField(max_length=500)),
+                (
+                    "bre_id",
+                    models.ForeignKey(
+                        blank=True,
+                        db_column="bre_id",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.DogBreed",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        db_column="user_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'dog_profile',
+                "db_table": "dog_profile",
             },
         ),
         migrations.CreateModel(
-            name='Park',
+            name="Park",
             fields=[
-                ('park_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=50)),
-                ('street', models.CharField(max_length=50)),
-                ('city', models.CharField(max_length=50)),
-                ('state', models.CharField(max_length=2)),
-                ('zipcode', models.CharField(max_length=5)),
+                ("park_id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=50)),
+                ("street", models.CharField(max_length=50)),
+                ("city", models.CharField(max_length=50)),
+                ("state", models.CharField(max_length=2)),
+                ("zipcode", models.CharField(max_length=5)),
             ],
             options={
-                'db_table': 'park',
+                "db_table": "park",
             },
         ),
         migrations.CreateModel(
-            name='Tag',
+            name="Tag",
             fields=[
-                ('tag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('tag_name', models.CharField(max_length=50)),
-                ('tag_type', models.CharField(max_length=1)),
+                ("tag_id", models.AutoField(primary_key=True, serialize=False)),
+                ("tag_name", models.CharField(max_length=50)),
+                ("tag_type", models.CharField(max_length=1)),
             ],
             options={
-                'db_table': 'tag',
+                "db_table": "tag",
             },
         ),
         migrations.CreateModel(
-            name='UserProfile',
+            name="UserProfile",
             fields=[
-                ('user_id', models.OneToOneField(db_column='user_id', on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('pic', models.ImageField(default='../static/images/profile1.jpg', null=True, upload_to='user/')),
-                ('fname', models.CharField(max_length=50)),
-                ('lname', models.CharField(max_length=50)),
-                ('dob', models.DateField()),
-                ('bio', models.CharField(blank=True, max_length=500, null=True)),
+                (
+                    "user_id",
+                    models.OneToOneField(
+                        db_column="user_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "pic",
+                    models.ImageField(
+                        default="../static/images/profile1.jpg",
+                        null=True,
+                        upload_to="user/",
+                    ),
+                ),
+                ("fname", models.CharField(max_length=50)),
+                ("lname", models.CharField(max_length=50)),
+                ("dob", models.DateField()),
+                ("bio", models.CharField(blank=True, max_length=500, null=True)),
             ],
             options={
-                'db_table': 'user_profile',
+                "db_table": "user_profile",
             },
         ),
         migrations.CreateModel(
-            name='Service',
+            name="Service",
             fields=[
-                ('ser_id', models.AutoField(primary_key=True, serialize=False)),
-                ('ser_name', models.CharField(max_length=50)),
-                ('tag_id', models.ForeignKey(db_column='tag_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Tag')),
+                ("ser_id", models.AutoField(primary_key=True, serialize=False)),
+                ("ser_name", models.CharField(max_length=50)),
+                (
+                    "tag_id",
+                    models.ForeignKey(
+                        db_column="tag_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Tag",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'service',
+                "db_table": "service",
             },
         ),
         migrations.CreateModel(
-            name='EventPost',
+            name="EventPost",
             fields=[
-                ('event_id', models.AutoField(editable=False, primary_key=True, serialize=False)),
-                ('event_title', models.CharField(max_length=50)),
-                ('event_description', models.CharField(max_length=500)),
-                ('event_time', models.DateTimeField(default=datetime.datetime.now)),
-                ('park_id', models.ForeignKey(blank=True, db_column='park_id', null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Park')),
-                ('user_id', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
+                (
+                    "event_id",
+                    models.AutoField(editable=False, primary_key=True, serialize=False),
+                ),
+                ("event_title", models.CharField(max_length=50)),
+                ("event_description", models.CharField(max_length=500)),
+                ("event_time", models.DateTimeField(default=datetime.datetime.now)),
+                (
+                    "park_id",
+                    models.ForeignKey(
+                        blank=True,
+                        db_column="park_id",
+                        null=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Park",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        db_column="user_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'event_post',
+                "db_table": "event_post",
             },
         ),
         migrations.CreateModel(
-            name='UserTag',
+            name="UserTag",
             fields=[
-                ('utag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('tag_id', models.ForeignKey(db_column='tag_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Tag')),
-                ('user_id', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
+                ("utag_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "tag_id",
+                    models.ForeignKey(
+                        db_column="tag_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Tag",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        db_column="user_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'user_tag',
-                'unique_together': {('user_id', 'tag_id')},
+                "db_table": "user_tag",
+                "unique_together": {("user_id", "tag_id")},
             },
         ),
         migrations.CreateModel(
-            name='ParkTag',
+            name="ParkTag",
             fields=[
-                ('ptag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('park_id', models.ForeignKey(db_column='park_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Park')),
-                ('tag_id', models.ForeignKey(db_column='tag_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Tag')),
+                ("ptag_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "park_id",
+                    models.ForeignKey(
+                        db_column="park_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Park",
+                    ),
+                ),
+                (
+                    "tag_id",
+                    models.ForeignKey(
+                        db_column="tag_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Tag",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'park_tag',
-                'unique_together': {('park_id', 'tag_id')},
+                "db_table": "park_tag",
+                "unique_together": {("park_id", "tag_id")},
             },
         ),
         migrations.CreateModel(
-            name='EventTag',
+            name="EventTag",
             fields=[
-                ('etag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('event_id', models.ForeignKey(db_column='event_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.EventPost')),
-                ('tag_id', models.ForeignKey(db_column='tag_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Tag')),
+                ("etag_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "event_id",
+                    models.ForeignKey(
+                        db_column="event_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.EventPost",
+                    ),
+                ),
+                (
+                    "tag_id",
+                    models.ForeignKey(
+                        db_column="tag_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Tag",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'event_tag',
-                'unique_together': {('event_id', 'tag_id')},
+                "db_table": "event_tag",
+                "unique_together": {("event_id", "tag_id")},
             },
         ),
         migrations.CreateModel(
-            name='DogTag',
+            name="DogTag",
             fields=[
-                ('dtag_id', models.AutoField(primary_key=True, serialize=False)),
-                ('dog_id', models.ForeignKey(db_column='dog_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.DogProfile')),
-                ('tag_id', models.ForeignKey(db_column='tag_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.Tag')),
+                ("dtag_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "dog_id",
+                    models.ForeignKey(
+                        db_column="dog_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.DogProfile",
+                    ),
+                ),
+                (
+                    "tag_id",
+                    models.ForeignKey(
+                        db_column="tag_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.Tag",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'dog_tag',
-                'unique_together': {('dog_id', 'tag_id')},
+                "db_table": "dog_tag",
+                "unique_together": {("dog_id", "tag_id")},
             },
         ),
         migrations.CreateModel(
-            name='Attendee',
+            name="Attendee",
             fields=[
-                ('attendee_id', models.AutoField(primary_key=True, serialize=False)),
-                ('event_id', models.ForeignKey(db_column='event_id', on_delete=django.db.models.deletion.DO_NOTHING, to='doghub_app.EventPost')),
-                ('user_id', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL)),
+                ("attendee_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "event_id",
+                    models.ForeignKey(
+                        db_column="event_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="doghub_app.EventPost",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        db_column="user_id",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'attendee',
-                'unique_together': {('event_id', 'user_id')},
+                "db_table": "attendee",
+                "unique_together": {("event_id", "user_id")},
             },
         ),
     ]

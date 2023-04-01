@@ -2,14 +2,15 @@
 
 from django.db import migrations
 
+
 def populate_data(apps, schema_editor):
-    MyModel = apps.get_model('doghub_app', 'Tag')
-    MyModel.objects.create(tag_name="Dog-Owner",tag_type="U")
+    MyModel = apps.get_model("doghub_app", "Tag")
+    MyModel.objects.create(tag_name="Dog-Owner", tag_type="U")
+
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('doghub_app', '0001_initial'),
+        ("doghub_app", "0001_initial"),
     ]
 
     operations = [
