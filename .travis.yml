@@ -17,6 +17,7 @@ before_install:
 before_script:
   - python manage.py makemigrations
   - python manage.py migrate
+  - python tags.py
 
 script:
   - python manage.py test
