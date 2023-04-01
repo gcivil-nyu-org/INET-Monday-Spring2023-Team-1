@@ -44,7 +44,10 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
+      <link  rel = "stylesheet" type = 'text/css' href="{% static 'styles/tags.css' %}" />
+
       <title>Log In</title>
+
   </head>
   <body>
   <div class="container">
@@ -55,7 +58,9 @@
       <div class="profile-nav-info">
         <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
         <div class="userTag">
-          <p id="state" >Dog Owner</p>
+          {% if dogprof %}
+          <p id="state" class="button-85" >Dog Owner</p>
+          {% endif %}
           <!-- <span id="country" >USA.</span> -->
         </div>
   
@@ -142,7 +147,7 @@
             {% else %}
             <h1 id = 'demo'>Add Dog Profiles</h1>
             {% endif %}
-          </div>
+          </div>  
           <div class="profile-reviews tab">
             <h1>Events</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
