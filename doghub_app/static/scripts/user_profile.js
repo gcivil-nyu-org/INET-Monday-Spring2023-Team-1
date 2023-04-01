@@ -71,15 +71,28 @@
 }
 ;
 
-  toggle.forEach(el=> el.addEventListener('click', () => {
+toggle.forEach(el=> el.addEventListener('click', () => {
     console.log("here")
       var ind = index(el,toggle);
       console.log(container)
       container[ind].classList.toggle('active');
       
-  }));
+}));
 
-  // toggle.addEventListener('click', () => {
-  //   console.log("here")
-  //     container.classList.toggle('active');
-  // });
+const pop = document.getElementById('pop-up');
+function funcWind() {
+    pop.classList.add('wind_height');
+    console.log(pop)
+}
+
+function closeWind() {
+  pop.classList.remove('wind_height');
+  console.log(pop)
+}
+
+const editPasswordBtn = document.querySelector("#edit-password-btn");
+const passwordChangeFields = document.querySelector("#password-change-fields");
+editPasswordBtn.addEventListener("click", () => {
+passwordChangeFields.style.display = "block";
+});
+
