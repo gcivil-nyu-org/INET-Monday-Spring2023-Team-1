@@ -24,7 +24,7 @@
     </span>
     <div class="container" id="container">
       <div class="form-container sign-up-container">
-        <form action="/register" method="post">
+        <form action="/register" method="post" id="reg_form">
           {% csrf_token %}
           <h1>Create Account</h1>
           <div class="social-container">
@@ -33,16 +33,19 @@
             <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for registration</span>
-          <input type="email" name="reg_uemail" placeholder="Email" />
-          <input type="password" name="reg_psw" placeholder="Password" />
           {% if errors %}
-          <ul>
+            <span style="font-weight:bold">{{ errorTitle }}</span>
+          {% endif %}
+          <input type="email" name="reg_uemail" id = "reg_uemail" placeholder="Email" />
+          <input type="password" name="reg_psw" id = "reg_psw" placeholder="Password" />
+          {% if errors %}
+          <ul id="err_ls">
             {% for error in errors %}
-              <li><span>{{ error }}</span></li>
+              <li><span style="font-size: 10px;">{{ error }}</span></li>
             {% endfor %}
           </ul>
           {% endif %}
-          <button>Sign Up</button>
+         <button id="signUpPost">Sign Up</button>
         </form>
       </div>
       <div class="form-container sign-in-container">
