@@ -117,6 +117,9 @@ class Tag(models.Model):
     tag_name = models.CharField(max_length=MID_CHAR_SIZE)
     tag_type = models.CharField(max_length=1)
 
+    def __str__(self):
+        return f"{self.tag_name} , type:{self.tag_type}"
+
     class Meta:
         db_table = "tag"
 
@@ -174,6 +177,9 @@ class UserTag(models.Model):
     utag_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
     tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
+
+    def __str__(self):
+        return f"{self.user_id}, {self.tag_id.tag_name}"
 
     class Meta:
         db_table = "user_tag"

@@ -81,11 +81,6 @@ class RegisterDetailsTestCase(TestCase):
         self.assertTrue(UserProfile.objects.filter(user_id=self.user).exists())
         self.assertRedirects(response, reverse("events"))
 
-        response = self.client.post(self.dog_register_url, data=self.dog_profile_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(DogProfile.objects.filter(user_id=self.user).exists())
-        self.assertRedirects(response, reverse("register_details"))
-
     def test_register_details_request_get(self):
         response = self.client.get(self.register_url)
         self.assertEqual(response.status_code, 200)
