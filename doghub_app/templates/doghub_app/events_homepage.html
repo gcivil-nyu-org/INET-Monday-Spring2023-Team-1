@@ -19,11 +19,12 @@
         <li><a href="">News</a></li>
         <li><a href="">Contact</a></li>
         <li>
-          
-          <form method="post" action="{% url 'search-user' %}">
-            {% csrf_token %}
-            <input type="text" name="searched" /> </li>
-          </form>
+
+              <form method="post" action="{% url 'search-user' %}">
+                {% csrf_token %}
+                <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> </li>
+              </form>
+
         <li>
           <a class="active" href="{% url 'user_profile'%}"
             ><div class="profile-img">
@@ -73,5 +74,6 @@
       <li>No posts yet.</li>
       {% endfor %}
     </ul>
+    <script src= "{% static 'scripts/events_homepage.js' %}" ></script>
   </body>
 </html>
