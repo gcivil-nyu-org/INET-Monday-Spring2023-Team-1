@@ -407,3 +407,17 @@ def public_profile(request, email):
         )
     else:
         return HttpResponse("User not found.")
+
+
+@login_required
+def search_user(request):
+    if request.method == "POST":
+        searched = request.POST["searched"]
+        users = CustomUser.objects.filter(email__contains=searched)
+        return render(
+            request,
+            "doghub_app/search-results.html",
+            {"searched": searched, "users": users},
+        )
+    else:
+        return render(request, "doghub_app/search-results.html", {})

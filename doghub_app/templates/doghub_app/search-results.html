@@ -1,0 +1,17 @@
+{% block content %}
+<center>
+  {% if searched %}
+  <h1>You searched for {{searched }}</h1>
+</br>
+
+{% for user in users %}
+    {{ user }} - <a href="{% url 'public-profile' user.email   %}" > Profile </a> 
+    </br>
+{%  endfor %}
+
+  {% else %}
+  <h1>You forgot to search for something.</h1>
+  {% endif %}
+</center>
+
+{% endblock %}
