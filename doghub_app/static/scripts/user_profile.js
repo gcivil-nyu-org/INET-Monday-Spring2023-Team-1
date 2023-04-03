@@ -96,3 +96,7 @@ editPasswordBtn.addEventListener("click", () => {
 passwordChangeFields.style.display = "block";
 });
 
+setTimeout(function() {
+  var messages = document.getElementsByClassName('message')[0];
+  messages.parentNode.removeChild(messages);
+}, 3000);

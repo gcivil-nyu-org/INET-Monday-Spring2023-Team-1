@@ -3,6 +3,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;  
+    height: 65px;
 }
   
   .navi {
@@ -12,7 +13,7 @@ ul {
   .navi li {
     float: left;
     border-right: 1px solid #fbfdf7;
-    height: 60px;
+    height: 65px;
   }
   
   

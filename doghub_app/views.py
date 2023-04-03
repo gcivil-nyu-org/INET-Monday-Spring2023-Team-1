@@ -255,6 +255,8 @@ def user_profile(request):
 
             if errors:
                 context["errors"] = errors
+                if len("errors")>0:
+                    messages.error(request, "For you and your dog's safety, please choose a strong password.")
             else:
                 # Change the user's password
                 request.user.set_password(new_password)
