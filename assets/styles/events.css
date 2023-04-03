@@ -1,0 +1,45 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;  
+    height: 65px;
+}
+  
+  .navi {
+    background-color: #6F36A8; 
+  }
+  
+  .navi li {
+    float: left;
+    border-right: 1px solid #fbfdf7;
+    height: 65px;
+  }
+  
+  
+  .navi li a {
+    display: block;
+    padding: 14px 16px;
+    color: #fbfdf7;
+    text-decoration: none;  
+  }
+  
+  .navi li a:hover:not(.active3) {
+    background-color: #0F101A;
+  }
+  
+  .active {
+    background-color: #679D24;  
+  }
+  
+  .navi li:last-child {
+    float: right;  
+  }
+  @media (max-width: 900px) {
+  .profile-img {
+    float: left;
+    width: 100%;
+    height: 200px;
+    border-color: #6F36A8;
+  }
+}

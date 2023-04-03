@@ -382,17 +382,20 @@ def add_post(request):
 
 
 def public_profile(request, email):
-    user = CustomUser.objects.get(email=email)
-    user_prof = UserProfile.objects.get(user_id=user.id)
-    dog_prof = DogProfile.objects.filter(user_id=user.id)
-    context = {
-        "user": user,
-        "userprof": user_prof,
-        "dogprof": list(dog_prof),
-        "media_url": settings.MEDIA_URL,
-    }
-    return render(
-        request=request,
-        template_name="doghub_app/public_user_profile.html",
-        context=context,
-    )
+    if CustomUser.objects.filter(email=email).exists():
+        user = CustomUser.objects.get(email=email)
+        user_prof = UserProfile.objects.get(user_id=user.id)
+        dog_prof = DogProfile.objects.filter(user_id=user.id)
+        context = {
+            "user": user,
+            "userprof": user_prof,
+            "dogprof": list(dog_prof),
+            "media_url": settings.MEDIA_URL,
+        }
+        return render(
+            request=request,
+            template_name="doghub_app/public_user_profile.html",
+            context=context,
+        )
+    else:
+        return HttpResponse("User not found.")

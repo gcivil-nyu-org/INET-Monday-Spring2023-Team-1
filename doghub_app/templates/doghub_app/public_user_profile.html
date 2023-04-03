@@ -44,6 +44,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
+      <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/tags.css' %}" />
       <title>Log In</title>
   </head>
   <body>
@@ -54,8 +55,10 @@
       </div>
       <div class="profile-nav-info">
         <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
-        <div class="userTag">
-          <p id="state" >Dog Owner</p>
+        <div class="userTag1">
+          {% if dogprof %}
+          <p id="state1" class="button-85" >Dog Owner</p>
+          {% endif %}
           <!-- <span id="country" >USA.</span> -->
         </div>
   
@@ -125,9 +128,6 @@
              {% endfor %}
             </ul>
             {% else %}
-            <h1 id = 'demo'>Add Dog Profiles</h1>
-            <p>You can add profiles for your dogs or continue on your profile</p>
-            <button class="ghost" id="addDogProfile">Continue User Profile</button>
             {% endif %}
           </div>
         </div>
