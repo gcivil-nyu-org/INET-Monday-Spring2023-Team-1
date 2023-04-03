@@ -81,6 +81,8 @@ def verify_email(request, token):
     if verification_token_generator.check_token(user, token):
         user.email_verified = True
         user.save()
+        if UserProfile.objects.filter(user_id= user.id).exists():
+            return redirect("events")
         return redirect("register_details")
     else:
         return redirect("login")
@@ -382,20 +384,17 @@ def add_post(request):
 
 
 def public_profile(request, email):
-    if CustomUser.objects.filter(email=email).exists():
-        user = CustomUser.objects.get(email=email)
-        user_prof = UserProfile.objects.get(user_id=user.id)
-        dog_prof = DogProfile.objects.filter(user_id=user.id)
-        context = {
-            "user": user,
-            "userprof": user_prof,
-            "dogprof": list(dog_prof),
-            "media_url": settings.MEDIA_URL,
-        }
-        return render(
-            request=request,
-            template_name="doghub_app/public_user_profile.html",
-            context=context,
-        )
-    else:
-        return HttpResponse("User not found.")
+    user = CustomUser.objects.get(email=email)
+    user_prof = UserProfile.objects.get(user_id=user.id)
+    dog_prof = DogProfile.objects.filter(user_id=user.id)
+    context = {
+        "user": user,
+        "userprof": user_prof,
+        "dogprof": list(dog_prof),
+        "media_url": settings.MEDIA_URL,
+    }
+    return render(
+        request=request,
+        template_name="doghub_app/public_user_profile.html",
+        context=context,
+    )
