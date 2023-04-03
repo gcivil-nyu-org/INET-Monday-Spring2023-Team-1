@@ -255,8 +255,11 @@ def user_profile(request):
 
             if errors:
                 context["errors"] = errors
-                if len("errors")>0:
-                    messages.error(request, "For you and your dog's safety, please choose a strong password.")
+                if len("errors") > 0:
+                    messages.error(
+                        request,
+                        "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                    )
             else:
                 # Change the user's password
                 request.user.set_password(new_password)
@@ -377,49 +380,6 @@ def add_post(request):
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
     )
-
-
-# save every feature manually instead of form cause you cannot add a template
-# look at the register page
-
-
-def public_profile(request, email):
-    user = CustomUser.objects.get(email=email)
-    user_prof = UserProfile.objects.get(user_id=user.id)
-    dog_prof = DogProfile.objects.filter(user_id=user.id)
-    context = {
-        "user": user,
-        "userprof": user_prof,
-        "dogprof": list(dog_prof),
-        "media_url": settings.MEDIA_URL,
-    }
-    return render(
-        request=request,
-        template_name="doghub_app/public_user_profile.html",
-        context=context,
-    )
-
-
-@login_required
-def add_post(request):
-    if request.method == "POST":
-        event_post_form = EventPostForm(request.POST)
-        if event_post_form.is_valid():
-            event_post = event_post_form.save(commit=False)
-            event_post.user_id = request.user
-            event_post.save()
-            return redirect("events")
-    else:
-        event_post_form = EventPostForm()
-
-    context = {"event_post_form": event_post_form}
-    return render(
-        request=request, template_name="doghub_app/add_event.html", context=context
-    )
-
-
-# save every feature manually instead of form cause you cannot add a template
-# look at the register page
 
 
 def public_profile(request, email):
