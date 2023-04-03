@@ -45,6 +45,7 @@ urlpatterns = [
     ),
     path("verify-email/<token>", views.verify_email, name="verify-email"),
     path("public-profile/<email>", views.public_profile, name="public-profile"),
+    path("search-user", views.search_user, name="search-user"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

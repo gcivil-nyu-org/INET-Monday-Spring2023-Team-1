@@ -18,7 +18,12 @@
         <li><a href="">Home</a></li>
         <li><a href="">News</a></li>
         <li><a href="">Contact</a></li>
-
+        <li>
+          
+          <form method="post" action="{% url 'search-user' %}">
+            {% csrf_token %}
+            <input type="text" name="searched" /> </li>
+          </form>
         <li>
           <a class="active" href="{% url 'user_profile'%}"
             ><div class="profile-img">
