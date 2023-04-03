@@ -368,6 +368,12 @@ def add_post(request):
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
+            user = request.user
+            user = CustomUser.objects.get(id=user.id)
+            if not user.email_verified:
+                messages.error(request, "Verify your email before posting an Event.")
+                return redirect("events")
+
             event_post = event_post_form.save(commit=False)
             event_post.user_id = request.user
             event_post.save()
