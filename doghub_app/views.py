@@ -12,7 +12,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
-
 from doghub_app.tokens import verification_token_generator
 
 from .forms import (
@@ -103,10 +102,11 @@ def register_request(request):
         elif errors:
             context["errors"] = errors
             if len(errors) > 0:
-                messages.error(
-                    request,
-                    "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
-                )
+                context["errorTitle"] = "Invalid Password"
+                # messages.error(
+                #     request,
+                #     "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
+                # )
         else:
             user = CustomUser.objects.create_user(
                 username=user_email, email=user_email, password=password
@@ -187,7 +187,12 @@ def login_request(request):
 
 @login_required
 def events(request):
-    user_prof = UserProfile.objects.get(user_id=request.user)
+    try:
+        user_prof = UserProfile.objects.get(user_id=request.user)
+    except:  # noqa: E722
+        return render(request, "doghub_app/register.html")
+
+    context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
@@ -216,7 +221,10 @@ def logout_request(request):
 
 @login_required
 def user_profile(request):
-    user_prof = UserProfile.objects.get(user_id=request.user)
+    try:
+        user_prof = UserProfile.objects.get(user_id=request.user)
+    except:  # noqa: E722
+        return render(request, "doghub_app/register.html")
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     context = {
         "userprof": user_prof,
@@ -263,6 +271,7 @@ def user_profile(request):
 def user_profile_edit(request):
     context = {}
     user_prof = UserProfile.objects.get(user_id=request.user)
+
     if request.method == "POST":
         user_prof.fname = request.POST.get("ufirstname")
         user_prof.lname = request.POST.get("ulastname")
