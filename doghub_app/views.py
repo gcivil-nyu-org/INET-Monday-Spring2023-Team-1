@@ -81,6 +81,8 @@ def verify_email(request, token):
     if verification_token_generator.check_token(user, token):
         user.email_verified = True
         user.save()
+        if UserProfile.objects.filter(user_id=user.id).exists():
+            return redirect("events")
         return redirect("register_details")
     else:
         return redirect("login")
