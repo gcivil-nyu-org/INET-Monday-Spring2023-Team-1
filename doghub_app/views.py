@@ -13,11 +13,7 @@ from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
-
 from .forms import (
-    CustomUserChangeForm,
-    UserProfileForm,
-    DogProfileForm,
     EventPostForm,
 )
 from .models import CustomUser, UserProfile, DogProfile, EventPost
@@ -237,61 +233,82 @@ def user_profile(request):
 
 @login_required
 def user_profile_edit(request):
-    user = request.user
+    context = {}
     user_prof = UserProfile.objects.get(user_id=request.user)
 
     if request.method == "POST":
-        user_form = CustomUserChangeForm(request.POST, instance=user)
-        profile_form = UserProfileForm(request.POST, request.FILES, instance=user_prof)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return redirect("user_profile")
+        user_prof.fname = request.POST.get("ufirstname")
+        user_prof.lname = request.POST.get("ulastname")
+        user_prof.bio = request.POST.get("uBio")
+        if "upic" in request.FILES:
+            user_prof.pic = request.FILES["upic"]
+        if request.POST.get("uDOB") != "":
+            user_prof.dob = request.POST.get("uDOB")
+        user_prof.save()
+        return redirect("user_profile")
     else:
-        user_form = CustomUserChangeForm(instance=user)
-        profile_form = UserProfileForm(instance=user_prof)
-    return render(
-        request,
-        "doghub_app/user_profile_edit.html",
-        {"user_form": user_form, "profile_form": profile_form},
-    )
+        user_dob = user_prof.dob.strftime("%Y-%m-%d")
+        context = {
+            "user_prof": user_prof,
+            "media_url": settings.MEDIA_URL,
+            "user_dob": user_dob,
+        }
+    return render(request, "doghub_app/user_profile_edit.html", context=context)
 
 
 @login_required
 def dog_profile_edit(request, pk):
+    context = {}
     dog_prof = get_object_or_404(DogProfile, pk=pk)
+
     if not dog_prof:
         raise Http404("Dog profile does not exist.")
     if request.method == "POST":
-        form = DogProfileForm(request.POST, request.FILES, instance=dog_prof)
-        if form.is_valid():
-            form.save()
-            return redirect("user_profile")
+        dog_prof.name = request.POST.get("dogName")
+        dog_prof.bio = request.POST.get("dogBio")
+        if "dogPic" in request.FILES:
+            dog_prof.pic = request.FILES["dogPic"]
+        if request.POST.get("dogDOB") != "":
+            dog_prof.dob = request.POST.get("dogDOB")
+        dog_prof.save()
+        return redirect("user_profile")
     else:
-        form = DogProfileForm(instance=dog_prof)
+        dog_dob = dog_prof.dob.strftime("%Y-%m-%d")
+        context = {
+            "dog_prof": dog_prof,
+            "media_url": settings.MEDIA_URL,
+            "dog_dob": dog_dob,
+        }
+        print(dog_dob)
     return render(
         request=request,
         template_name="doghub_app/dog_profile_edit.html",
-        context={"form": form},
+        context=context,
     )
 
 
 @login_required
 def dog_profile_add(request):
+    context = {}
     if request.method == "POST":
-        dog_profile_form = DogProfileForm(request.POST, request.FILES)
-        if dog_profile_form.is_valid():
-            dog_profile = dog_profile_form.save(commit=False)
-            dog_profile.user_id = request.user
-            dog_profile.save()
-            return redirect("user_profile")
+        dog_profile = DogProfile(
+            user_id=request.user,
+            name=request.POST.get("dogName"),
+            bio=request.POST.get("dogBio"),
+        )
+        if "dogPic" in request.FILES:
+            dog_profile.pic = request.FILES["dogPic"]
+        if request.POST.get("dogDOB") != "":
+            dog_profile.dob = request.POST.get("dogDOB")
+        dog_profile.save()
+        return redirect("dog_profile_add")
     else:
-        dog_profile_form = DogProfileForm()
-
-    context = {"dog_profile_form": dog_profile_form}
-    if dog_profile_form.errors:
-        context["form_errors"] = dog_profile_form.errors
-
+        # dog_profile_form = DogProfileForm()
+        if DogProfile.objects.filter(user_id=request.user).exists():
+            dogprofiles = DogProfile.objects.filter(user_id=request.user)
+            context = {"dogList": list(dogprofiles), "media_url": settings.MEDIA_URL}
+            for dog in dogprofiles:
+                print(dog.pic)
     return render(
         request=request,
         template_name="doghub_app/dog_profile_add.html",
@@ -302,10 +319,8 @@ def dog_profile_add(request):
 @login_required
 def dog_profile_delete(request, pk):
     dog_profile = get_object_or_404(DogProfile, pk=pk)
-    if request.method == "POST":
-        dog_profile.delete()
-        return redirect("user_profile")
-    return render(request=request, template_name="doghub_app/dog_profile_delete.html")
+    dog_profile.delete()
+    return redirect("user_profile")
 
 
 @login_required
