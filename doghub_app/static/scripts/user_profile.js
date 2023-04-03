@@ -88,4 +88,19 @@ function funcWind() {
 function closeWind() {
   pop.classList.remove('wind_height');
   console.log(pop)
+
 }
+
+const editPasswordBtn = document.querySelector("#edit-password-btn");
+const passwordChangeFields = document.querySelector("#password-change-fields");
+editPasswordBtn.addEventListener("click", () => {
+passwordChangeFields.style.display = "block";
+});
+
+setTimeout(function() {
+  var messages = document.getElementsByClassName('message')[0];
+  messages.parentNode.removeChild(messages);
+}, 3000);
+
+
+

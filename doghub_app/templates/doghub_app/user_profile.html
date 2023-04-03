@@ -45,13 +45,27 @@
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
       <link  rel = "stylesheet" type = 'text/css' href="{% static 'styles/tags.css' %}" />
-
+      <div class="message" >
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success" id="fade">{{ message }}</div>
+          {% endfor %}
+        {% endif %}</div>
       <title>Log In</title>
 
   </head>
+
   <body>
 
   <div class="container">
+    <div>
+      <ul class="navi">
+        <li><a href="">Home</a></li>
+        <li><a href="">News</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a class="active1" href="">About</a></li>
+      </ul>
+    </div>
     <div class="profile-header">
       <div class="profile-img">
         <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
@@ -112,8 +126,8 @@
         <div class="nav">
           <ul>
             <li onclick="tabs(0)" class="user-post">Dogs</li>
-            <li onclick="tabs(1)" class="user-review active">Events</li>
-            <li onclick="tabs(2)" class="user-setting"> Settings</li>
+            <li onclick="tabs(1)" class="user-review ">Events</li>
+            <li onclick="tabs(2)" class="user-setting" id="account-setting-tab"> Settings</li>
           </ul>
         </div>
         <div class="profile-body">
@@ -172,9 +186,49 @@
           <div class="profile-settings tab">
             <div class="account-setting">
               <h1>Acount Setting</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
+              <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
                 animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
-                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>
+                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>-->
+              <button id="edit-password-btn" class="editpassbtn">Edit Password</button>
+    
+              <div id="password-change-fields" style="display: none;">
+                <form method="POST">
+                  {% csrf_token %}
+                  <div>
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" name="current_password" required>
+                  </div>
+                  <div>
+                    <label for="new_password">New Password:</label>
+                    <input type="password" name="new_password" required>
+                  </div>
+                  <div>
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" name="confirm_password" required>
+                  </div>
+                  <div>
+                    <button type="submit" class="savepassbtn" name="save_password" id="save-password-btn">Save Password</button>
+                  </div>
+                </form>
+              </div>
+              {% if errors %}
+                {% for error in errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+              {% endif %}
+              
+              <!--<script>
+                // Get the "Save password" button and the "Account setting" tab
+                const savePasswordBtn = document.getElementById("save-password-btn");
+                const accountSettingTab = document.getElementById("account-setting-tab");
+              
+                // Add an event listener to the "Save password" button
+                savePasswordBtn.addEventListener("click", function() {
+                  // Switch to the "Account setting" tab
+                  accountSettingTab.click();
+                });
+              </script>-->
+              
             </div>
           </div>
         </div>

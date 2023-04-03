@@ -678,3 +678,80 @@ button.createbtn i {
   background: #73BEF5;
 }
 
+
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;  
+}
+
+.navi {
+  background-color: #6F36A8; 
+}
+
+.navi li {
+  float: left;
+  border-right: 1px solid #fbfdf7;
+}
+
+
+.navi li a {
+  display: block;
+  padding: 14px 16px;
+  color: #fbfdf7;
+  text-decoration: none;  
+}
+
+.navi li a:hover:not(.active1) {
+  background-color: #0F101A;
+}
+
+.active1 {
+  background-color: #679D24;  
+}
+
+.navi li:last-child {
+  float: right;  
+}
+
+.message{
+  text-align: center;
+}
+
+button.editpassbtn{
+  border: 0;
+  padding: 10px;
+  width: 30%;
+  border-radius: 3px;
+  background: #6F36A8;
+  color: #fff;
+  font-family: "Bree Serif";
+  font-size: 1rem;
+  margin: 5px 2px;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 10px;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.3);
+}
+
+button.savepassbtn{
+  border: 0;
+  padding: 10px;
+  width: 20%;
+  border-radius: 3px;
+  background: #4cc207;
+  color: #fff;
+  font-family: "Bree Serif";
+  font-size: 1rem;
+  margin: 5px 2px;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 10px;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.3);
+}
+

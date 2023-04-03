@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 from django.http import Http404
 from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -195,9 +195,13 @@ def events(request):
 
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
-    return render(
-        request, "doghub_app/events_homepage.html", {"event_posts": event_posts}
-    )
+    context = {
+        "userprof": user_prof,
+        "event_posts": event_posts,
+        "media_url": settings.MEDIA_URL,
+    }  # noqa: F841
+
+    return render(request, "doghub_app/events_homepage.html", context=context)
 
 
 # if request.method == "GET":
@@ -226,6 +230,42 @@ def user_profile(request):
         "dogprof": list(dog_prof),
         "media_url": settings.MEDIA_URL,
     }
+    if request.method == "POST":
+        if "save_password" in request.POST:
+            current_password = request.POST.get("current_password")
+            new_password = request.POST.get("new_password")
+            confirm_password = request.POST.get("confirm_password")
+            errors = []
+
+            # Check if the current password is correct
+            if not request.user.check_password(current_password):
+                errors.append("Current password is incorrect.")
+                # errors.append("Current password is incorrect.")
+                # return redirect('user_profile')
+
+            # Check if the new password and confirmation match
+            if new_password != confirm_password:
+                errors.append("New password and confirmation do not match.")
+                # return redirect('user_profile')
+
+            password_errors = validate_password(new_password)
+            if password_errors:
+                errors.extend(password_errors)
+
+            if errors:
+                context["errors"] = errors
+                if len("errors") > 0:
+                    messages.error(
+                        request,
+                        "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                    )
+            else:
+                # Change the user's password
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, "Password has been changed.")
+                return redirect("user_profile")
     return render(
         request=request, template_name="doghub_app/user_profile.html", context=context
     )
@@ -339,10 +379,6 @@ def add_post(request):
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
     )
-
-
-# save every feature manually instead of form cause you cannot add a template
-# look at the register page
 
 
 def public_profile(request, email):
