@@ -13,7 +13,6 @@ from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
-
 from .forms import (
     EventPostForm,
 )

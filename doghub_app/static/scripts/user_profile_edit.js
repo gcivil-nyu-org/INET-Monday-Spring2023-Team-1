@@ -56,6 +56,5 @@ function handleFiles(upload, preview,avatar){
   }
 }
 
-upload.addEventListener("change", ()=>{handleFiles(upload,preview, avatar)}, false);
 upload_human.addEventListener("change", ()=>{handleFiles(upload_human,preview_human, avatar_human)}, false);
 // upload.addEventListener("change", handleFiles, false);
