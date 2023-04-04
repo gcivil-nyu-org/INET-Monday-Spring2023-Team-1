@@ -226,9 +226,9 @@ def user_profile(request):
         user_prof = UserProfile.objects.get(user_id=request.user)
     except:  # noqa: E722
         return render(request, "doghub_app/register.html")
-    
+
     dog_prof = DogProfile.objects.filter(user_id=request.user)
-    events_list = EventPost.objects.filter(user_id = request.user)
+    events_list = EventPost.objects.filter(user_id=request.user)
     context = {
         "userprof": user_prof,
         "dogprof": list(dog_prof),
@@ -397,7 +397,7 @@ def public_profile(request, email):
         user = CustomUser.objects.get(email=email)
         user_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
-        events_list = EventPost.objects.filter(user_id = request.user)
+        events_list = EventPost.objects.filter(user_id=request.user)
 
         context = {
             "user": user,
