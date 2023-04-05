@@ -92,12 +92,12 @@
   display: block;
   border: 0px;
   font-weight: 700;
-  box-shadow: 0px 0px 14px -7px #19f024;
+  box-shadow: 0px 0px 14px -7px #d319f0;
   background-image: linear-gradient(
     45deg,
-    #ff2f2f 0%,
-    #f0bc61 51%,
-    #ff2f2f 100%
+    #02006a 0%,
+    #61d0ff 51%,
+    #02006a 100%
   );
   cursor: pointer;
   user-select: none;
