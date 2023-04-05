@@ -76,6 +76,9 @@
           {% if dogprof %}
           <p id="state" class="button-85" >Dog Owner</p>
           {% endif %}
+          {% if events_list %}
+          <p id="state" class="button-87" >Event Host</p>
+          {% endif %}
           <!-- <span id="country" >USA.</span> -->
         </div>
   
@@ -166,7 +169,7 @@
                     <li>DOB: {{dog.dob}}</a></li>
                 </ul>
                 <a href="{% url 'dog_profile_edit' dog.pk %}" class="dog-edit">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  <i class="fa fa-pencil-square-o" true"></i>
                 </a>
                 </header>
              </li>
@@ -178,10 +181,78 @@
             {% endif %}
           </div>  
           <div class="profile-reviews tab">
-            <h1>Events</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
-              repellendus excepturi quisquam temporibus quam nobis voluptatem, reiciendis distinctio deserunt vitae! Maxime provident, distinctio animi commodi nemo, eveniet fugit porro quos nesciunt quidem a, corporis nisi dolorum minus sit eaque error
-              sequi ullam. Quidem ut fugiat, praesentium velit aliquam!</p>
+
+    
+                {% for event in events_list %}
+<!--                 <li class="">
+                  <header style="border-radius: 10px;" class="proflist--item">                 
+                    <h3 style="text-align: center;  font-size: 22spx; font-weight: bold;" class="prof-nam">{{event.event_title}}</h3>
+                    <span class="toggle">
+                      <i style="position: right;" class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </span>
+                    <ul>
+                      <li>Description: {{event.event_description}}</a></li>
+                      <li>Time: {{event.event_time}}</a></li>
+                    </ul>
+                  </header>
+               </li> -->
+
+              <ul style="position:center;">
+
+                <li style="padding: 1rem; position:right; " >
+                  <header style="display: inline-block;">
+                  <div style=  "--border-radius: 0.75rem;
+               --primary-color: #8012c0;
+               --secondary-color: #3c3852;
+               width: 450px;
+               font-family: 'Arial';
+               padding: 1rem;
+               cursor: pointer;
+               border-radius: var(--border-radius);
+               border-width: 1px;;
+               border-style:solidd;
+               border-color: #120321;
+               background: #f1f1f3;
+               box-shadow: 1px 1px 16px 0.5px rgba(60, 0, 51, 0.237);
+               position: relative;" class="card">
+
+                <h3 style="  padding: 0;
+                font-size: 1.3rem;
+                font-weight: bold;
+                color:#410464;" class="card__title">{{event.event_title}}
+                </h3>
+                
+                <p style = "  color: var(--secondary-color);
+                font-size: 0.86rem;" class="card__content"> {{event.event_description}} </p>
+                <div style="  color: #6e6b80;
+                font-size: 0.8rem;" class="card__date">
+                    {{event.event_time}}
+                </div>
+                <div style="  position: absolute;
+                background: var(--primary-color);
+                padding: 0.4rem;
+                border-top-left-radius: var(--border-radius);
+                border-bottom-right-radius: var(--border-radius);
+                bottom: 0;
+                right: 0;
+                transition: 0.2s;
+                display: flex;
+                justify-content: center;
+                align-items: center;" class="card__arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="15" width="15">
+                        <path fill="#fff" d="M13.4697 17.9697C13.1768 18.2626 13.1768 18.7374 13.4697 19.0303C13.7626 19.3232 14.2374 19.3232 14.5303 19.0303L20.3232 13.2374C21.0066 12.554 21.0066 11.446 20.3232 10.7626L14.5303 4.96967C14.2374 4.67678 13.7626 4.67678 13.4697 4.96967C13.1768 5.26256 13.1768 5.73744 13.4697 6.03033L18.6893 11.25H4C3.58579 11.25 3.25 11.5858 3.25 12C3.25 12.4142 3.58579 12.75 4 12.75H18.6893L13.4697 17.9697Z"></path>
+                    </svg>
+                </div>
+              </div>
+            </header>
+                </li>
+
+              </ul>
+
+
+                {% endfor %}
+
+
           </div>
           <div class="profile-settings tab">
             <div class="account-setting">
