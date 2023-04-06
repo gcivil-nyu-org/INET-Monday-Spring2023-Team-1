@@ -1,0 +1,946 @@
+- model: doghub_app.park
+  pk: 1
+  fields:
+    name: Fishbridge Garden Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.709070274158'
+    longitude: '-74.0013770043858'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 2
+  fields:
+    name: Little Bay Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7878857805568'
+    longitude: '-73.7927010998833'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 3
+  fields:
+    name: Canine Court Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8990203595757'
+    longitude: '-73.8951999290714'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 4
+  fields:
+    name: Tompkins Square Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7264720372543'
+    longitude: '-73.9811705103259'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 5
+  fields:
+    name: Dyker Beach Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6177590064976'
+    longitude: '-74.020919307198'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 6
+  fields:
+    name: Sherry Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7415087114362'
+    longitude: '-73.8987983818218'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 7
+  fields:
+    name: Owl's Head Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6403828638215'
+    longitude: '-74.0348411931394'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 8
+  fields:
+    name: Maria Hernandez Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.703700360917'
+    longitude: '-73.9229853762756'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 9
+  fields:
+    name: Madison Square Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.74235101912'
+    longitude: '-73.9885634322628'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 10
+  fields:
+    name: West Thames Street Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7075091627058'
+    longitude: '-74.0163099497159'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 11
+  fields:
+    name: Carl Schurz Park Large Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7742315483894'
+    longitude: '-73.9439829586035'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 12
+  fields:
+    name: Fox Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8150018625836'
+    longitude: '-73.8981138182471'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 13
+  fields:
+    name: Riverside Park Dog Run (105th St)
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8024203223986'
+    longitude: '-73.97149186873'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 14
+  fields:
+    name: Bloomingdale Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.533334069108'
+    longitude: '-74.2113941927075'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 15
+  fields:
+    name: Soundview Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8190006021608'
+    longitude: '-73.8776107585716'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 16
+  fields:
+    name: Riverside Park Dog Run (72nd St)
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7811968625178'
+    longitude: '-73.9865711479933'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 17
+  fields:
+    name: Cooper Park Large Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7154041460173'
+    longitude: '-73.936034485188'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 18
+  fields:
+    name: Highbridge Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8558285414239'
+    longitude: '-73.9248563364086'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 19
+  fields:
+    name: North End Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7166681345966'
+    longitude: '-74.0147206503039'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 20
+  fields:
+    name: Veteran's Grove Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7425170172856'
+    longitude: '-73.8775656554913'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 21
+  fields:
+    name: Manhattan Beach Dog Run (Oriental Boulevard)
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.5778309681734'
+    longitude: '-73.9417584743109'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 22
+  fields:
+    name: Frank S. Hackett Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.9014007493713'
+    longitude: '-73.9055999419031'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 23
+  fields:
+    name: Washington Square Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7306619640371'
+    longitude: '-73.9984429147237'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 24
+  fields:
+    name: DeWitt Clinton Park Large Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7674916244008'
+    longitude: '-73.9941112705244'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 25
+  fields:
+    name: Stuyvesant Square Dog Park
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7331576770781'
+    longitude: '-73.9837749812092'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 26
+  fields:
+    name: Corlears Hook Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.711799173903'
+    longitude: '-73.9793872421415'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 27
+  fields:
+    name: Conference House Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.5002812819725'
+    longitude: '-74.2499184302292'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 28
+  fields:
+    name: Murray Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7468861641592'
+    longitude: '-73.948218874384'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 29
+  fields:
+    name: Dog Bone Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.883743655731'
+    longitude: '-73.8828484467862'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 30
+  fields:
+    name: East River Esplanade Waterfront Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7044563380258'
+    longitude: '-74.0056204957209'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 31
+  fields:
+    name: Pier 84 Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7634786664309'
+    longitude: '-74.0004015664785'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 32
+  fields:
+    name: St. Nicholas Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8179549485156'
+    longitude: '-73.9488594435156'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 33
+  fields:
+    name: Riverside Park South Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7812416802998'
+    longitude: '-73.987378544791'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 34
+  fields:
+    name: Sirius Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7120071907067'
+    longitude: '-74.0169270953306'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 35
+  fields:
+    name: J. Hood Wright Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8465996236976'
+    longitude: '-73.9421944491906'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 36
+  fields:
+    name: Forest Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6967449403819'
+    longitude: '-73.8604220883869'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 37
+  fields:
+    name: Tribeca Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7161935325278'
+    longitude: '-74.0120858316807'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 38
+  fields:
+    name: Dimattina Park Dog Run - South
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6797901531038'
+    longitude: '-74.0029280236992'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 39
+  fields:
+    name: Seton Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8865780901145'
+    longitude: '-73.9157807957807'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 40
+  fields:
+    name: Morningside Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8044448244024'
+    longitude: '-73.9591927586953'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 41
+  fields:
+    name: Pelham Bay Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8505475646398'
+    longitude: '-73.8210160681157'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 42
+  fields:
+    name: McGolrick Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7232942906792'
+    longitude: '-73.9435635998802'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 43
+  fields:
+    name: Rockaway Freeway Dog Park
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.591161067217'
+    longitude: '-73.8087844431308'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 44
+  fields:
+    name: Lou Lodati Dog Park
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.747295373397'
+    longitude: '-73.9216867347502'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 45
+  fields:
+    name: DiMattina Park Dog Run - North
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6809038968293'
+    longitude: '-74.002248726401'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 46
+  fields:
+    name: Bellevue South Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7398312791091'
+    longitude: '-73.978430860082'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 47
+  fields:
+    name: Sternberg Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7061664844752'
+    longitude: '-73.9467368538867'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 48
+  fields:
+    name: Thomas Jefferson Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.792257316096'
+    longitude: '-73.9350440907486'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 49
+  fields:
+    name: Carl Schurz Park Small Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7739330846114'
+    longitude: '-73.9438875784343'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 50
+  fields:
+    name: Riverside Park Dog Run (87th St)
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.790305594702'
+    longitude: '-73.9806048572374'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 51
+  fields:
+    name: Herbert Von King Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6898114057654'
+    longitude: '-73.9478619089954'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 52
+  fields:
+    name: Underbridge Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7338629103904'
+    longitude: '-73.8452197252218'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 53
+  fields:
+    name: Pier 6 Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6927272665055'
+    longitude: '-74.0000354904093'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 54
+  fields:
+    name: Fort Independence Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.881670847532'
+    longitude: '-73.8946089759189'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 55
+  fields:
+    name: Union Square Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7355620418305'
+    longitude: '-73.9909697606443'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 56
+  fields:
+    name: DeWitt Clinton Park Small Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7676042536785'
+    longitude: '-73.9944355800431'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 57
+  fields:
+    name: Hillside Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7014655814613'
+    longitude: '-73.9944357891999'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 58
+  fields:
+    name: Greenwood Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6493872543963'
+    longitude: '-73.9763790717918'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 59
+  fields:
+    name: Windmuller Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7459685343477'
+    longitude: '-73.908414222812'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 60
+  fields:
+    name: Silver Lake Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6264604382157'
+    longitude: '-74.0927531877494'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 61
+  fields:
+    name: Ewen Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8822411059072'
+    longitude: '-73.9100564569881'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 62
+  fields:
+    name: Riverside Park Dog Run (W. 142nd St.)
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8253018165679'
+    longitude: '-73.954204388675'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 63
+  fields:
+    name: Washington Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6728862695761'
+    longitude: '-73.9858216484045'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 64
+  fields:
+    name: Marcus Garvey Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8029335686589'
+    longitude: '-73.9431213694829'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 65
+  fields:
+    name: Williamsbridge Oval Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8779922360071'
+    longitude: '-73.8760162182939'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 66
+  fields:
+    name: Oneida Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.899408869718'
+    longitude: '-73.8735178923397'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 67
+  fields:
+    name: Coleman Oval Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7110530108449'
+    longitude: '-73.9933027915057'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 68
+  fields:
+    name: Robert Moses Playground Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7482756774825'
+    longitude: '-73.969019568132'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 69
+  fields:
+    name: Adam Yauch Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.6923801560951'
+    longitude: '-73.9991034152585'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 70
+  fields:
+    name: Tribeca Dog Park
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7215355648627'
+    longitude: '-74.0123351371298'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 71
+  fields:
+    name: Fort Tryon Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8616921624085'
+    longitude: '-73.9319852906233'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 72
+  fields:
+    name: Homer's Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8711508728601'
+    longitude: '-73.921737210984'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 73
+  fields:
+    name: Franz Sigel Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8228822524282'
+    longitude: '-73.9259181035315'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 74
+  fields:
+    name: The Rocky Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8409670678612'
+    longitude: '-73.9452604164518'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 76
+  fields:
+    name: Peter Detmold Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7532186525665'
+    longitude: '-73.9639841653291'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 77
+  fields:
+    name: Brooklyn Bridge Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7043548977823'
+    longitude: '-73.9891076107824'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 78
+  fields:
+    name: McCarren Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.720067119749'
+    longitude: '-73.9528961947447'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 79
+  fields:
+    name: Robin Kovary Run for Small Dogs
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7301855007599'
+    longitude: '-73.9975266645397'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 80
+  fields:
+    name: Cooper Park Small Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7153848811658'
+    longitude: '-73.9362165893835'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 81
+  fields:
+    name: Theodore Roosevelt Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7821535133698'
+    longitude: '-73.9738015948089'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 82
+  fields:
+    name: Ida Court Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.5381960554187'
+    longitude: '-74.1873688845096'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 83
+  fields:
+    name: Hunters Point South Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7433359186576'
+    longitude: '-73.9601937634864'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 84
+  fields:
+    name: Overlook Dog Park / The Barking Lot
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7103408658501'
+    longitude: '-73.8368092511193'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 85
+  fields:
+    name: Cunningham Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7266396045119'
+    longitude: '-73.7755711889786'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 86
+  fields:
+    name: St. Mary's Park Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.8096545933129'
+    longitude: '-73.9121732680986'
+    use_coordinates: true
+- model: doghub_app.park
+  pk: 87
+  fields:
+    name: Andrew Haswell Green Dog Run
+    street: null
+    city: null
+    state: null
+    zipcode: null
+    latitude: '40.7602309329308'
+    longitude: '-73.9568379736388'
+    use_coordinates: true
