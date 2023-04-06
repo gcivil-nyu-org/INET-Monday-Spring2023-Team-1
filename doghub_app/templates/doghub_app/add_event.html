@@ -18,7 +18,7 @@
                 <div class="card__content">
                     <form method="POST">
                     {% csrf_token %}
-                   <!-- {{ event_post_form.as_p }} -->
+                  
 
                    <div class = "input-inline">
                     <label>Event Title:</label>
@@ -39,7 +39,7 @@
 
                 <div class = "input-inline">
                     <label>Location:</label>
-                    <input type="text" id="DOB" name ="location"/>
+                    <input type="text" id="location" readonly name ="location" required/>
 
                 </div>
 
@@ -52,10 +52,7 @@
                   
                 </div>
 
-                <!--p class="card__content">test</p-->
-                <!--div class="card__date">
-                    time
-                </div-->
+              
             </div>
             <div class="column">
                 <div id="map"></div>
@@ -63,13 +60,14 @@
         </div>
     </div>
 </body>
-<!--/div-->
+
 
 
 
 
 <script>
     function initMap() {
+        const parkData = {{ park_data|safe }};
         const trialpark = { lat: -74.0016, lng: 40.7093};
         const centerloc = {lat: 40.730610, lng: -73.935242};
       var map = new google.maps.Map(document.getElementById('map'), {
@@ -77,29 +75,46 @@
         zoom: 12
       });
 
+          for(var i=0; i< parkData.length; i++) {
+
+            var position = new google.maps.LatLng(
+                parseFloat(parkData[i].latitude),
+                parseFloat(parkData[i].longitude)
+            );
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: parkData[i].name
+
+            });
+        var conString='<div> <h1>' + parkData[i].name + '</h1></div>';
+        var infowindow = new google.maps.InfoWindow({
+            content: conString
+        });
+        var openInfoWindow =null;
+
+        marker.addListener('click', (function(infowindow, marker){
+            return function(){
+            if(openInfoWindow){
+                openInfoWindow.close();
+            }
+            infowindow.open(map, marker);
+            openInfoWindow=infowindow;
+            const lat = marker.getPosition().lat();
+            const lng = marker.getPosition().lng();
+            const coordinatesInput = document.getElementById('location');
+            coordinatesInput.value = `${lat},${lng}`;
+         
+            }
+        })(infowindow, marker));
+
+      } 
       const contentString = 
       '<div id = "content">'+
       '<div id = "siteNotice">'+
         "</div>" + 
         '<h1 id ="firstHeading" class="firstHeading">Trial</h1>';
 
-        const infowindow = new google.maps.InfoWindow({
-            content:contentString,
-            ariaLabel: "Trial"
-        })
-
-      const marker= new google.maps.Marker({
-          position: centerloc,
-          map,
-          title: "Trial park!",
-      })
-
-      marker.addListener("click", () => {
-          infowindow.open({
-              anchor: marker,
-              map,
-          });
-      });
 
     }
   </script>
