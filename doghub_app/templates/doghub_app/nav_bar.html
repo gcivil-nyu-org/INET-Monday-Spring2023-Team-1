@@ -1,0 +1,85 @@
+{% load static %}
+<html>{% block content %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="{% static 'styles/nav_bar.css' %}"
+    />
+    
+    <div class="nav1">
+    <nav>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">News</a></li>
+            <li><a href="">Contact</a></li>
+            <li>
+
+                <form method="post" action="{% url 'search-user' %}">
+                    {% csrf_token %}
+                    <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                </form>
+            </li>
+            
+            <div class="user">
+                <img src="{{media_url}}{{userprof.pic}}" class="userpic" onclick="ToggleMenu()">
+                <div class="s1" id="submenu">
+                    <div class="s2">
+                        <div class="uinfo">
+                            <img src="{{media_url}}{{userprof.pic}}">
+                            <h2>{{ userprof.fname}}</h2>
+                        </div>
+                        <hr>
+
+                        <a href="{% url 'user_profile' %}" class="s3">
+                            <img src="{% static 'images/user_profile.jpeg' %}">
+                            <p>View Profile</p>
+                            <span>></span>
+                        </a>
+                        <a href="{% url 'logout' %}" class="s3">
+                            <img src="{% static 'images/log_out.png' %}">
+                            <p>Log Out</p>
+                            <span>></span>
+                        </a>
+                    </div>
+                </div></div>
+            
+            
+        </ul>
+            <!--<li>
+                <a class="active" href="{% url 'user_profile'%}">
+                    <div class="profile-img">
+                        <img src="{{media_url}}{{userprof.pic}}" width="30" alt="Profile Image"/>
+                    </div>
+                    {{ userprof.fname}}
+                </a>
+            </li>-->
+      <!--<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+        data-mdb-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user mx-1"></i> Profile </a>
+        
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li>
+                <a class="dropdown-item" href="#">My account</a>
+            </li>
+
+            <li>
+                <a class="dropdown-item" href="#">Log out</a>
+            </li>
+        </ul>
+      </li>-->
+    </nav>
+</div>
+<script>
+    let sb=document.getElementById("submenu");
+
+    function ToggleMenu(){
+        sb.classList.toggle("open-menu");
+    }
+</script>
+    {% endblock %}
+
+</html>
+

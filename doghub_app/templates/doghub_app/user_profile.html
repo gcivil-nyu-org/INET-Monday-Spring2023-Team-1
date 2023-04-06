@@ -1,4 +1,3 @@
-
 {% block content %}
 {% load static %}
   <!-- <div class="container">
@@ -52,20 +51,27 @@
           {% endfor %}
         {% endif %}</div>
       <title>Log In</title>
-
+   <div class="navi">
+      <nav>
+          <ul>
+              <li><a href="{% url 'events' %}">Home</a></li>
+              <li><a href="">News</a></li>
+              <li><a href="">Contact</a></li>
+              <li>
+                  <form method="post" action="{% url 'search-user' %}">
+                      {% csrf_token %}
+                      <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                  </form>
+              </li><li>
+              <div class="lout">
+              <a href="{% url 'logout' %}"><img src="{% static 'images/log_out.png' %}"><p class="lout1">Log Out</p></a></div></li>
+            </ul></nav></div></div>
   </head>
 
   <body>
 
   <div class="container">
-    <div>
-      <ul class="navi">
-        <li><a href="{% url 'events' %}">Home</a></li>
-        <li><a href="">News</a></li>
-        <li><a href="">Contact</a></li>
-        <li><a class="active1" href="">About</a></li>
-      </ul>
-    </div>
+ 
     <div class="profile-header">
       <div class="profile-img">
         <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">

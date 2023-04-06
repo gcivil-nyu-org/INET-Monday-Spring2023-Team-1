@@ -1,4 +1,5 @@
-{% load static %} {% if messages %} {% for message in messages %}
+
+{% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
 <div class="alert alert-{{ message.tags }}">{{ message }}</div>
 {% endfor %} {% endif %}
 <!DOCTYPE html>
@@ -13,46 +14,7 @@
       href="{% static 'styles/events.css' %}"
     />
     <title>Title</title>
-    <div>
-      <ul class="navi">
-        <li><a href="">Home</a></li>
-        <li><a href="">News</a></li>
-        <li><a href="">Contact</a></li>
-        <li>
-
-              <form method="post" action="{% url 'search-user' %}">
-                {% csrf_token %}
-                <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> </li>
-              </form>
-
-        <li>
-          <a class="active" href="{% url 'user_profile'%}"
-            ><div class="profile-img">
-              <img
-                src="{{media_url}}{{userprof.pic}}"
-                width="30"
-                alt="Profile Image"
-              />
-            </div>
-            {{ userprof.fname}}</a
-          >
-        </li>
-        <!--<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
-          data-mdb-toggle="dropdown" aria-expanded="false"> <i class="fas fa-user mx-1"></i> Profile </a>
-          
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li>
-                  <a class="dropdown-item" href="#">My account</a>
-              </li>
-
-              <li>
-                  <a class="dropdown-item" href="#">Log out</a>
-              </li>
-          </ul>
-        </li>-->
-      </ul>
-    </div>
+    
   </head>
   <body>
     <p>Welcome {{ userprof.fname}}</p>
