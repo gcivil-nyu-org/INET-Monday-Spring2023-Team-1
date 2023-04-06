@@ -371,20 +371,16 @@ def dog_profile_delete(request, pk):
 
 @login_required
 def add_post(request):
-
-    current_datetime = datetime.now().strftime('%Y-%m-%dT%H:%M')
-  
-
+    current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
-       
             event_post = event_post_form.save(commit=False)
-            event_post=EventPost(
-            event_title=request.POST.get("event_title"),
-            event_description=request.POST.get("event_description"),
-            event_time = request.POST.get("event_time"),
+            event_post = EventPost(
+                event_title=request.POST.get("event_title"),
+                event_description=request.POST.get("event_description"),
+                event_time=request.POST.get("event_time"),
             )
             user = request.user
             user = CustomUser.objects.get(id=user.id)
@@ -399,7 +395,7 @@ def add_post(request):
     else:
         event_post_form = EventPostForm()
 
-    context = {"event_post_form": event_post_form, 'current_datetime': current_datetime}
+    context = {"event_post_form": event_post_form, "current_datetime": current_datetime}
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
     )
