@@ -196,6 +196,7 @@ def events(request):
     context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
+    print(event_posts)
     event_posts.reverse()
     context = {
         "userprof": user_prof,
