@@ -4,10 +4,27 @@
   <h1>You searched for {{searched }}</h1>
 </br>
 
-{% for user in users %}
+<!-- {% for user in users %}
     {{ user }} - <a href="{% url 'public-profile' user.email   %}" > Profile </a> 
     </br>
 {%  endfor %}
+ -->
+ <h1> Users </h1>
+{% for user in u_list %}
+    {{ user.fname }} {{user.lname}} - <a href="{% url 'public-profile' user.email   %}" > Profile </a> 
+    </br>
+
+{% endfor %}
+
+<h1>Events</h1>
+{% for event in events %}
+    {{ event.event_title }}
+    </br>
+
+{% endfor %}
+
+
+
 
   {% else %}
   <h1>You forgot to search for something.</h1>
