@@ -423,10 +423,10 @@ def search_user(request):
         show_events = False
         searched = request.POST["searched"]
 
-        if request.POST.get("filter")=="users":
+        if request.POST.get("filter_users")=="users":
             show_users = True
 
-        if request.POST.get("filter")=="events":
+        if request.POST.get("filter_events")=="events":
             show_events = True
 
         user_profiles_fname = list(UserProfile.objects.filter(fname__icontains=searched))
