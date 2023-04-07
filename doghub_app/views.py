@@ -419,7 +419,16 @@ def public_profile(request, email):
 def search_user(request):
     if request.method == "POST":
         f = open("output.txt","w+")
+        show_users = False
+        show_events = False
         searched = request.POST["searched"]
+
+        if request.POST.get("filter")=="users":
+            show_users = True
+
+        if request.POST.get("filter")=="events":
+            show_events = True
+
         user_profiles_fname = list(UserProfile.objects.filter(fname__icontains=searched))
         user_profiles_lname = list(UserProfile.objects.filter(lname__icontains=searched))
         users_list = []
@@ -439,7 +448,6 @@ def search_user(request):
             
 
         events = EventPost.objects.filter(event_title__icontains=searched)
-        f.write(str(len(events)))
 
         return render(
             request,
@@ -448,7 +456,9 @@ def search_user(request):
              "user_profiles_lname":user_profiles_lname,
              "events":events,
              "users_list":users_list,
-             "u_list": u_list,},
+             "u_list": u_list,
+             "show_users":show_users,
+             "show_events":show_events,},
              
         )
     else:

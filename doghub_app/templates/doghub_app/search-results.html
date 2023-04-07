@@ -9,20 +9,31 @@
     </br>
 {%  endfor %}
  -->
- <h1> Users </h1>
-{% for user in u_list %}
-    {{ user.fname }} {{user.lname}} - <a href="{% url 'public-profile' user.email   %}" > Profile </a> 
-    </br>
+{% if show_users %}
+  <div class = "users">
+    <h1> Users </h1>
 
-{% endfor %}
+    {% for user in u_list %}
+        {{ user.fname }} {{user.lname}} - <a href="{% url 'public-profile' user.email   %}" > Profile </a> 
+        </br>
+    {% endfor %}
 
-<h1>Events</h1>
-{% for event in events %}
-    {{ event.event_title }}
-    </br>
+  </div>
+{% endif %}
 
-{% endfor %}
+{% if show_events %}
 
+  <div class="events">
+    <h1>Events</h1>
+
+    {% for event in events %}
+        {{ event.event_title }}
+        </br>
+    {% endfor %}
+    
+  </div>
+
+{% endif %}
 
 
 
