@@ -4,7 +4,7 @@
     name: Fishbridge Garden Dog Run
     street: "Dover St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10038"
     latitude: "40.709070274158"
     longitude: "-74.0013770043858"
@@ -15,7 +15,7 @@
     name: Little Bay Park Dog Run
     street: "14th Rd. &, Utopia Pkwy"
     city: "Whitestone"
-    state: "New York"
+    state: "NY"
     zipcode: "11357"
     latitude: "40.7878857805568"
     longitude: "-73.7927010998833"
@@ -26,7 +26,7 @@
     name: Canine Court Dog Run
     street: "Broadway &, W 252nd St"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10471"
     latitude: "40.8990203595757"
     longitude: "-73.8951999290714"
@@ -37,7 +37,7 @@
     name: Tompkins Square Park Dog Run
     street: "99 1/2 St Marks Pl"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10009"
     latitude: "40.7264720372543"
     longitude: "-73.9811705103259"
@@ -48,7 +48,7 @@
     name: Dyker Beach Park Dog Run
     street: "900-998 86th St"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11228"
     latitude: "40.6177590064976"
     longitude: "-74.020919307198"
@@ -59,7 +59,7 @@
     name: Sherry Park Dog Run
     street: "Queens Blvd. &, 65th Pl"
     city: "Woodside"
-    state: "New York"
+    state: "NY"
     zipcode: "11377"
     latitude: "40.7415087114362"
     longitude: "-73.8987983818218"
@@ -70,7 +70,7 @@
     name: Owl's Head Park Dog Run
     street: "68th Street &, Shore Rd"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11220"
     latitude: "40.6403828638215"
     longitude: "-74.0348411931394"
@@ -81,7 +81,7 @@
     name: Maria Hernandez Park Dog Run
     street: "92 Irving Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11237"
     latitude: "40.703700360917"
     longitude: "-73.9229853762756"
@@ -92,7 +92,7 @@
     name: Madison Square Park Dog Run
     street: "Broadway"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10010"
     latitude: "40.74235101912"
     longitude: "-73.9885634322628"
@@ -103,7 +103,7 @@
     name: West Thames Street Dog Run
     street: "70 Little W St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10280"
     latitude: "40.7075091627058"
     longitude: "-74.0163099497159"
@@ -114,7 +114,7 @@
     name: Carl Schurz Park Large Dog Run
     street: "70 Little W St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10280"
     latitude: "40.7742315483894"
     longitude: "-73.9439829586035"
@@ -125,7 +125,7 @@
     name: Fox Playground Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "null"
     latitude: "40.8150018625836"
     longitude: "-73.8981138182471"
@@ -136,7 +136,7 @@
     name: Riverside Park Dog Run (105th St)
     street: "Riverside Dr &, W 105th St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10025"
     latitude: "40.8024203223986"
     longitude: "-73.97149186873"
@@ -147,7 +147,7 @@
     name: Bloomingdale Park Dog Run
     street: "Maguire Ave"
     city: "Staten Island"
-    state: "New York"
+    state: "NY"
     zipcode: "10309"
     latitude: "40.533334069108"
     longitude: "-74.2113941927075"
@@ -158,7 +158,7 @@
     name: Soundview Park Dog Run
     street: "Soundview Park Lafayette Ave &, Boynton Ave"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10473"
     latitude: "40.8190006021608"
     longitude: "-73.8776107585716"
@@ -169,7 +169,7 @@
     name: Riverside Park Dog Run (72nd St)
     street: "72nd St Riverside Park"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10023"
     latitude: "40.7811968625178"
     longitude: "-73.9865711479933"
@@ -180,7 +180,7 @@
     name: Cooper Park Large Dog Run
     street: "331 Morgan Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11211"
     latitude: "40.7154041460173"
     longitude: "-73.936034485188"
@@ -191,7 +191,7 @@
     name: Highbridge Park Dog Run
     street: "2682-2698 Amsterdam Ave"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10040"
     latitude: "40.8558285414239"
     longitude: "-73.9248563364086"
@@ -202,7 +202,7 @@
     name: North End Dog Run
     street: "Liberty Green, 300 North End Ave"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10282"
     latitude: "40.7166681345966"
     longitude: "-74.0147206503039"
@@ -213,7 +213,7 @@
     name: Veteran's Grove Dog Run
     street: "Judge St. &, Whitney Ave"
     city: "Elmhurst"
-    state: "New York"
+    state: "NY"
     zipcode: "11373"
     latitude: "40.7425170172856"
     longitude: "-73.8775656554913"
@@ -224,7 +224,7 @@
     name: Manhattan Beach Dog Run (Oriental Boulevard)
     street: "Park Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11235"
     latitude: "40.5778309681734"
     longitude: "-73.9417584743109"
@@ -235,7 +235,7 @@
     name: Frank S. Hackett Park Dog Run
     street: "W. 254th St &, Riverdale Ave"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10471"
     latitude: "40.9014007493713"
     longitude: "-73.9055999419031"
@@ -246,7 +246,7 @@
     name: Washington Square Park Dog Run
     street: "52 Washington Square S"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10012"
     latitude: "40.7306619640371"
     longitude: "-73.9984429147237"
@@ -257,7 +257,7 @@
     name: DeWitt Clinton Park Large Dog Run
     street: "11th Ave &, W 52nd St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10019"
     latitude: "40.7674916244008"
     longitude: "-73.9941112705244"
@@ -268,7 +268,7 @@
     name: Stuyvesant Square Dog Park
     street: "9, Rutherford Pl"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10003"
     latitude: "40.7331576770781"
     longitude: "-73.9837749812092"
@@ -279,7 +279,7 @@
     name: Corlears Hook Park Dog Run
     street: "397 FDR Dr"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10002"
     latitude: "40.711799173903"
     longitude: "-73.9793872421415"
@@ -290,7 +290,7 @@
     name: Conference House Park Dog Run
     street: "Craig Ave &, Surf Ave"
     city: null
-    state: "New York"
+    state: "NY"
     zipcode: "10307"
     latitude: "40.5002812819725"
     longitude: "-74.2499184302292"
@@ -301,7 +301,7 @@
     name: Murray Playground Dog Run
     street: "11-38, 11-98 45th Rd"
     city: "Long Island City"
-    state: "New York"
+    state: "NY"
     zipcode: "11101"
     latitude: "40.7468861641592"
     longitude: "-73.948218874384"
@@ -312,7 +312,7 @@
     name: Dog Bone Run
     street: "36 W Gun Hill Rd"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10467"
     latitude: "40.883743655731"
     longitude: "-73.8828484467862"
@@ -323,7 +323,7 @@
     name: East River Esplanade Waterfront Dog Run
     street: "John Finley Walk"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10022"
     latitude: "40.7044563380258"
     longitude: "-74.0056204957209"
@@ -334,7 +334,7 @@
     name: Pier 84 Dog Run
     street: "353 West St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10036"
     latitude: "40.7634786664309"
     longitude: "-74.0004015664785"
@@ -345,7 +345,7 @@
     name: St. Nicholas Park Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10032"
     latitude: "40.8179549485156"
     longitude: "-73.9488594435156"
@@ -356,7 +356,7 @@
     name: Riverside Park South Dog Run
     street: "Hudson River Greenway"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10069"
     latitude: "40.7812416802998"
     longitude: "-73.987378544791"
@@ -367,7 +367,7 @@
     name: Sirius Dog Run
     street: "385 South End Ave"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10280"
     latitude: "40.7120071907067"
     longitude: "-74.0169270953306"
@@ -378,7 +378,7 @@
     name: J. Hood Wright Park Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10033"
     latitude: "40.8465996236976"
     longitude: "-73.9421944491906"
@@ -389,7 +389,7 @@
     name: Forest Park Dog Run
     street: "8445 Park Ln S"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "11421"
     latitude: "40.6967449403819"
     longitude: "-73.8604220883869"
@@ -400,7 +400,7 @@
     name: Tribeca Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10013"
     latitude: "40.7161935325278"
     longitude: "-74.0120858316807"
@@ -411,7 +411,7 @@
     name: Dimattina Park Dog Run - South
     street: "167-177 Hamilton Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11231"
     latitude: "40.6797901531038"
     longitude: "-74.0029280236992"
@@ -422,7 +422,7 @@
     name: Seton Park Dog Run
     street: "Independence Ave"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10463"
     latitude: "40.8865780901145"
     longitude: "-73.9157807957807"
@@ -433,7 +433,7 @@
     name: Morningside Park Dog Run
     street: "399 W 110th St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10025"
     latitude: "40.8044448244024"
     longitude: "-73.9591927586953"
@@ -444,7 +444,7 @@
     name: Pelham Bay Park Dog Run
     street: null
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10465"
     latitude: "40.8505475646398"
     longitude: "-73.8210160681157"
@@ -455,7 +455,7 @@
     name: McGolrick Park Dog Run
     street: "Russell Street &, Nassau Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11222"
     latitude: "40.7232942906792"
     longitude: "-73.9435635998802"
@@ -466,7 +466,7 @@
     name: Rockaway Freeway Dog Park
     street: "83-02 Beach Channel Dr"
     city: "Queens"
-    state: "New York"
+    state: "NY"
     zipcode: "11693"
     latitude: "40.591161067217"
     longitude: "-73.8087844431308"
@@ -477,7 +477,7 @@
     name: Lou Lodati Dog Park
     street: "41-15 Skillman Ave"
     city: "Long Island City"
-    state: "New York"
+    state: "NY"
     zipcode: "11104"
     latitude: "40.747295373397"
     longitude: "-73.9216867347502"
@@ -488,7 +488,7 @@
     name: DiMattina Park Dog Run - North
     street: "167-177 Hamilton Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11231"
     latitude: "40.6809038968293"
     longitude: "-74.002248726401"
@@ -499,7 +499,7 @@
     name: Bellevue South Park Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10016"
     latitude: "40.7398312791091"
     longitude: "-73.978430860082"
@@ -510,7 +510,7 @@
     name: Sternberg Park Dog Run
     street: "73 Montrose Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11206"
     latitude: "40.7061664844752"
     longitude: "-73.9467368538867"
@@ -521,7 +521,7 @@
     name: Thomas Jefferson Park Dog Run
     street: "2180 1st Ave"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10029"
     latitude: "40.792257316096"
     longitude: "-73.9350440907486"
@@ -532,7 +532,7 @@
     name: Carl Schurz Park Small Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10028"
     latitude: "40.7739330846114"
     longitude: "-73.9438875784343"
@@ -543,7 +543,7 @@
     name: Riverside Park Dog Run (87th St)
     street: "Hudson River Greenway"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10024"
     latitude: "40.790305594702"
     longitude: "-73.9806048572374"
@@ -554,7 +554,7 @@
     name: Herbert Von King Park Dog Run
     street: "Herbert Von King Park Marcy Ave &, Clifton Pl"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11216"
     latitude: "40.6898114057654"
     longitude: "-73.9478619089954"
@@ -565,7 +565,7 @@
     name: Underbridge Playground Dog Run
     street: "64th Ave. &, Grand Central Pkwy"
     city: "Forest Hills"
-    state: "New York"
+    state: "NY"
     zipcode: "11375"
     latitude: "40.7338629103904"
     longitude: "-73.8452197252218"
@@ -576,7 +576,7 @@
     name: Pier 6 Dog Run
     street: "334 Furman St"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11201"
     latitude: "40.6927272665055"
     longitude: "-74.0000354904093"
@@ -587,7 +587,7 @@
     name: Fort Independence Playground Dog Run
     street: "Sedgwick Ave. &, W 238th St"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10463"
     latitude: "40.881670847532"
     longitude: "-73.8946089759189"
@@ -598,7 +598,7 @@
     name: Union Square Park Dog Run
     street: "Union Square W"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10003"
     latitude: "40.7355620418305"
     longitude: "-73.9909697606443"
@@ -609,7 +609,7 @@
     name: DeWitt Clinton Park Small Dog Run
     street: "11th Ave. &, W 54th St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10019"
     latitude: "40.7676042536785"
     longitude: "-73.9944355800431"
@@ -620,7 +620,7 @@
     name: Hillside Park Dog Run
     street: "Vine St"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11201"
     latitude: "40.7014655814613"
     longitude: "-73.9944357891999"
@@ -631,7 +631,7 @@
     name: Greenwood Playground Dog Run
     street: "140 E 5th St"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11218"
     latitude: "40.6493872543963"
     longitude: "-73.9763790717918"
@@ -642,7 +642,7 @@
     name: Windmuller Park Dog Run
     street: "Dover St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10038"
     latitude: "40.7459685343477"
     longitude: "-73.908414222812"
@@ -653,7 +653,7 @@
     name: Silver Lake Park Dog Run
     street: "700 Victory Blvd"
     city: "Staten Island"
-    state: "New York"
+    state: "NY"
     zipcode: "10301"
     latitude: "40.6264604382157"
     longitude: "-74.0927531877494"
@@ -664,7 +664,7 @@
     name: Ewen Park Dog Run
     street: "Riverdale Ave. &, W 232nd St"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10463"
     latitude: "40.8822411059072"
     longitude: "-73.9100564569881"
@@ -675,7 +675,7 @@
     name: Riverside Park Dog Run (W. 142nd St.)
     street: "675 Riverside Dr"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10031"
     latitude: "40.8253018165679"
     longitude: "-73.954204388675"
@@ -686,7 +686,7 @@
     name: Washington Park Dog Run
     street: "3 St., 4 St. bet. 4 Ave. and 5 Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11215"
     latitude: "40.6728862695761"
     longitude: "-73.9858216484045"
@@ -697,7 +697,7 @@
     name: Marcus Garvey Park Dog Run
     street: "Madison Avenue and, E 120th St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10027"
     latitude: "40.8029335686589"
     longitude: "-73.9431213694829"
@@ -708,7 +708,7 @@
     name: Williamsbridge Oval Dog Run
     street: "3225 Reservoir Oval E"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10467"
     latitude: "40.8779922360071"
     longitude: "-73.8760162182939"
@@ -719,7 +719,7 @@
     name: Oneida Run
     street: "Oneida Avenue &, Van Cortlandt Park E"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10470"
     latitude: "40.899408869718"
     longitude: "-73.8735178923397"
@@ -730,7 +730,7 @@
     name: Coleman Oval Park Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10002"
     latitude: "40.7110530108449"
     longitude: "-73.9933027915057"
@@ -741,7 +741,7 @@
     name: Robert Moses Playground Dog Run
     street: "East 42nd Street and, 1st Ave."
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10016"
     latitude: "40.7482756774825"
     longitude: "-73.969019568132"
@@ -752,7 +752,7 @@
     name: Adam Yauch Park Dog Run
     street: "27 State St #5512"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11201"
     latitude: "40.6923801560951"
     longitude: "-73.9991034152585"
@@ -763,7 +763,7 @@
     name: Tribeca Dog Park
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "null"
     latitude: "40.7215355648627"
     longitude: "-74.0123351371298"
@@ -774,7 +774,7 @@
     name: Fort Tryon Park Dog Run
     street: "Margaret Corbin Dr"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10040"
     latitude: "40.8616921624085"
     longitude: "-73.9319852906233"
@@ -785,7 +785,7 @@
     name: Homer's Dog Run
     street: "Hill Park"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10034"
     latitude: "40.8711508728601"
     longitude: "-73.921737210984"
@@ -796,7 +796,7 @@
     name: Franz Sigel Park Dog Run
     street: "Franz Sigel Park"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10451"
     latitude: "40.8228822524282"
     longitude: "-73.9259181035315"
@@ -807,7 +807,7 @@
     name: The Rocky Run
     street: "Fort Washington Park, 899 Riverside Dr"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10032"
     latitude: "40.8409670678612"
     longitude: "-73.9452604164518"
@@ -818,7 +818,7 @@
     name: Peter Detmold Park Dog Run
     street: "454 E 51st St"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10022"
     latitude: "40.7532186525665"
     longitude: "-73.9639841653291"
@@ -829,7 +829,7 @@
     name: Brooklyn Bridge Park Dog Run
     street: "Adams St & Plymouth St"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11201"
     latitude: "40.7043548977823"
     longitude: "-73.9891076107824"
@@ -840,7 +840,7 @@
     name: McCarren Park Dog Run
     street: "North 12th Street & Driggs Avenue &, Union Ave,"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11211"
     latitude: "40.720067119749"
     longitude: "-73.9528961947447"
@@ -851,7 +851,7 @@
     name: Robin Kovary Run for Small Dogs
     street: "59 Washington Square S"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10012"
     latitude: "40.7301855007599"
     longitude: "-73.9975266645397"
@@ -862,7 +862,7 @@
     name: Cooper Park Small Dog Run
     street: "331 Morgan Ave"
     city: "Brooklyn"
-    state: "New York"
+    state: "NY"
     zipcode: "11211"
     latitude: "40.7153848811658"
     longitude: "-73.9362165893835"
@@ -873,7 +873,7 @@
     name: Theodore Roosevelt Park Dog Run
     street: "200 Central Park West"
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: "10024"
     latitude: "40.7821535133698"
     longitude: "-73.9738015948089"
@@ -884,7 +884,7 @@
     name: Ida Court Dog Run
     street: "212 N Railroad St,"
     city: "Staten Island"
-    state: "New York"
+    state: "NY"
     zipcode: "10312"
     latitude: "40.5381960554187"
     longitude: "-74.1873688845096"
@@ -895,7 +895,7 @@
     name: Hunters Point South Park Dog Run
     street: "Hunter's Point South Park Center Blvd. &, 51st Ave"
     city: "Long Island City"
-    state: "New York"
+    state: "NY"
     zipcode: "11101"
     latitude: "40.7433359186576"
     longitude: "-73.9601937634864"
@@ -906,7 +906,7 @@
     name: Overlook Dog Park / The Barking Lot
     street: "80-30 Park Ln"
     city: "Queens"
-    state: "New York"
+    state: "NY"
     zipcode: "11415"
     latitude: "40.7103408658501"
     longitude: "-73.8368092511193"
@@ -917,7 +917,7 @@
     name: Cunningham Park Dog Run
     street: "193rd St &, Radnor Rd, Fresh Meadows"
     city: "Queens"
-    state: "New York"
+    state: "NY"
     zipcode: "11366"
     latitude: "40.7266396045119"
     longitude: "-73.7755711889786"
@@ -928,7 +928,7 @@
     name: St. Mary's Park Dog Run
     street: "387 Jackson Ave"
     city: "Bronx"
-    state: "New York"
+    state: "NY"
     zipcode: "10455"
     latitude: "40.8096545933129"
     longitude: "-73.9121732680986"
@@ -939,7 +939,7 @@
     name: Andrew Haswell Green Dog Run
     street: null
     city: "New York City"
-    state: "New York"
+    state: "NY"
     zipcode: null
     latitude: "40.7602309329308"
     longitude: "-73.9568379736388"
