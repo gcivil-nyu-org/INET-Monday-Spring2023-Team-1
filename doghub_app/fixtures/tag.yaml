@@ -1,0 +1,84 @@
+- model: doghub_app.tag
+  pk: 1
+  fields:
+    tag_name: Dog Owner
+    tag_type: U
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 2
+  fields:
+    tag_name: Dog Walker
+    tag_type: S
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 3
+  fields:
+    tag_name: Puppy
+    tag_type: D
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 4
+  fields:
+    tag_name: Puppy Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 5
+  fields:
+    tag_name: Off Leash
+    tag_type: P
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 6
+  fields:
+    tag_name: Large
+    tag_type: D
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 7
+  fields:
+    tag_name: Small
+    tag_type: D
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 8
+  fields:
+    tag_name: Vaccinated
+    tag_type: D
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 9
+  fields:
+    tag_name: Small Dog Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 10
+  fields:
+    tag_name: Dachshund Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 11
+  fields:
+    tag_name: Large Dog Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 12
+  fields:
+    tag_name: Vaccinated Dog Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 13
+  fields:
+    tag_name: Dog Owner Only
+    tag_type: E
+    sys_tag: true
+- model: doghub_app.tag
+  pk: 14
+  fields:
+    tag_name: Dachshund
+    tag_type: D
+    sys_tag: true
