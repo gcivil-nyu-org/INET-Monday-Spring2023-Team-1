@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
-from datetime import datetime,date
+from datetime import datetime, date
 from .forms import (
     EventPostForm,
 )
@@ -136,9 +136,9 @@ def register_details_request(request):
             user_profile.pic = request.FILES["upic"]
         if request.POST.get("uDOB") != "":
             user_profile.dob = request.POST.get("uDOB")
-            date_obj = datetime.strptime(user_profile.dob, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(user_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request,"Date is not valid")
+                messages.error(request, "Date is not valid")
                 return redirect("register_details")
         user_profile.save()
         return redirect("events")
@@ -164,9 +164,9 @@ def dog_profile_create(request):
             dog_profile.pic = request.FILES["dogPic"]
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
-            date_obj = datetime.strptime(dog_profile.dob, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request,"Date is not valid")
+                messages.error(request, "Date is not valid")
                 return redirect("register_details")
         dog_profile.save()
         return redirect("register_details")
@@ -298,9 +298,9 @@ def user_profile_edit(request):
             user_prof.pic = request.FILES["upic"]
         if request.POST.get("uDOB") != "":
             user_prof.dob = request.POST.get("uDOB")
-            date_obj = datetime.strptime(user_prof.dob, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(user_prof.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request,"Enter a valid date")
+                messages.error(request, "Enter a valid date")
                 return redirect("user_profile_edit")
         user_prof.save()
         return redirect("user_profile")
@@ -328,9 +328,9 @@ def dog_profile_edit(request, pk):
             dog_prof.pic = request.FILES["dogPic"]
         if request.POST.get("dogDOB") != "":
             dog_prof.dob = request.POST.get("dogDOB")
-            date_obj = datetime.strptime(dog_prof.dob, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(dog_prof.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request,"Enter a valid date")
+                messages.error(request, "Enter a valid date")
                 return redirect("user_profile")
         dog_prof.save()
         return redirect("user_profile")
@@ -362,9 +362,9 @@ def dog_profile_add(request):
             dog_profile.pic = request.FILES["dogPic"]
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
-            date_obj = datetime.strptime(dog_profile.dob, '%Y-%m-%d').date()
+            date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request,"Enter a valid date")
+                messages.error(request, "Enter a valid date")
                 return redirect("dog_profile_add")
         dog_profile.save()
         return redirect("dog_profile_add")
