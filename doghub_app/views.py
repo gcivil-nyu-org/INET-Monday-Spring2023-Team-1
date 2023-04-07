@@ -443,9 +443,11 @@ def search_user(request):
                 "fname":user.fname,
                 "lname":user.lname,
                 "email":user_object.email,
+                "pic": user.pic,
+                "user_prof": user,
             }
             u_list.append(d)
-            
+          
 
         events = EventPost.objects.filter(event_title__icontains=searched)
 
@@ -458,7 +460,10 @@ def search_user(request):
              "users_list":users_list,
              "u_list": u_list,
              "show_users":show_users,
-             "show_events":show_events,},
+             "show_events":show_events,
+            "media_url": settings.MEDIA_URL,
+            },
+
              
         )
     else:
