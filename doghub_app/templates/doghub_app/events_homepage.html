@@ -22,8 +22,14 @@
 
               <form method="post" action="{% url 'search-user' %}">
                 {% csrf_token %}
-                <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> </li>
+                <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                </br>
+                <input type="checkbox" name="filter_users" value="users" checked>
+                  <label style="color: white;" for="users">Users</label> 
+                <input type="checkbox" name="filter_events" value="events" checked>
+                <label style="color: white;" for="events">Events</label>
               </form>
+          </li>
 
         <li>
           <a class="active" href="{% url 'user_profile'%}"

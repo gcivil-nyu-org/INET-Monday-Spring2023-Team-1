@@ -418,7 +418,7 @@ def public_profile(request, email):
         user = CustomUser.objects.get(email=email)
         user_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
-        events_list = EventPost.objects.filter(user_id=request.user)
+        events_list = EventPost.objects.filter(user_id=request.user.id)
 
         context = {
             "user": user,
@@ -439,12 +439,56 @@ def public_profile(request, email):
 @login_required
 def search_user(request):
     if request.method == "POST":
+        # f = open("output.txt", "w+")
+        show_users = False
+        show_events = False
         searched = request.POST["searched"]
-        users = CustomUser.objects.filter(email__contains=searched)
+
+        if request.POST.get("filter_users") == "users":
+            show_users = True
+
+        if request.POST.get("filter_events") == "events":
+            show_events = True
+
+        user_profiles_fname = list(
+            UserProfile.objects.filter(fname__icontains=searched)
+        )
+        user_profiles_lname = list(
+            UserProfile.objects.filter(lname__icontains=searched)
+        )
+        users_list = []
+        users_list.extend(user_profiles_fname)
+        users_list.extend(user_profiles_lname)
+
+        u_list = []
+        for user in users_list:
+            user_id = user.user_id
+            user_object = CustomUser.objects.get(id=user_id.id)
+            d = {
+                "fname": user.fname,
+                "lname": user.lname,
+                "email": user_object.email,
+                "pic": user.pic,
+                "user_prof": user,
+            }
+            u_list.append(d)
+
+        events = EventPost.objects.filter(event_title__icontains=searched)
+
         return render(
             request,
             "doghub_app/search-results.html",
-            {"searched": searched, "users": users},
+            {
+                "searched": searched,
+                "user_profiles_fname": user_profiles_fname,
+                "user_profiles_lname": user_profiles_lname,
+                "events": events,
+                "users_list": users_list,
+                "u_list": u_list,
+                "show_users": show_users,
+                "show_events": show_events,
+                "media_url": settings.MEDIA_URL,
+            },
         )
     else:
         return render(request, "doghub_app/search-results.html", {})
