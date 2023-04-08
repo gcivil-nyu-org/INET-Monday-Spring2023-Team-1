@@ -26,25 +26,43 @@ const registerBtns=document.querySelectorAll(".registerBtn")
       console.log(b.classList)
       console.log(b.firstChild)
       if(b.classList.contains('registered')){
+        console.log("clicked_reg")
         b.firstChild.classList.remove('fa-solid');
         b.firstChild.classList.add('fa-regular');
         registered=false;
         b.classList.remove('registered')
         b.style.backgroundColor="#6f36a8"
-        
+        b.childNodes[1].nodeValue="RSVP"
       }
       else{   
+        console.log(b.firstChild)
         b.firstChild.classList.remove('fa-regula');
         b.firstChild.classList.add('fa-solid');
         b.classList.add('registered')
         registered=true;
         b.style.backgroundColor="#5886a8"
+        b.childNodes[1].nodeValue="Registered"
       }
     })
   })
 
-const cards = document.querySelectorAll(".card-inner");
-cards.forEach((card)=>card.addEventListener("click",(e)=>{
+
+
+function index(el,cards) {
+    i = 0;
+    console.log(cards)
+    for (; i < cards.length; i++) {
+        if (cards[i] == el) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+const card_containers = document.querySelectorAll(".card");
+
+const card_inners = document.querySelectorAll(".card-inner");
+card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
   if(registerBtnClicked){
     reg_icon= card.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
     console.log(registered)
@@ -59,14 +77,27 @@ cards.forEach((card)=>card.addEventListener("click",(e)=>{
     }
     return
   }
-
+  var back_content= card.firstElementChild.nextElementSibling
+  var curInd = index(card, card_inners);
+  var curCard = card_containers[curInd]
   if(card.classList.contains('flipped')){
     card.classList.remove('flipped')
     card.classList.add('flipped_back')
+    curCard.classList.remove('card_flipped')
+    curCard.classList.add('card_flipped_back')
+    back_content.classList.add('back_content_flipped_back')
+    back_content.classList.remove('back_content_flipped')
   }
   else{
     card.classList.add('flipped')
     card.classList.remove('flipped_back')
     console.log(card.classList);
+    curCard.classList.add('card_flipped')
+    curCard.classList.remove('card_flipped_back')
+    back_content.classList.add('back_content_flipped')
+    back_content.classList.remove('back_content_flipped_back')
   } 
 }));
+
+
+

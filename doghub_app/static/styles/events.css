@@ -24,6 +24,7 @@ body {
   display: inline-block;
   flex-direction: column;
   position: fixed;
+  /* width: 15.2%; */
   width: 17rem;
   min-height: 100%;
   background-color: #1f1d36;
@@ -40,24 +41,34 @@ body {
 }
 
 .side-bar ul {
-  padding: 1em;
-  margin: 0;
+  padding: 0em;
+  margin-top: 4%;
   list-style-type: none;
   height:100%;
+  left: 0%;
 }
 
 .side-bar ul li {
   margin: 0.5rem 0.5rem;
   padding: 0.5em;
-  width: 78%;
+  width: 80%;
   text-align: left;
   border-radius: 10px;
   cursor: pointer;
+  margin-top:4%;
 }
+
+.side-bar ul li span{
+ margin-left: 5%;
+}
+
+
+
 
 .side-bar ul li a {
   text-decoration: none;
   color: white;
+  margin-left: 24%;
 }
 
 .side-bar ul li:hover {
@@ -78,7 +89,7 @@ body {
 
 @media (max-width: 768px) {
   .side-bar {
-    width: 7.5rem;
+    width: 15.3%;
   }
   .side-bar .logo-top img {
     display: none;
@@ -123,7 +134,7 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-left: 60rem;
+  margin-left: 60%;
 }
 
 .add_event > .fa-solid {
@@ -145,7 +156,19 @@ body {
   margin-left: 42%;
   display: flex;
   flex-direction: row;
+  height:17rem;
 }
+
+.back_content_flipped{
+  height:17rem;
+}
+
+.back_content_flipped_back{
+  display:none;
+}
+/* .detail_content{
+  height:5 rem;
+} */
 .main-content {
   min-height: 100vh;
   margin-left: 17rem;
@@ -177,9 +200,9 @@ body {
 .main-content .friend ul,
 .main-content .group ul{
   position:center;
-  height: 45rem;
+  height: 85%;
   width: 80%;
-  padding-left: 15%;
+  padding-left: 22%;
   overflow:auto;
 }
 .main-content .event li,
@@ -187,6 +210,7 @@ body {
 .main-content .group li{
   padding: 1rem; 
   margin-bottom: 2rem;
+  margin-top: 1rem;
 }  
 
 .main-content .event head{
@@ -211,15 +235,15 @@ body {
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
+  transition: all 0.6s ease;
 }
 
 
 
 
 .card{
-  width: 450px;
-  height: 100px;
+  width: 29rem;
+  height: 7rem;
   font-family: 'Arial';
 }
 
@@ -227,8 +251,8 @@ body {
   --border-radius: 0.75rem;
   --primary-color: #8012c0;
   --secondary-color: #3c3852;
-  width: 450px;
-  height: 100px;
+  width: 29rem;
+  height: 7rem;
   font-family: 'Arial';
   padding: 1rem;
   cursor: pointer;
@@ -256,11 +280,21 @@ body {
 } */
 .flipped{
   transform: rotateY(180deg);
+  height: 20rem;
 }
 
 .flipped_back{
   transform: rotateY(360deg);
+  height: 7rem;
 }
+
+.card_flipped{
+  height: 20rem;
+}
+.card_flipped_back{
+  height: 7rem;
+}
+
 
 
 .front, .back{
@@ -366,6 +400,7 @@ ul {
   float: left;
   border-right: 1px solid #fbfdf7;
   height: 65px;
+  width:5.6rem;
 }
 
 .navi li a {
