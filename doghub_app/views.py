@@ -413,7 +413,7 @@ def add_post(request):
         request=request, template_name="doghub_app/add_event.html", context=context
     )
 
-
+@login_required
 def public_profile(request, email):
     if CustomUser.objects.filter(email=email).exists():
         user = CustomUser.objects.get(email=email)
