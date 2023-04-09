@@ -80,10 +80,13 @@ class DogProfile(models.Model):
 class Park(models.Model):
     park_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=MID_CHAR_SIZE)
-    street = models.CharField(max_length=MID_CHAR_SIZE)
-    city = models.CharField(max_length=MID_CHAR_SIZE)
-    state = models.CharField(max_length=2)
-    zipcode = models.CharField(max_length=5)
+    street = models.CharField(max_length=MID_CHAR_SIZE, blank=True, null=True)
+    city = models.CharField(max_length=MID_CHAR_SIZE, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
+    zipcode = models.CharField(max_length=5, blank=True, null=True)
+    latitude = models.CharField(max_length=MID_CHAR_SIZE, blank=True, null=True)
+    longitude = models.CharField(max_length=MID_CHAR_SIZE, blank=True, null=True)
+    use_coordinates = models.BooleanField(default=0)
 
     class Meta:
         db_table = "park"
@@ -116,6 +119,7 @@ class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=MID_CHAR_SIZE)
     tag_type = models.CharField(max_length=1)
+    sys_tag = models.BooleanField(default=0)
 
     def __str__(self):
         return f"{self.tag_name} , type:{self.tag_type}"

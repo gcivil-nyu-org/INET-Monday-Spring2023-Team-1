@@ -1,9 +1,127 @@
+{% load static %}
 
-{% block content %}
-<h1> Add Event</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ event_post_form.as_p }}
-    <button type = "submit">Submit</button>
-</form>
-{% endblock %}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/add_event.css' %}" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAC2P9ywf4F9C4G6SuiL34zav0l0Gko3I"></script>
+</head>
+
+<body>
+<!--div class="add_event"-->
+    <div class="card">
+        <div class="row">
+            <div class="column">
+                <h3 class="card__title">Add an Event!</h3>
+    
+                <div class="card__content">
+                    <form method="POST">
+                    {% csrf_token %}
+                  
+
+                   <div class = "input-inline">
+                    <label>Event Title:</label>
+                    <input type="text" name ="event_title" id="event_title" placeholder="Event Name" required/>
+
+                </div>
+                <div class = "input-inline-desc">
+                    <label>Event Description</label>
+                    <textarea name ="event_description" id="event_description" placeholder="Description" required></textarea>
+
+                </div>
+
+                <div class = "input-inline">
+                    <label>Date and Time of the Event:</label>
+                    <input type="datetime-local" id="event_time" name ="event_time" min="{{ current_datetime }}" required/>
+
+                </div>
+
+                <div class = "input-inline">
+                    <label>Location:</label>
+                    <input type="text" id="location" readonly name ="location" required/>
+
+                </div>
+
+
+                    <button class="button" type="submit">Submit</button>
+
+                  
+                    </form>
+
+                  
+                </div>
+
+              
+            </div>
+            <div class="column">
+                <h3 class="card__title">Select a marker for a dog park</h3>
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+<script>
+    function initMap() {
+        const parkData = {{ park_data|safe }};
+        const trialpark = { lat: -74.0016, lng: 40.7093};
+        const centerloc = {lat: 40.730610, lng: -73.935242};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 40.730610, lng: -73.935242},
+        zoom: 12
+      });
+
+          for(var i=0; i< parkData.length; i++) {
+
+            var position = new google.maps.LatLng(
+                parseFloat(parkData[i].latitude),
+                parseFloat(parkData[i].longitude)
+            );
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: parkData[i].name
+
+            });
+        var conString='<div> <h1>' + parkData[i].name + '</h1></div>';
+        var infowindow = new google.maps.InfoWindow({
+            content: conString
+        });
+        var openInfoWindow =null;
+
+        marker.addListener('click', (function(infowindow, marker){
+            return function(){
+            if(openInfoWindow){
+                openInfoWindow.close();
+            }
+            infowindow.open(map, marker);
+            openInfoWindow=infowindow;
+            const lat = marker.getPosition().lat();
+            const lng = marker.getPosition().lng();
+            const coordinatesInput = document.getElementById('location');
+            coordinatesInput.value = `${lat},${lng}`;
+         
+            }
+        })(infowindow, marker));
+
+      } 
+      const contentString = 
+      '<div id = "content">'+
+      '<div id = "siteNotice">'+
+        "</div>" + 
+        '<h1 id ="firstHeading" class="firstHeading">Trial</h1>';
+
+
+    }
+  </script>
+  <script>
+    window.onload=function(){
+        initMap();
+    };
+</script>
+

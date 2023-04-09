@@ -17,7 +17,8 @@ before_install:
 before_script:
   - python manage.py makemigrations
   - python manage.py migrate
-  - python tags.py
+  - python manage.py loaddata park.yaml
+  - python manage.py loaddata tag.yaml
 
 script:
   - python manage.py test

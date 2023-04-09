@@ -6,3 +6,4 @@ black
 coveralls
 mysqlclient
 six
+PyYAML
