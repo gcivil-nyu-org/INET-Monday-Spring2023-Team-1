@@ -136,9 +136,12 @@ def register_details_request(request):
             user_profile.pic = request.FILES["upic"]
         if request.POST.get("uDOB") != "":
             user_profile.dob = request.POST.get("uDOB")
+            today=date.today()
             date_obj = datetime.strptime(user_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request, "Date is not valid")
+                messages.error(request, "Enter a valid Date of Birth")
+            elif date.today().year - date_obj.year - ((today.month, today.day) < (date_obj.month, date_obj.day))<19:
+                messages.error(request,"For safety concerns, DogHub user should be 18+")
                 return redirect("register_details")
         user_profile.save()
         return redirect("events")
@@ -165,7 +168,7 @@ def dog_profile_create(request):
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
-            if date_obj >= date.today():
+            if date_obj >= date.today() or date.today().year - date_obj.year>31:
                 messages.error(request, "Date is not valid")
                 return redirect("register_details")
         dog_profile.save()
@@ -297,11 +300,14 @@ def user_profile_edit(request):
         if "upic" in request.FILES:
             user_prof.pic = request.FILES["upic"]
         if request.POST.get("uDOB") != "":
+            today=date.today()
             user_prof.dob = request.POST.get("uDOB")
             date_obj = datetime.strptime(user_prof.dob, "%Y-%m-%d").date()
             if date_obj >= date.today():
-                messages.error(request, "Enter a valid date")
-                return redirect("user_profile_edit")
+                messages.error(request, "Enter a Date of Birth")
+            elif date.today().year - date_obj.year - ((today.month, today.day) < (date_obj.month, date_obj.day))<18:
+                messages.error(request,"For safety concerns, DogHub user should be 18+")
+            return redirect("user_profile_edit")
         user_prof.save()
         return redirect("user_profile")
     else:
@@ -329,9 +335,9 @@ def dog_profile_edit(request, pk):
         if request.POST.get("dogDOB") != "":
             dog_prof.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_prof.dob, "%Y-%m-%d").date()
-            if date_obj >= date.today():
+            if date_obj >= date.today() or date.today().year - date_obj.year>31:
                 messages.error(request, "Enter a valid date")
-                return redirect("user_profile")
+                return redirect("dog_profile_edit",pk=dog_prof.pk)
         dog_prof.save()
         return redirect("user_profile")
     else:
@@ -363,7 +369,7 @@ def dog_profile_add(request):
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
-            if date_obj >= date.today():
+            if date_obj >= date.today() or date.today().year - date_obj.year>31:
                 messages.error(request, "Enter a valid date")
                 return redirect("dog_profile_add")
         dog_profile.save()
