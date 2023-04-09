@@ -1,18 +1,23 @@
 
-nav {
+.nav1 {
     background-color: #6f36a8;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
   }
   
   nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    height: 55px;
+    height: 60px;
     overflow: hidden;
+    
   }
   
   nav ul li {
@@ -56,7 +61,7 @@ nav {
 }
   .s1{
     position: absolute;
-    top: 90%;
+    top: 95%;
     right: -70%;
     width: 320px;
     max-height: 0px;
@@ -68,7 +73,7 @@ nav {
     max-height: 300px;
   }
   .s2{
-    background: #ffff;
+    background: #9a7dc8;
     padding: 20px;
     margin: 10px;
   }
@@ -139,8 +144,8 @@ nav {
     border-radius: 5px 0 0 5px;
     outline: none;
     color: #9dbfaf;
-    margin-right: 60px;
-    margin-left: 60px;
+    margin-right: 48px;
+    margin-left: 53px;
   }
   
   .searchTerm:focus {

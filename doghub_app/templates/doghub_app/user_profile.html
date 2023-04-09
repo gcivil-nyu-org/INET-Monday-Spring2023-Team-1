@@ -1,4 +1,4 @@
-{% block content %}
+{% include "doghub_app/nav_bar.html" %}{% block content %}
 {% load static %}
   <!-- <div class="container">
     <div class="row">
@@ -51,7 +51,7 @@
           {% endfor %}
         {% endif %}</div>
       <title>Log In</title>
-   <div class="navi">
+   <!--<div class="navi">
       <nav>
           <ul>
               <li><a href="{% url 'events' %}">Home</a></li>
@@ -65,7 +65,7 @@
               </li><li>
               <div class="lout">
               <a href="{% url 'logout' %}"><img src="{% static 'images/log_out.png' %}"><p class="lout1">Log Out</p></a></div></li>
-            </ul></nav></div></div>
+            </ul></nav></div></div>-->
   </head>
 
   <body>

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import 
 url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
@@ -20,6 +18,7 @@ body {
   height: 100%;
   width: 100%;
   position: fixed;
+  margin-top: 50px;
 }
 
 .side-bar {
@@ -27,7 +26,7 @@ body {
   flex-direction: column;
   position: fixed;
   /* width: 15.2%; */
-  width: 17rem;
+  width: 19.57rem;
   min-height: 100%;
   background-color: #1f1d36;
 }
@@ -445,4 +444,3 @@ ul {
 .searchTerm:focus {
   color: #8b00cc;
 }
->>>>>>> develop
