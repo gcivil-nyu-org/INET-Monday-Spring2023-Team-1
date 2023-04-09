@@ -11,7 +11,8 @@ from django.contrib.messages import get_messages
 from doghub.settings import BASE_DIR
 import pathlib
 import yaml
-import logging
+
+# import logging
 
 
 class HomeViewTestCase(TestCase):
@@ -257,23 +258,28 @@ class TestFixtures(TestCase):
     matches the data in the database
     """
 
-    fixtures_path = pathlib.Path(BASE_DIR) / "doghub_app" / "fixtures"
+    # the fixtures variable here is a Django variable used in setup
+    # it tells Django to load this data into the database before testing
+    fixtures = ["tag.yaml", "park.yaml"]
 
+    # this is a local var, prefixed with dh (doghub) to not clash with Django
     # make sure your model is imported
     # extend this variable to test more fixtures files. format: (model, "filename.yaml")
-    fixtures = [
+    dh_fixtures = [
         (Tag, "tag.yaml"),
         (Park, "park.yaml"),
     ]
 
+    dh_fixtures_path = pathlib.Path(BASE_DIR) / "doghub_app" / "fixtures"
+
     def test_if_fixtures_data_loaded(self):
-        for model, fname in self.fixtures:
-            logging.debug(f"testing fixture file {fname}")
-            with open(self.fixtures_path / fname) as file:
+        for model, fname in self.dh_fixtures:
+            # logging.debug(f"testing fixture file {fname}")
+            with open(self.dh_fixtures_path / fname) as file:
                 data = yaml.safe_load(file)
 
             for rec in data:
-                logging.debug(f"testing pk: {rec['pk']}")
+                # logging.debug(f"testing pk: {rec['pk']}")
                 try:
                     obj = model.objects.get(pk=rec["pk"])
                 except model.DoesNotExist:
