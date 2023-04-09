@@ -475,8 +475,8 @@ label {
   opacity: 0;
 }
 .avatar_img {
-  height: 145px;
-  width: 145px;
+  min-height: 9.2rem;
+  min-width: 9.2rem;
   display: block;
   border-radius: 50%;
   padding-right: 1px;
