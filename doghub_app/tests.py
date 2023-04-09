@@ -1,13 +1,17 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from mock import patch
-from doghub_app.models import CustomUser, UserProfile, DogProfile
+from unittest.mock import patch
+from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park
 from doghub_app.tokens import verification_token_generator
 from . import validators
 from django.core import mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.messages import get_messages
+from doghub.settings import BASE_DIR
+import pathlib
+import yaml
+import logging
 
 
 class HomeViewTestCase(TestCase):
@@ -245,3 +249,37 @@ class LogoutRequestViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "You have successfully logged out.")
+
+
+class TestFixtures(TestCase):
+    """
+    tests that all the data in the fixture files
+    matches the data in the database
+    """
+
+    fixtures_path = pathlib.Path(BASE_DIR) / "doghub_app" / "fixtures"
+
+    # make sure your model is imported
+    # extend this variable to test more fixtures files. format: (model, "filename.yaml")
+    fixtures = [
+        (Tag, "tag.yaml"),
+        (Park, "park.yaml"),
+    ]
+
+    def test_if_fixtures_data_loaded(self):
+        for model, fname in self.fixtures:
+            logging.debug(f"testing fixture file {fname}")
+            with open(self.fixtures_path / fname) as file:
+                data = yaml.safe_load(file)
+
+            for rec in data:
+                logging.debug(f"testing pk: {rec['pk']}")
+                try:
+                    obj = model.objects.get(pk=rec["pk"])
+                except model.DoesNotExist:
+                    obj = None
+
+                self.assertIsNotNone(obj)
+
+                for field in rec["fields"]:
+                    self.assertEqual(getattr(obj, field), rec["fields"][field])
