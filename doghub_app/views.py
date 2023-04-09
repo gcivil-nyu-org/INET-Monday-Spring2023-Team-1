@@ -17,8 +17,10 @@ from datetime import datetime, date
 from .forms import (
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Park
 from _version import __version__
+from datetime import datetime
+import json
 
 
 # Create your views here.
@@ -208,6 +210,7 @@ def events(request):
     context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
+    print(event_posts)
     event_posts.reverse()
     context = {
         "userprof": user_prof,
@@ -216,14 +219,6 @@ def events(request):
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
-
-
-# if request.method == "GET":
-#    return render(
-#       request=request,
-#      template_name="doghub_app/events_homepage.html",
-#     context=context,
-# )
 
 
 def logout_request(request):
@@ -397,23 +392,50 @@ def dog_profile_delete(request, pk):
 
 @login_required
 def add_post(request):
+    current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
+    parks = list(Park.objects.values())
+    park_data = json.dumps(parks)
+    # park_data = Park.objects.all()
+    # park_data_list = list(park_data)
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
+            event_post = event_post_form.save(commit=False)
+
+            event_post = EventPost(
+                event_title=request.POST.get("event_title"),
+                event_description=request.POST.get("event_description"),
+                event_time=request.POST.get("event_time"),
+            )
+
+            location = request.POST.get("location")
+            latitude, longitude = location.split(",")
+            # latitude, longitude = location[0], location[1]
+            try:
+                park = Park.objects.get(latitude=latitude, longitude=longitude)
+            except Park.DoesNotExist:
+                messages.error(request, "No park found for the given info")
+                return redirect("add_post")
+            event_post.park_id = park
+
             user = request.user
             user = CustomUser.objects.get(id=user.id)
             if not user.email_verified:
                 messages.error(request, "Verify your email before posting an Event.")
                 return redirect("events")
 
-            event_post = event_post_form.save(commit=False)
             event_post.user_id = request.user
             event_post.save()
+            messages.success(request, "Your post has been added!")
             return redirect("events")
     else:
         event_post_form = EventPostForm()
 
-    context = {"event_post_form": event_post_form}
+    context = {
+        "event_post_form": event_post_form,
+        "current_datetime": current_datetime,
+        "park_data": park_data,
+    }
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
     )
@@ -424,7 +446,7 @@ def public_profile(request, email):
         user = CustomUser.objects.get(email=email)
         user_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
-        events_list = EventPost.objects.filter(user_id=request.user)
+        events_list = EventPost.objects.filter(user_id=request.user.id)
 
         context = {
             "user": user,
@@ -445,12 +467,56 @@ def public_profile(request, email):
 @login_required
 def search_user(request):
     if request.method == "POST":
+        # f = open("output.txt", "w+")
+        show_users = False
+        show_events = False
         searched = request.POST["searched"]
-        users = CustomUser.objects.filter(email__contains=searched)
+
+        if request.POST.get("filter_users") == "users":
+            show_users = True
+
+        if request.POST.get("filter_events") == "events":
+            show_events = True
+
+        user_profiles_fname = list(
+            UserProfile.objects.filter(fname__icontains=searched)
+        )
+        user_profiles_lname = list(
+            UserProfile.objects.filter(lname__icontains=searched)
+        )
+        users_list = []
+        users_list.extend(user_profiles_fname)
+        users_list.extend(user_profiles_lname)
+
+        u_list = []
+        for user in users_list:
+            user_id = user.user_id
+            user_object = CustomUser.objects.get(id=user_id.id)
+            d = {
+                "fname": user.fname,
+                "lname": user.lname,
+                "email": user_object.email,
+                "pic": user.pic,
+                "user_prof": user,
+            }
+            u_list.append(d)
+
+        events = EventPost.objects.filter(event_title__icontains=searched)
+
         return render(
             request,
             "doghub_app/search-results.html",
-            {"searched": searched, "users": users},
+            {
+                "searched": searched,
+                "user_profiles_fname": user_profiles_fname,
+                "user_profiles_lname": user_profiles_lname,
+                "events": events,
+                "users_list": users_list,
+                "u_list": u_list,
+                "show_users": show_users,
+                "show_events": show_events,
+                "media_url": settings.MEDIA_URL,
+            },
         )
     else:
         return render(request, "doghub_app/search-results.html", {})
