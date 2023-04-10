@@ -8,6 +8,6 @@ class DoghubAppConfig(AppConfig):
 
     def ready(self):
         from .models import DogProfile
-        from .signals import create_user_tag
+        from .signals import dog_profile_create_triggers
 
-        post_save.connect(create_user_tag, sender=DogProfile)
+        post_save.connect(dog_profile_create_triggers, sender=DogProfile)
