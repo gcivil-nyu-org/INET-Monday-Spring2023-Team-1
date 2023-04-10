@@ -1,4 +1,3 @@
 [run]
 omit =
     doghub_app/apps.py
-    /usr
