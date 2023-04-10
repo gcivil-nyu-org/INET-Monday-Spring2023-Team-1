@@ -330,6 +330,11 @@ class AddPostViewTestCase(TestCase):
         # self.assertRedirects(response, self.events_url)
         self.assertEqual(EventPost.objects.count(), 0)  # noqa: F821
 
+    def test_get(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.get(self.url, data=self.valid_data)
+        self.assertTemplateUsed(response, "doghub_app/add_event.html")
+
     # def test_add_post_view_with_invalid_location(self):
     #   self.client.login(username='testuser', password='Test@123')
     #  invalid_data = self.valid_data.copy()
