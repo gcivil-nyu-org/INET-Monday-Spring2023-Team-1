@@ -253,7 +253,7 @@ class AddPostViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="test@example.com", password="testpass")
+            username="testuser", email="test@example.com", password="Tes")
         self.park = Park.objects.create(name='Test Fishbridge', latitude='40.709070274158', longitude='-74.0013770043858')
         self.url = reverse('add_post')
         self.url = reverse ('add_post')
@@ -265,13 +265,13 @@ class AddPostViewTestCase(TestCase):
         }
 
     def test_add_post_view_with_valid_data(self):
-        self.client.login(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='Test@123')
         response = self.client.post(self.url, self.valid_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(EventPost.objects.count(),1)
 
     def test_add_post_view_with_invalid_data(self):
-        self.client.login(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='Test@123')
         invalid_data = self.valid_data.copy()
         invalid_data['event_title'] = ''
         response = self.client.post(self.url, invalid_data)
@@ -286,14 +286,14 @@ class AddPostViewTestCase(TestCase):
     def test_add_post_view_with_unverified_user(self):
         self.user.email_verified = False
         self.user.save()
-        self.client.login(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='Test@123')
         response = self.client.post(self.url, self.valid_data)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/events/')
         self.assertEqual(EventPost.objects.count(), 0)
 
     def test_add_post_view_with_invalid_location(self):
-        self.client.login(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='Test@123')
         invalid_data = self.valid_data.copy()
         invalid_data['location'] = 'invalid_location'
         response = self.client.post(self.url, invalid_data)
@@ -303,7 +303,7 @@ class AddPostViewTestCase(TestCase):
         self.assertContains(response, 'No park found for the given info')
 
     def test_add_post_view_context(self):
-        self.client.login(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='Test@123')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('event_post_form' in response.context)
