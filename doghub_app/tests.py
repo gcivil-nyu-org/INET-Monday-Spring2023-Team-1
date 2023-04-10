@@ -288,7 +288,7 @@ class AddPostViewTestCase(TestCase):
             "user_id": self.user,
             "event_title": "Test Event",
             "event_description": "This is a test event",
-            "event_time": "2025-04-08T12:00",
+            "event_time": "2025-04-08T17:00",
             "location": "40.709070274158,-74.0013770043858",
         }
 
