@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 from django.http import Http404
 from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -13,15 +13,14 @@ from django.urls import reverse
 from django.conf import settings
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
-
+from datetime import date
 from .forms import (
-    CustomUserChangeForm,
-    UserProfileForm,
-    DogProfileForm,
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Park
 from _version import __version__
+from datetime import datetime
+import json
 
 
 # Create your views here.
@@ -85,6 +84,8 @@ def verify_email(request, token):
     if verification_token_generator.check_token(user, token):
         user.email_verified = True
         user.save()
+        if UserProfile.objects.filter(user_id=user.id).exists():
+            return redirect("events")
         return redirect("register_details")
     else:
         return redirect("login")
@@ -105,10 +106,11 @@ def register_request(request):
         elif errors:
             context["errors"] = errors
             if len(errors) > 0:
-                messages.error(
-                    request,
-                    "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
-                )
+                context["errorTitle"] = "Invalid Password"
+                # messages.error(
+                #     request,
+                #     "There was an issue with your password. Please try again with a stronger password.",  # noqa: E501
+                # )
         else:
             user = CustomUser.objects.create_user(
                 username=user_email, email=user_email, password=password
@@ -136,6 +138,21 @@ def register_details_request(request):
             user_profile.pic = request.FILES["upic"]
         if request.POST.get("uDOB") != "":
             user_profile.dob = request.POST.get("uDOB")
+            today = date.today()
+            date_obj = datetime.strptime(user_profile.dob, "%Y-%m-%d").date()
+            if date_obj >= date.today():
+                messages.error(request, "Enter a valid Date of Birth")
+                return redirect("register_details")
+            elif (
+                date.today().year
+                - date_obj.year
+                - ((today.month, today.day) < (date_obj.month, date_obj.day))
+                < 18
+            ):
+                messages.error(
+                    request, "For safety concerns, DogHub user should be 18+"
+                )
+                return redirect("register_details")
         user_profile.save()
         return redirect("events")
     if DogProfile.objects.filter(user_id=request.user).exists():
@@ -160,6 +177,10 @@ def dog_profile_create(request):
             dog_profile.pic = request.FILES["dogPic"]
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
+            date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
+            if date_obj >= date.today() or date.today().year - date_obj.year > 31:
+                messages.error(request, "Enter a valid Date of Birth")
+                return redirect("register_details")
         dog_profile.save()
         return redirect("register_details")
     return render(request=request, template_name="doghub_app/register.html")
@@ -197,18 +218,15 @@ def events(request):
     context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
+    print(event_posts)
     event_posts.reverse()
-    return render(
-        request, "doghub_app/events_homepage.html", {"event_posts": event_posts}
-    )
+    context = {
+        "userprof": user_prof,
+        "event_posts": event_posts,
+        "media_url": settings.MEDIA_URL,
+    }  # noqa: F841
 
-
-# if request.method == "GET":
-#    return render(
-#       request=request,
-#      template_name="doghub_app/events_homepage.html",
-#     context=context,
-# )
+    return render(request, "doghub_app/events_homepage.html", context=context)
 
 
 def logout_request(request):
@@ -223,12 +241,51 @@ def user_profile(request):
         user_prof = UserProfile.objects.get(user_id=request.user)
     except:  # noqa: E722
         return render(request, "doghub_app/register.html")
+
     dog_prof = DogProfile.objects.filter(user_id=request.user)
+    events_list = EventPost.objects.filter(user_id=request.user)
     context = {
         "userprof": user_prof,
         "dogprof": list(dog_prof),
         "media_url": settings.MEDIA_URL,
+        "events_list": events_list,
     }
+    if request.method == "POST":
+        if "save_password" in request.POST:
+            current_password = request.POST.get("current_password")
+            new_password = request.POST.get("new_password")
+            confirm_password = request.POST.get("confirm_password")
+            errors = []
+
+            # Check if the current password is correct
+            if not request.user.check_password(current_password):
+                errors.append("Current password is incorrect.")
+                # errors.append("Current password is incorrect.")
+                # return redirect('user_profile')
+
+            # Check if the new password and confirmation match
+            if new_password != confirm_password:
+                errors.append("New password and confirmation do not match.")
+                # return redirect('user_profile')
+
+            password_errors = validate_password(new_password)
+            if password_errors:
+                errors.extend(password_errors)
+
+            if errors:
+                context["errors"] = errors
+                if len("errors") > 0:
+                    messages.error(
+                        request,
+                        "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                    )
+            else:
+                # Change the user's password
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, "Password has been changed.")
+                return redirect("user_profile")
     return render(
         request=request, template_name="doghub_app/user_profile.html", context=context
     )
@@ -236,61 +293,105 @@ def user_profile(request):
 
 @login_required
 def user_profile_edit(request):
-    user = request.user
+    context = {}
     user_prof = UserProfile.objects.get(user_id=request.user)
 
     if request.method == "POST":
-        user_form = CustomUserChangeForm(request.POST, instance=user)
-        profile_form = UserProfileForm(request.POST, request.FILES, instance=user_prof)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return redirect("user_profile")
+        user_prof.fname = request.POST.get("ufirstname")
+        user_prof.lname = request.POST.get("ulastname")
+        user_prof.bio = request.POST.get("uBio")
+        if "upic" in request.FILES:
+            user_prof.pic = request.FILES["upic"]
+        if request.POST.get("uDOB") != "":
+            today = date.today()
+            user_prof.dob = request.POST.get("uDOB")
+            date_obj = datetime.strptime(user_prof.dob, "%Y-%m-%d").date()
+            if date_obj >= date.today():
+                messages.error(request, "Enter a valid Date of Birth")
+                return redirect("user_profile_edit")
+            elif (
+                date.today().year
+                - date_obj.year
+                - ((today.month, today.day) < (date_obj.month, date_obj.day))
+                < 18
+            ):
+                messages.error(
+                    request, "For safety concerns, DogHub user should be 18+"
+                )
+                return redirect("user_profile_edit")
+        user_prof.save()
+        return redirect("user_profile")
     else:
-        user_form = CustomUserChangeForm(instance=user)
-        profile_form = UserProfileForm(instance=user_prof)
-    return render(
-        request,
-        "doghub_app/user_profile_edit.html",
-        {"user_form": user_form, "profile_form": profile_form},
-    )
+        user_dob = user_prof.dob.strftime("%Y-%m-%d")
+        context = {
+            "user_prof": user_prof,
+            "media_url": settings.MEDIA_URL,
+            "user_dob": user_dob,
+        }
+    return render(request, "doghub_app/user_profile_edit.html", context=context)
 
 
 @login_required
 def dog_profile_edit(request, pk):
+    context = {}
     dog_prof = get_object_or_404(DogProfile, pk=pk)
+
     if not dog_prof:
         raise Http404("Dog profile does not exist.")
     if request.method == "POST":
-        form = DogProfileForm(request.POST, request.FILES, instance=dog_prof)
-        if form.is_valid():
-            form.save()
-            return redirect("user_profile")
+        dog_prof.name = request.POST.get("dogName")
+        dog_prof.bio = request.POST.get("dogBio")
+        if "dogPic" in request.FILES:
+            dog_prof.pic = request.FILES["dogPic"]
+        if request.POST.get("dogDOB") != "":
+            dog_prof.dob = request.POST.get("dogDOB")
+            date_obj = datetime.strptime(dog_prof.dob, "%Y-%m-%d").date()
+            if date_obj >= date.today() or date.today().year - date_obj.year > 31:
+                messages.error(request, "Enter a valid Date of Birth")
+                return redirect("dog_profile_edit", pk=dog_prof.pk)
+        dog_prof.save()
+        return redirect("user_profile")
     else:
-        form = DogProfileForm(instance=dog_prof)
+        dog_dob = dog_prof.dob.strftime("%Y-%m-%d")
+        context = {
+            "dog_prof": dog_prof,
+            "media_url": settings.MEDIA_URL,
+            "dog_dob": dog_dob,
+        }
+        print(dog_dob)
     return render(
         request=request,
         template_name="doghub_app/dog_profile_edit.html",
-        context={"form": form},
+        context=context,
     )
 
 
 @login_required
 def dog_profile_add(request):
+    context = {}
     if request.method == "POST":
-        dog_profile_form = DogProfileForm(request.POST, request.FILES)
-        if dog_profile_form.is_valid():
-            dog_profile = dog_profile_form.save(commit=False)
-            dog_profile.user_id = request.user
-            dog_profile.save()
-            return redirect("user_profile")
+        dog_profile = DogProfile(
+            user_id=request.user,
+            name=request.POST.get("dogName"),
+            bio=request.POST.get("dogBio"),
+        )
+        if "dogPic" in request.FILES:
+            dog_profile.pic = request.FILES["dogPic"]
+        if request.POST.get("dogDOB") != "":
+            dog_profile.dob = request.POST.get("dogDOB")
+            date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
+            if date_obj >= date.today() or date.today().year - date_obj.year > 31:
+                messages.error(request, "Enter a valid Date of Birth")
+                return redirect("dog_profile_add")
+        dog_profile.save()
+        return redirect("dog_profile_add")
     else:
-        dog_profile_form = DogProfileForm()
-
-    context = {"dog_profile_form": dog_profile_form}
-    if dog_profile_form.errors:
-        context["form_errors"] = dog_profile_form.errors
-
+        # dog_profile_form = DogProfileForm()
+        if DogProfile.objects.filter(user_id=request.user).exists():
+            dogprofiles = DogProfile.objects.filter(user_id=request.user)
+            context = {"dogList": list(dogprofiles), "media_url": settings.MEDIA_URL}
+            for dog in dogprofiles:
+                print(dog.pic)
     return render(
         request=request,
         template_name="doghub_app/dog_profile_add.html",
@@ -301,46 +402,144 @@ def dog_profile_add(request):
 @login_required
 def dog_profile_delete(request, pk):
     dog_profile = get_object_or_404(DogProfile, pk=pk)
-    if request.method == "POST":
-        dog_profile.delete()
-        return redirect("user_profile")
-    return render(request=request, template_name="doghub_app/dog_profile_delete.html")
+    dog_profile.delete()
+    return redirect("user_profile")
 
 
 @login_required
 def add_post(request):
+    current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
+    parks = list(Park.objects.values())
+    park_data = json.dumps(parks)
+    # park_data = Park.objects.all()
+    # park_data_list = list(park_data)
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
             event_post = event_post_form.save(commit=False)
+
+            event_post = EventPost(
+                event_title=request.POST.get("event_title"),
+                event_description=request.POST.get("event_description"),
+                event_time=request.POST.get("event_time"),
+            )
+
+            location = request.POST.get("location")
+            if "," not in location:
+                messages.error(request, "Invalid location format")
+                return redirect("add_post")
+            latitude, longitude = location.split(",")
+            # latitude, longitude = location[0], location[1]
+            try:
+                park = Park.objects.get(latitude=latitude, longitude=longitude)
+            except Park.DoesNotExist:
+                messages.error(request, "No park found for the given info")
+                return redirect("add_post")
+            event_post.park_id = park
+
+            user = request.user
+            user = CustomUser.objects.get(id=user.id)
+            if not user.email_verified:
+                messages.error(request, "Verify your email before posting an Event.")
+                return redirect("events")
+
             event_post.user_id = request.user
             event_post.save()
+            messages.success(request, "Your post has been added!")
             return redirect("events")
     else:
         event_post_form = EventPostForm()
 
-    context = {"event_post_form": event_post_form}
+    context = {
+        "event_post_form": event_post_form,
+        "current_datetime": current_datetime,
+        "park_data": park_data,
+    }
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
     )
 
 
-# save every feature manually instead of form cause you cannot add a template
-# look at the register page
-
-
+@login_required
 def public_profile(request, email):
-    user = CustomUser.objects.get(email=email)
-    user_prof = UserProfile.objects.get(user_id=user.id)
-    dog_prof = DogProfile.objects.filter(user_id=user.id)
-    context = {
-        "user": user,
-        "userprof": user_prof,
-        "dogprof": list(dog_prof),
-        "media_url": settings.MEDIA_URL,
-    }
-    return render(
-        request=request,
-        template_name="doghub_app/public_user_profile.html",
-        context=context,
-    )
+    if CustomUser.objects.filter(email=email).exists():
+        user = CustomUser.objects.get(email=email)
+        public_prof = UserProfile.objects.get(user_id=user.id)
+        dog_prof = DogProfile.objects.filter(user_id=user.id)
+        events_list = EventPost.objects.filter(user_id=request.user.id)
+        user_prof = UserProfile.objects.get(user_id=request.user.id)
+
+        context = {
+            "user": user,
+            "public_prof": public_prof,
+            "dogprof": list(dog_prof),
+            "media_url": settings.MEDIA_URL,
+            "events_list": list(events_list),
+            "userprof": user_prof,
+        }
+        return render(
+            request=request,
+            template_name="doghub_app/public_user_profile.html",
+            context=context,
+        )
+    else:
+        return HttpResponse("User not found.")
+
+
+@login_required
+def search_user(request):
+    if request.method == "POST":
+        # f = open("output.txt", "w+")
+        user_prof = UserProfile.objects.get(user_id=request.user.id)
+        show_users = False
+        show_events = False
+        searched = request.POST["searched"]
+
+        if request.POST.get("filter_users") == "users":
+            show_users = True
+
+        if request.POST.get("filter_events") == "events":
+            show_events = True
+
+        user_profiles_fname = list(
+            UserProfile.objects.filter(fname__icontains=searched)
+        )
+        user_profiles_lname = list(
+            UserProfile.objects.filter(lname__icontains=searched)
+        )
+        users_list = []
+        users_list.extend(user_profiles_fname)
+        users_list.extend(user_profiles_lname)
+
+        u_list = []
+        for user in users_list:
+            user_id = user.user_id
+            user_object = CustomUser.objects.get(id=user_id.id)
+            d = {
+                "fname": user.fname,
+                "lname": user.lname,
+                "email": user_object.email,
+                "pic": user.pic,
+            }
+            u_list.append(d)
+
+        events = EventPost.objects.filter(event_title__icontains=searched)
+
+        return render(
+            request,
+            "doghub_app/search-results.html",
+            {
+                "searched": searched,
+                "user_profiles_fname": user_profiles_fname,
+                "user_profiles_lname": user_profiles_lname,
+                "events": events,
+                "users_list": users_list,
+                "u_list": u_list,
+                "show_users": show_users,
+                "show_events": show_events,
+                "media_url": settings.MEDIA_URL,
+                "userprof": user_prof,
+            },
+        )
+    else:
+        return render(request, "doghub_app/search-results.html", {})

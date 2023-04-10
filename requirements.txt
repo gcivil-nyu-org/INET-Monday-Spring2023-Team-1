@@ -6,3 +6,5 @@ black
 coveralls
 mysqlclient
 six
+PyYAML
+python-dateutil

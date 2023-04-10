@@ -17,7 +17,6 @@ from .get_env_vars import update_os_environ
 
 update_os_environ()  # fixes an aws EB bug -- must run on top
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -32,6 +31,8 @@ if "DOGHUB_DB_ENV" in os.environ and os.environ["DOGHUB_DB_ENV"] == "PROD":
 else:
     DEBUG = True
 
+
+LOGGING_LEVEL = "DEBUG" if DEBUG else "WARNING"
 
 ALLOWED_HOSTS = [
     "doghub-production-env.eba-7pbt5sqz.us-west-2.elasticbeanstalk.com",
@@ -147,17 +148,11 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"  # noqa: E501
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -166,11 +161,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "EST"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -207,3 +202,27 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 BASE_URL = os.getenv("BASE_URL_DOGHUB")
+
+
+# log to the consule
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "custom": {
+            "format": "[{asctime}] {levelname} -- {filename}:{funcName} -- {message}",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "custom",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOGGING_LEVEL,
+    },
+}

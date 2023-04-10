@@ -1,5 +1,4 @@
-
-{% block content %}
+{% include "doghub_app/nav_bar.html" %}{% block content %}
 {% load static %}
   <!-- <div class="container">
     <div class="row">
@@ -45,12 +44,34 @@
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
       <link  rel = "stylesheet" type = 'text/css' href="{% static 'styles/tags.css' %}" />
-
+      <div class="message" >
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success" id="fade">{{ message }}</div>
+          {% endfor %}
+        {% endif %}</div>
       <title>Log In</title>
-
+   <!--<div class="navi">
+      <nav>
+          <ul>
+              <li><a href="{% url 'events' %}">Home</a></li>
+              <li><a href="">News</a></li>
+              <li><a href="">Contact</a></li>
+              <li>
+                  <form method="post" action="{% url 'search-user' %}">
+                      {% csrf_token %}
+                      <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                  </form>
+              </li><li>
+              <div class="lout">
+              <a href="{% url 'logout' %}"><img src="{% static 'images/log_out.png' %}"><p class="lout1">Log Out</p></a></div></li>
+            </ul></nav></div></div>-->
   </head>
+
   <body>
+
   <div class="container">
+ 
     <div class="profile-header">
       <div class="profile-img">
         <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
@@ -60,6 +81,9 @@
         <div class="userTag">
           {% if dogprof %}
           <p id="state" class="button-85" >Dog Owner</p>
+          {% endif %}
+          {% if events_list %}
+          <p id="state" class="button-87" >Event Host</p>
           {% endif %}
           <!-- <span id="country" >USA.</span> -->
         </div>
@@ -111,8 +135,8 @@
         <div class="nav">
           <ul>
             <li onclick="tabs(0)" class="user-post">Dogs</li>
-            <li onclick="tabs(1)" class="user-review active">Events</li>
-            <li onclick="tabs(2)" class="user-setting"> Settings</li>
+            <li onclick="tabs(1)" class="user-review ">Events</li>
+            <li onclick="tabs(2)" class="user-setting" id="account-setting-tab"> Settings</li>
           </ul>
         </div>
         <div class="profile-body">
@@ -123,43 +147,165 @@
             {% if dogprof %}
             <ul class="proflist">
               {% for dog in dogprof %}
-              <li class="">
-                <header class="proflist--item">
-                  <a href="{% url 'dog_profile_delete' dog.pk %}" class="delete-bin">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </a>
-                  <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
+              <div id="pop-up" class="wind">
+                <div>
+                  <div onclick="closeWind()" class = "closewind">
+                    <i class="fa fa-times"></i>
+                  </div>
+                  <div class = "windprompt">
+                  <h3>Are you sure you want to delete this dog profile?</h3>
+                </div>
+                <a href="{% url 'dog_profile_delete' dog.pk %}">
+                  <button class="deletebtn">Delete</button>
+                </a>
+                </div>
+              </div>
+              <li class="proflist--item">
+                  <div class="delete-bin" onclick="funcWind()">
+              
+                    <i class="fa fa-trash" aria-hidden="true" onclick="funcWind()"></i>
+                  </div>
+                  <img src="{{media_url}}{{dog.pic}}" alt="DOG"class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
                   <span class="toggle">
                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
                   </span>
-                  <ul>
+                  <ul class="prof_expand">
                     <li>Bio: {{dog.bio}}</a></li>
                     <li>DOB: {{dog.dob}}</a></li>
                 </ul>
                 <a href="{% url 'dog_profile_edit' dog.pk %}" class="dog-edit">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  <i class="fa fa-pencil-square-o" true></i>
                 </a>
-                </header>
+               
              </li>
              {% endfor %}
             </ul>
             {% else %}
             <h1 id = 'demo'>Add Dog Profiles</h1>
+            <p>You can add profiles for your dogs here</p>
             {% endif %}
           </div>  
           <div class="profile-reviews tab">
-            <h1>Events</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam pariatur officia, aperiam quidem quasi, tenetur molestiae. Architecto mollitia laborum possimus iste esse. Perferendis tempora consectetur, quae qui nihil voluptas. Maiores debitis
-              repellendus excepturi quisquam temporibus quam nobis voluptatem, reiciendis distinctio deserunt vitae! Maxime provident, distinctio animi commodi nemo, eveniet fugit porro quos nesciunt quidem a, corporis nisi dolorum minus sit eaque error
-              sequi ullam. Quidem ut fugiat, praesentium velit aliquam!</p>
+
+    
+                {% for event in events_list %}
+<!--                 <li class="">
+                  <header style="border-radius: 10px;" class="proflist--item">                 
+                    <h3 style="text-align: center;  font-size: 22spx; font-weight: bold;" class="prof-nam">{{event.event_title}}</h3>
+                    <span class="toggle">
+                      <i style="position: right;" class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </span>
+                    <ul>
+                      <li>Description: {{event.event_description}}</a></li>
+                      <li>Time: {{event.event_time}}</a></li>
+                    </ul>
+                  </header>
+               </li> -->
+
+              <ul style="position:center;">
+
+                <li style="padding: 1rem; position:right; " >
+                  <header style="display: inline-block;">
+                  <div style=  "--border-radius: 0.75rem;
+               --primary-color: #8012c0;
+               --secondary-color: #3c3852;
+               width: 450px;
+               font-family: 'Arial';
+               padding: 1rem;
+               cursor: pointer;
+               border-radius: var(--border-radius);
+               border-width: 1px;;
+               border-style:solidd;
+               border-color: #120321;
+               background: #f1f1f3;
+               box-shadow: 1px 1px 16px 0.5px rgba(60, 0, 51, 0.237);
+               position: relative;" class="card">
+
+                <h3 style="  padding: 0;
+                font-size: 1.3rem;
+                font-weight: bold;
+                color:#410464;" class="card__title">{{event.event_title}}
+                </h3>
+                
+                <p style = "  color: var(--secondary-color);
+                font-size: 0.86rem;" class="card__content"> {{event.event_description}} </p>
+                <div style="  color: #6e6b80;
+                font-size: 0.8rem;" class="card__date">
+                    {{event.event_time}}
+                </div>
+                <div style="  position: absolute;
+                background: var(--primary-color);
+                padding: 0.4rem;
+                border-top-left-radius: var(--border-radius);
+                border-bottom-right-radius: var(--border-radius);
+                bottom: 0;
+                right: 0;
+                transition: 0.2s;
+                display: flex;
+                justify-content: center;
+                align-items: center;" class="card__arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="15" width="15">
+                        <path fill="#fff" d="M13.4697 17.9697C13.1768 18.2626 13.1768 18.7374 13.4697 19.0303C13.7626 19.3232 14.2374 19.3232 14.5303 19.0303L20.3232 13.2374C21.0066 12.554 21.0066 11.446 20.3232 10.7626L14.5303 4.96967C14.2374 4.67678 13.7626 4.67678 13.4697 4.96967C13.1768 5.26256 13.1768 5.73744 13.4697 6.03033L18.6893 11.25H4C3.58579 11.25 3.25 11.5858 3.25 12C3.25 12.4142 3.58579 12.75 4 12.75H18.6893L13.4697 17.9697Z"></path>
+                    </svg>
+                </div>
+              </div>
+            </header>
+                </li>
+
+              </ul>
+
+
+                {% endfor %}
+
+
           </div>
           <div class="profile-settings tab">
             <div class="account-setting">
-              <h1>Acount Setting</h1>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
+              <h1>Account Settings</h1>
+              <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
                 animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
-                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>
+                nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>-->
+              <button id="edit-password-btn" class="editpassbtn">Edit Password</button>
+    
+              <div id="password-change-fields" style="display: none;">
+                <form method="POST">
+                  {% csrf_token %}
+                  <div>
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" name="current_password" required>
+                  </div>
+                  <div>
+                    <label for="new_password">New Password:</label>
+                    <input type="password" name="new_password" required>
+                  </div>
+                  <div>
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" name="confirm_password" required>
+                  </div>
+                  <div>
+                    <button type="submit" class="savepassbtn" name="save_password" id="save-password-btn">Save Password</button>
+                  </div>
+                </form>
+              </div>
+              {% if errors %}
+                {% for error in errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+              {% endif %}
+              
+              <!--<script>
+                // Get the "Save password" button and the "Account setting" tab
+                const savePasswordBtn = document.getElementById("save-password-btn");
+                const accountSettingTab = document.getElementById("account-setting-tab");
+              
+                // Add an event listener to the "Save password" button
+                savePasswordBtn.addEventListener("click", function() {
+                  // Switch to the "Account setting" tab
+                  accountSettingTab.click();
+                });
+              </script>-->
+              
             </div>
           </div>
         </div>

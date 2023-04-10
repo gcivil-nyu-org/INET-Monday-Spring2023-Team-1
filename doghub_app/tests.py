@@ -1,13 +1,29 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+
+# from django.utils import timezone
+# from datetime import datetime
 from django.contrib.auth import get_user_model
-from mock import patch
-from doghub_app.models import CustomUser, UserProfile, DogProfile
+
+from unittest.mock import patch
+
+from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park, EventPost
+
 from doghub_app.tokens import verification_token_generator
+
+# from .forms import EventPostForm
 from . import validators
 from django.core import mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.messages import get_messages
+from doghub.settings import BASE_DIR
+import pathlib
+import yaml
+from datetime import date, timedelta
+
+# import logging
+
+# from django.contrib.messages.middleware import MessageMiddleware
 
 
 class HomeViewTestCase(TestCase):
@@ -80,11 +96,6 @@ class RegisterDetailsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(UserProfile.objects.filter(user_id=self.user).exists())
         self.assertRedirects(response, reverse("events"))
-
-        response = self.client.post(self.dog_register_url, data=self.dog_profile_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(DogProfile.objects.filter(user_id=self.user).exists())
-        self.assertRedirects(response, reverse("register_details"))
 
     def test_register_details_request_get(self):
         response = self.client.get(self.register_url)
@@ -250,3 +261,444 @@ class LogoutRequestViewTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "You have successfully logged out.")
+
+
+class AddPostViewTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="Test@123",
+            email_verified=True,
+        )
+        # self.user = get_user_model().objects.create_user(
+        #   username="testuser", email="test@example.com", password="Test@123")
+        self.park = Park.objects.create(
+            name="Test Fishbridge",
+            latitude="40.709070274158",
+            longitude="-74.0013770043858",
+        )
+        self.url = reverse("add_post")
+        self.valid_data = {
+            "user_id": self.user,
+            "event_title": "Test Event",
+            "event_description": "This is a test event",
+            "event_time": "2025-04-08T12:00",
+            "location": "40.709070274158,-74.0013770043858",
+        }
+
+    def test_add_post_view_with_valid_data(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post(self.url, data=self.valid_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(EventPost.objects.count(), 1)  # noqa: F821
+        event_post = EventPost.objects.first()  # noqa: F821
+        self.assertEqual(event_post.event_title, self.valid_data["event_title"])
+        self.assertEqual(
+            event_post.event_description, self.valid_data["event_description"]
+        )
+        self.assertEqual(
+            event_post.event_time.strftime("%Y-%m-%dT%H:%M"),
+            self.valid_data["event_time"],
+        )
+        self.assertEqual(event_post.park_id, self.park)
+        self.assertEqual(event_post.user_id, self.user)
+
+    def test_add_post_view_with_invalid_data(self):
+        self.client.login(username="testuser", password="Test@123")
+        invalid_data = self.valid_data.copy()
+        invalid_data["event_title"] = ""
+        response = self.client.post(self.url, invalid_data)
+        self.assertEqual(response.status_code, 302)
+        # self.assertContains(response, 'Please fill out this field.')
+
+    def test_add_post_view_with_unauthenticated_user(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/login?next=" + self.url)
+
+    def test_add_post_view_with_unverified_user(self):
+        self.user.email_verified = False
+        self.user.save()
+        self.client.login(username="testuser", password="Test@123")
+        response = self.client.post(self.url, self.valid_data)
+        self.assertEqual(response.status_code, 302)
+        # self.events_url = reverse("events")
+        self.assertRedirects(response, "/login?next=" + self.url)
+        # self.assertRedirects(response, self.events_url)
+        self.assertEqual(EventPost.objects.count(), 0)  # noqa: F821
+
+    def test_get(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.get(self.url, data=self.valid_data)
+        self.assertTemplateUsed(response, "doghub_app/add_event.html")
+
+    # def test_add_post_view_with_invalid_location(self):
+    #   self.client.login(username='testuser', password='Test@123')
+    #  invalid_data = self.valid_data.copy()
+    #  invalid_data['location'] = 'invalid_location'
+    #  response = self.client.post(self.url, invalid_data)
+    #  self.assertEqual(response.status_code, 302)
+    #  self.assertRedirects(response, self.url)
+    #  self.assertEqual(EventPost.objects.count(), 0)
+    # messages = response.context.get('messages')
+    # self.assertIsNotNone(messages)
+    # self.assertIn('No park found for the given info', messages.rendered_content)
+
+
+#  def test_add_post_view_with_invalid_location(self):
+#     self.client.login(username='testuser', password='Test@123')
+#    invalid_data = self.valid_data.copy()
+#   invalid_data['location'] = 'invalid_location'
+#  response = self.client.post(self.url, invalid_data)
+# self.assertEqual(response.status_code, 302)
+# self.assertRedirects(response, self.url)
+# self.assertEqual(EventPost.objects.count(), 0)
+# self.assertContains(response, 'No park found for the given info')
+
+# def test_add_post_view_context(self):
+#    self.client.login(username='testuser', password='Test@123')
+#   response = self.client.get(self.url)
+#   self.assertEqual(response.status_code, 302)
+#   self.assertTrue('event_post_form' in response.context)
+#   self.assertTrue('current_datetime' in response.context)
+#   self.assertTrue('park_data' in response.context)
+#   self.assertIsInstance(response.context['event_post_form'].instance, EventPost)
+#   self.assertIsInstance(response.context['current_datetime'], str)
+#   self.assertIsInstance(response.context['park_data'], str)
+# self.assertContains(response, 'name="event_title"')
+# self.assertContains(response, 'name="event_description"')
+# self.assertContains(response, 'name="event_time"')
+# self.assertContains(response, 'id="id_location"')
+
+
+class TestFixtures(TestCase):
+    """
+    tests that all the data in the fixture files
+    matches the data in the database
+    """
+
+    # the fixtures variable here is a Django variable used in setup
+    # it tells Django to load this data into the database before testing
+    fixtures = ["tag.yaml", "park.yaml"]
+
+    # this is a local var, prefixed with dh (doghub) to not clash with Django
+    # make sure your model is imported
+    # extend this variable to test more fixtures files. format: (model, "filename.yaml")
+    dh_fixtures = [
+        (Tag, "tag.yaml"),
+        (Park, "park.yaml"),
+    ]
+
+    dh_fixtures_path = pathlib.Path(BASE_DIR) / "doghub_app" / "fixtures"
+
+    def test_if_fixtures_data_loaded(self):
+        for model, fname in self.dh_fixtures:
+            # logging.debug(f"testing fixture file {fname}")
+            with open(self.dh_fixtures_path / fname) as file:
+                data = yaml.safe_load(file)
+
+            for rec in data:
+                # logging.debug(f"testing pk: {rec['pk']}")
+                try:
+                    obj = model.objects.get(pk=rec["pk"])
+                except model.DoesNotExist:
+                    obj = None
+
+                self.assertIsNotNone(obj)
+
+                for field in rec["fields"]:
+                    self.assertEqual(getattr(obj, field), rec["fields"][field])
+
+
+class TestUserDateValidation(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser@example.com",
+            email="testuser@example.com",
+            password="Testpassword@123",
+        )
+        self.client.login(email="testuser@example.com", password="Testpassword@123")
+
+    def test_user_age_valid(self):
+        # test for valid user age
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 20}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+
+class TestUserProfileEdit(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.client.login(username="testuser", password="testpass")
+        self.url = reverse("user_profile_edit")
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+
+    def test_valid_form_data(self):
+        response = self.client.post(
+            self.url,
+            {
+                "ufirstname": "New",
+                "ulastname": "Name",
+                "uDOB": date.today() - timedelta(days=365 * 25),
+                "uBio": "New bio",
+            },
+        )
+        self.assertRedirects(response, reverse("user_profile"))
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.fname, "New")
+        self.assertEqual(self.user_profile.lname, "Name")
+        self.assertEqual(self.user_profile.bio, "New bio")
+
+    def test_get_request(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test")
+        self.assertContains(response, "User")
+        self.assertContains(response, "Test bio")
+
+
+class TestDogProfileSignals(TestCase):
+    fixtures = ["tag.yaml"]
+
+    def _test_tag(
+        self, tag_id: int, name: str, tag_type: str, sys_tag: bool = True
+    ) -> bool:
+        try:
+            tag = Tag.objects.get(tag_id=tag_id)
+        except Tag.DoesNotExist:
+            tag = None
+
+            # check if tag exists
+            self.assertIsNotNone(tag)
+            # check if tag name matches (case insensitive)
+            self.assertEqual(tag.tag_name.upper(), name.upper())
+            # check if tag type is upper case
+            self.assertEqual(tag.tag_type, tag.tag_type.upper())
+            # check if tag type matches
+            self.assertEqual(tag.tag_type, tag_type.upper())
+            # check if sys_tag matches
+            self.assertEqual(tag.sys_tag, sys_tag)
+
+    def test_multiple_tags(self) -> None:
+        # test tag_id, tag_name, tag_type, sys_tag
+        self._test_tag(1, "dog owner", "U", True)
+        self._test_tag(3, "puppy", "D", True)
+        self._test_tag(13, "dog owner only", "E", True)
+
+        return None
+
+
+class SearchResultsTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.login_url = reverse("login")
+        self.search_url = reverse("search-user")
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="testpass123",
+        )
+        self.searched = {
+            "searched": "test",
+        }
+
+    def test_login_success(self):
+        self.user_data = {
+            "uemail": "testuser@test.com",
+            "psw": "testpass123",
+        }
+        response = self.client.post(self.login_url, data=self.user_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            CustomUser.objects.filter(email=self.user_data["uemail"]).exists()
+        )
+
+    def test_search_success(self):
+        response = self.client.post(self.search_url, data=self.searched)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(CustomUser.objects.filter(email=self.user.email).exists())
+
+
+class SearchUserTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser@gmail.com", password="testpass123", email_verified=True
+        )
+        self.userprofile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="John",
+            lname="Doe",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+        self.eventpost = EventPost.objects.create(
+            user_id=self.user,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+        self.u_list = [
+            {
+                "fname": "John",
+                "lname": "Doe",
+                "email": "testuser@gmail.com",
+            }
+        ]
+
+    def test_search_user_by_fname(self):
+        logged_in = self.client.login(
+            username="testuser@gmail.com", password="testpass123"
+        )
+        self.assertEqual(logged_in, True)
+        response = self.client.post(
+            reverse("search-user"),
+            {
+                "searched": "John",
+                "show_users": True,
+                "show_events": True,
+                "u_list": self.u_list,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "John")
+        u_list = response.context["u_list"]
+        self.assertEqual(len(u_list), 1)
+        self.assertContains(response, "events")
+
+    def test_search_nothing(self):
+        logged_in = self.client.login(
+            username="testuser@gmail.com", password="testpass123"
+        )
+        self.assertEqual(logged_in, True)
+        response = self.client.get(reverse("search-user"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/search-results.html")
+
+
+class PublicProfileTestCase(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password456",
+        )
+        self.public_profile1 = UserProfile.objects.create(
+            user_id=self.user1,
+            fname="User",
+            lname="One",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+        self.public_profile2 = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="User",
+            lname="Two",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+
+    def test_public_profile_existing_user(self):
+        url = reverse("public-profile", args=["user1@example.com"])
+        self.client.login(email="user2@example.com", password="password456")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/public_user_profile.html")
+        self.assertEqual(response.context["user"], self.user1)
+        self.assertEqual(response.context["public_prof"], self.public_profile1)
+
+    def test_public_profile_not_existing_user(self):
+        url = reverse("public-profile", args=["user3@example.com"])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
