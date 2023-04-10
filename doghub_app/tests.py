@@ -452,3 +452,35 @@ class TestDogProfileSignals(TestCase):
         self._test_tag(13, "dog owner only", "E", True)
 
         return None
+
+
+class SearchResultsTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.login_url = reverse("login")
+        self.search_url = reverse("search-user")
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="testpass123",
+        )
+        self.searched = {
+            "searched": "test",
+        }
+
+    def test_login_success(self):
+        self.user_data = {
+            "uemail": "testuser@test.com",
+            "psw": "testpass123",
+        }
+        response = self.client.post(self.login_url, data=self.user_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            CustomUser.objects.filter(email=self.user_data["uemail"]).exists()
+        )
+
+    def test_search_success(self):
+        response = self.client.post(self.search_url, data=self.searched)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(CustomUser.objects.filter(email=self.user.email).exists())
