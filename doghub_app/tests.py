@@ -5,9 +5,6 @@ from django.urls import reverse
 # from datetime import datetime
 from django.contrib.auth import get_user_model
 
-from mock import patch
-from doghub_app.models import CustomUser, UserProfile, DogProfile, EventPost, Park
-
 from unittest.mock import patch
 from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park
 
@@ -265,7 +262,6 @@ class LogoutRequestViewTestCase(TestCase):
         self.assertEqual(str(messages[0]), "You have successfully logged out.")
 
 
-
 class AddPostViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
@@ -296,8 +292,8 @@ class AddPostViewTestCase(TestCase):
         self.client.login(username="testuser@test.com", password="Test@123")
         response = self.client.post(self.url, data=self.valid_data)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(EventPost.objects.count(), 1)
-        event_post = EventPost.objects.first()
+        self.assertEqual(EventPost.objects.count(), 1)  # noqa: F821
+        event_post = EventPost.objects.first()  # noqa: F821
         self.assertEqual(event_post.event_title, self.valid_data["event_title"])
         self.assertEqual(
             event_post.event_description, self.valid_data["event_description"]
@@ -331,7 +327,7 @@ class AddPostViewTestCase(TestCase):
         # self.events_url = reverse("events")
         self.assertRedirects(response, "/login?next=" + self.url)
         # self.assertRedirects(response, self.events_url)
-        self.assertEqual(EventPost.objects.count(), 0)
+        self.assertEqual(EventPost.objects.count(), 0)  # noqa: F821
 
     # def test_add_post_view_with_invalid_location(self):
     #   self.client.login(username='testuser', password='Test@123')
@@ -370,6 +366,7 @@ class AddPostViewTestCase(TestCase):
 # self.assertContains(response, 'name="event_description"')
 # self.assertContains(response, 'name="event_time"')
 # self.assertContains(response, 'id="id_location"')
+
 
 class TestFixtures(TestCase):
     """
@@ -570,4 +567,3 @@ class TestDogProfileSignals(TestCase):
         self._test_tag(13, "dog owner only", "E", True)
 
         return None
-
