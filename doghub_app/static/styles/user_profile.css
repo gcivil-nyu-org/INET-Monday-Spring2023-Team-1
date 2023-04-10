@@ -406,7 +406,7 @@ button.createbtn i {
 .proflist--item {
   display: inline-block;
   width: 55%;
-  height: 82px;
+  height: 9.5rem;
   top: 0;
   background-color: #fff;
   border-color: #ffffff;
@@ -425,19 +425,18 @@ button.createbtn i {
     @extend %group;
   } */
 .prof-img {
-  height: 60px;
-  width: 60px;
+  height: 6em;
+  width: 6em;
   margin-right: 3em;
-  margin-left: 1.8em;
+  margin-left: 1em;
   margin-top: 0.4em;
   float: left;
-  display: block;
   border-radius: 50%;
+  background-color: #e40046;
   border: #73bef5;
-  @media screen and (min-width: 32em) {
-    width: 6em;
-    height: 6em;
-  }
+}
+.prof_expand{
+  margin-top: 2rem;
 }
 .prof-name {
   padding: 0em;
@@ -458,8 +457,7 @@ button.createbtn i {
 .toggle {
   position: relative;
   top: 0px;
-  left: 65.5%;
-
+  margin-left: 95%;
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 50%;
@@ -496,7 +494,7 @@ button.createbtn i {
 .delete-bin {
   position: relative;
   top: 0px;
-  left: 65.5%;
+  margin-left: 95%;
 
   width: 1rem;
   height: 1rem;
@@ -664,41 +662,6 @@ button.createbtn i {
 
 .deletebtn:hover {
   background: #73bef5;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-.navi {
-  background-color: #6f36a8;
-}
-
-.navi li {
-  float: left;
-  border-right: 1px solid #fbfdf7;
-}
-
-.navi li a {
-  display: block;
-  padding: 14px 16px;
-  color: #fbfdf7;
-  text-decoration: none;
-}
-
-.navi li a:hover:not(.active1) {
-  background-color: #0f101a;
-}
-
-.active1 {
-  background-color: #679d24;
-}
-
-.navi li:last-child {
-  float: right;
 }
 
 .message {

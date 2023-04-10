@@ -1,5 +1,4 @@
-
-{% block content %}
+{% include "doghub_app/nav_bar.html" %}{% block content %}
 {% load static %}
   <!-- <div class="container">
     <div class="row">
@@ -52,20 +51,27 @@
           {% endfor %}
         {% endif %}</div>
       <title>Log In</title>
-
+   <!--<div class="navi">
+      <nav>
+          <ul>
+              <li><a href="{% url 'events' %}">Home</a></li>
+              <li><a href="">News</a></li>
+              <li><a href="">Contact</a></li>
+              <li>
+                  <form method="post" action="{% url 'search-user' %}">
+                      {% csrf_token %}
+                      <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                  </form>
+              </li><li>
+              <div class="lout">
+              <a href="{% url 'logout' %}"><img src="{% static 'images/log_out.png' %}"><p class="lout1">Log Out</p></a></div></li>
+            </ul></nav></div></div>-->
   </head>
 
   <body>
 
   <div class="container">
-    <div>
-      <ul class="navi">
-        <li><a href="{% url 'events' %}">Home</a></li>
-        <li><a href="">News</a></li>
-        <li><a href="">Contact</a></li>
-        <li><a class="active1" href="">About</a></li>
-      </ul>
-    </div>
+ 
     <div class="profile-header">
       <div class="profile-img">
         <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
@@ -154,24 +160,24 @@
                 </a>
                 </div>
               </div>
-              <li class="">
-                <header class="proflist--item">
+              <li class="proflist--item">
                   <div class="delete-bin" onclick="funcWind()">
+              
                     <i class="fa fa-trash" aria-hidden="true" onclick="funcWind()"></i>
                   </div>
-                  <img src="{{media_url}}{{dog.pic}}" alt="DOG" class="prof-img" />
+                  <img src="{{media_url}}{{dog.pic}}" alt="DOG"class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
                   <span class="toggle">
                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
                   </span>
-                  <ul>
+                  <ul class="prof_expand">
                     <li>Bio: {{dog.bio}}</a></li>
                     <li>DOB: {{dog.dob}}</a></li>
                 </ul>
                 <a href="{% url 'dog_profile_edit' dog.pk %}" class="dog-edit">
-                  <i class="fa fa-pencil-square-o" true"></i>
+                  <i class="fa fa-pencil-square-o" true></i>
                 </a>
-                </header>
+               
              </li>
              {% endfor %}
             </ul>

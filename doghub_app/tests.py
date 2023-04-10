@@ -4,8 +4,13 @@ from django.urls import reverse
 # from django.utils import timezone
 # from datetime import datetime
 from django.contrib.auth import get_user_model
+
 from mock import patch
 from doghub_app.models import CustomUser, UserProfile, DogProfile, EventPost, Park
+
+from unittest.mock import patch
+from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park
+
 from doghub_app.tokens import verification_token_generator
 
 # from .forms import EventPostForm
@@ -13,6 +18,12 @@ from . import validators
 from django.core import mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.messages import get_messages
+from doghub.settings import BASE_DIR
+import pathlib
+import yaml
+from datetime import date, timedelta
+
+# import logging
 
 # from django.contrib.messages.middleware import MessageMiddleware
 
@@ -254,6 +265,7 @@ class LogoutRequestViewTestCase(TestCase):
         self.assertEqual(str(messages[0]), "You have successfully logged out.")
 
 
+
 class AddPostViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
@@ -358,3 +370,204 @@ class AddPostViewTestCase(TestCase):
 # self.assertContains(response, 'name="event_description"')
 # self.assertContains(response, 'name="event_time"')
 # self.assertContains(response, 'id="id_location"')
+
+class TestFixtures(TestCase):
+    """
+    tests that all the data in the fixture files
+    matches the data in the database
+    """
+
+    # the fixtures variable here is a Django variable used in setup
+    # it tells Django to load this data into the database before testing
+    fixtures = ["tag.yaml", "park.yaml"]
+
+    # this is a local var, prefixed with dh (doghub) to not clash with Django
+    # make sure your model is imported
+    # extend this variable to test more fixtures files. format: (model, "filename.yaml")
+    dh_fixtures = [
+        (Tag, "tag.yaml"),
+        (Park, "park.yaml"),
+    ]
+
+    dh_fixtures_path = pathlib.Path(BASE_DIR) / "doghub_app" / "fixtures"
+
+    def test_if_fixtures_data_loaded(self):
+        for model, fname in self.dh_fixtures:
+            # logging.debug(f"testing fixture file {fname}")
+            with open(self.dh_fixtures_path / fname) as file:
+                data = yaml.safe_load(file)
+
+            for rec in data:
+                # logging.debug(f"testing pk: {rec['pk']}")
+                try:
+                    obj = model.objects.get(pk=rec["pk"])
+                except model.DoesNotExist:
+                    obj = None
+
+                self.assertIsNotNone(obj)
+
+                for field in rec["fields"]:
+                    self.assertEqual(getattr(obj, field), rec["fields"][field])
+
+
+class TestUserDateValidation(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser@example.com",
+            email="testuser@example.com",
+            password="Testpassword@123",
+        )
+        self.client.login(email="testuser@example.com", password="Testpassword@123")
+
+    def test_user_age_valid(self):
+        # test for valid user age
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 20}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+
+class TestUserProfileEdit(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.client.login(username="testuser", password="testpass")
+        self.url = reverse("user_profile_edit")
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+
+    def test_valid_form_data(self):
+        response = self.client.post(
+            self.url,
+            {
+                "ufirstname": "New",
+                "ulastname": "Name",
+                "uDOB": date.today() - timedelta(days=365 * 25),
+                "uBio": "New bio",
+            },
+        )
+        self.assertRedirects(response, reverse("user_profile"))
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.fname, "New")
+        self.assertEqual(self.user_profile.lname, "Name")
+        self.assertEqual(self.user_profile.bio, "New bio")
+
+    def test_get_request(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test")
+        self.assertContains(response, "User")
+        self.assertContains(response, "Test bio")
+
+
+class TestDogProfileSignals(TestCase):
+    fixtures = ["tag.yaml"]
+
+    def _test_tag(
+        self, tag_id: int, name: str, tag_type: str, sys_tag: bool = True
+    ) -> bool:
+        try:
+            tag = Tag.objects.get(tag_id=tag_id)
+        except Tag.DoesNotExist:
+            tag = None
+
+            # check if tag exists
+            self.assertIsNotNone(tag)
+            # check if tag name matches (case insensitive)
+            self.assertEqual(tag.tag_name.upper(), name.upper())
+            # check if tag type is upper case
+            self.assertEqual(tag.tag_type, tag.tag_type.upper())
+            # check if tag type matches
+            self.assertEqual(tag.tag_type, tag_type.upper())
+            # check if sys_tag matches
+            self.assertEqual(tag.sys_tag, sys_tag)
+
+    def test_multiple_tags(self) -> None:
+        # test tag_id, tag_name, tag_type, sys_tag
+        self._test_tag(1, "dog owner", "U", True)
+        self._test_tag(3, "puppy", "D", True)
+        self._test_tag(13, "dog owner only", "E", True)
+
+        return None
+
