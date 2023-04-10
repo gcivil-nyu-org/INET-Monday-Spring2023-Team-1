@@ -425,6 +425,9 @@ def add_post(request):
             )
 
             location = request.POST.get("location")
+            if "," not in location:
+                messages.error(request, "Invalid location format")
+                return redirect("add_post")
             latitude, longitude = location.split(",")
             # latitude, longitude = location[0], location[1]
             try:
