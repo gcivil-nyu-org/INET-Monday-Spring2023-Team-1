@@ -421,3 +421,34 @@ class TestUserProfileEdit(TestCase):
         self.assertContains(response, "Test")
         self.assertContains(response, "User")
         self.assertContains(response, "Test bio")
+
+
+class TestDogProfileSignals(TestCase):
+    fixtures = ["tag.yaml"]
+
+    def _test_tag(
+        self, tag_id: int, name: str, tag_type: str, sys_tag: bool = True
+    ) -> bool:
+        try:
+            tag = Tag.objects.get(tag_id=tag_id)
+        except Tag.DoesNotExist:
+            tag = None
+
+            # check if tag exists
+            self.assertIsNotNone(tag)
+            # check if tag name matches (case insensitive)
+            self.assertEqual(tag.tag_name.upper(), name.upper())
+            # check if tag type is upper case
+            self.assertEqual(tag.tag_type, tag.tag_type.upper())
+            # check if tag type matches
+            self.assertEqual(tag.tag_type, tag_type.upper())
+            # check if sys_tag matches
+            self.assertEqual(tag.sys_tag, sys_tag)
+
+    def test_multiple_tags(self) -> None:
+        # test tag_id, tag_name, tag_type, sys_tag
+        self._test_tag(1, "dog owner", "U", True)
+        self._test_tag(3, "puppy", "D", True)
+        self._test_tag(13, "dog owner only", "E", True)
+
+        return None
