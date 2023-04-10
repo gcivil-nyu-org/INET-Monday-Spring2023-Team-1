@@ -51,10 +51,10 @@
   <div class="container">
     <div class="profile-header">
       <div class="profile-img">
-        <img src="{{media_url}}{{userprof.pic}}" width="200" alt="Profile Image">
+        <img src="{{media_url}}{{public_prof.pic}}" width="200" alt="Profile Image">
       </div>
       <div class="profile-nav-info">
-        <h3 class="user-name">{{userprof.fname}} {{userprof.lname}}</h3>
+        <h3 class="user-name">{{public_prof.fname}} {{public_prof.lname}}</h3>
         <div class="userTag">
           {% if dogprof %}
           <p id="state1" class="button-85" >Dog Owner</p>
@@ -77,7 +77,7 @@
           <div class="user-bio">
             <h3>Bio</h3>
             <p class="bio">
-              {{userprof.bio}}
+              {{public_prof.bio}}
             </p>
           </div>
           <div class="profile-btn">
