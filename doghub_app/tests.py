@@ -202,7 +202,8 @@ class ForgotPasswordTestDemo(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn("Reset Password", mail.outbox[0].subject)
         self.assertIn(
-            "http://127.0.0.1:8000/reset_password/confirm", mail.outbox[0].body
+            "http://doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com/reset_password/confirm",  # noqa: E501
+            mail.outbox[0].body,
         )
 
     def test_forgot_password_email_invalid_email(self):
