@@ -486,24 +486,56 @@ class SearchResultsTestCase(TestCase):
         self.assertTrue(CustomUser.objects.filter(email=self.user.email).exists())
 
 
-
 class SearchUserTestCase(TestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create_user(username='testuser@gmail.com', password='testpass123', email_verified = True)
-        self.userprofile = UserProfile.objects.create(user_id=self.user, fname='John', lname='Doe',dob="2000-01-01", bio="Test user bio")
-        self.eventpost = EventPost.objects.create(user_id=self.user,event_title='Test Event', event_description='Test Description')
-        self.u_list = [{
-            "fname":"John",
-            "lname":"Doe",
-            "email":"testuser@gmail.com",
-        }]
+        self.user = CustomUser.objects.create_user(
+            username="testuser@gmail.com", password="testpass123", email_verified=True
+        )
+        self.userprofile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="John",
+            lname="Doe",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+        self.eventpost = EventPost.objects.create(
+            user_id=self.user,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+        self.u_list = [
+            {
+                "fname": "John",
+                "lname": "Doe",
+                "email": "testuser@gmail.com",
+            }
+        ]
 
     def test_search_user_by_fname(self):
-        logged_in = self.client.login(username='testuser@gmail.com', password='testpass123')
-        self.assertEqual(logged_in,True)
-        response = self.client.post(reverse('search-user'), {'searched': 'John', 'show_users': True, 'show_events': True, 'u_list':self.u_list,})
+        logged_in = self.client.login(
+            username="testuser@gmail.com", password="testpass123"
+        )
+        self.assertEqual(logged_in, True)
+        response = self.client.post(
+            reverse("search-user"),
+            {
+                "searched": "John",
+                "show_users": True,
+                "show_events": True,
+                "u_list": self.u_list,
+            },
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'John')
-        u_list = response.context['u_list']
+        self.assertContains(response, "John")
+        u_list = response.context["u_list"]
         self.assertEqual(len(u_list), 1)
-        self.assertContains(response, 'events')
+        self.assertContains(response, "events")
+
+    def test_search_nothing(self):
+        logged_in = self.client.login(
+            username="testuser@gmail.com", password="testpass123"
+        )
+        self.assertEqual(logged_in, True)
+        response = self.client.get(reverse("search-user"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/search-results.html")
