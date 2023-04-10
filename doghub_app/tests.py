@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from unittest.mock import patch
-from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park
+from doghub_app.models import CustomUser, EventPost, UserProfile, DogProfile, Tag, Park
 from doghub_app.tokens import verification_token_generator
 from . import validators
 from django.core import mail
@@ -484,3 +484,26 @@ class SearchResultsTestCase(TestCase):
         response = self.client.post(self.search_url, data=self.searched)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(CustomUser.objects.filter(email=self.user.email).exists())
+
+
+
+class SearchUserTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(username='testuser@gmail.com', password='testpass123', email_verified = True)
+        self.userprofile = UserProfile.objects.create(user_id=self.user, fname='John', lname='Doe',dob="2000-01-01", bio="Test user bio")
+        self.eventpost = EventPost.objects.create(user_id=self.user,event_title='Test Event', event_description='Test Description')
+        self.u_list = [{
+            "fname":"John",
+            "lname":"Doe",
+            "email":"testuser@gmail.com",
+        }]
+
+    def test_search_user_by_fname(self):
+        logged_in = self.client.login(username='testuser@gmail.com', password='testpass123')
+        self.assertEqual(logged_in,True)
+        response = self.client.post(reverse('search-user'), {'searched': 'John', 'show_users': True, 'show_events': True, 'u_list':self.u_list,})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'John')
+        u_list = response.context['u_list']
+        self.assertEqual(len(u_list), 1)
+        self.assertContains(response, 'events')
