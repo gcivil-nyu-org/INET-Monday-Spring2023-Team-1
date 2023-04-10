@@ -11,6 +11,7 @@ from django.contrib.messages import get_messages
 from doghub.settings import BASE_DIR
 import pathlib
 import yaml
+from datetime import date
 
 # import logging
 
@@ -289,3 +290,62 @@ class TestFixtures(TestCase):
 
                 for field in rec["fields"]:
                     self.assertEqual(getattr(obj, field), rec["fields"][field])
+
+
+class TestUserDateValidation(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser@example.com",
+            email="testuser@example.com",
+            password="Testpassword@123",
+        )
+        self.client.login(email="testuser@example.com", password="Testpassword@123")
+
+    def test_user_age_valid(self):
+        # test for valid user age
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 20}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Testing user",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("register_details"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+        self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
