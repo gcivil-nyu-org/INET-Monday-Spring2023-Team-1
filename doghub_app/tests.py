@@ -11,7 +11,7 @@ from django.contrib.messages import get_messages
 from doghub.settings import BASE_DIR
 import pathlib
 import yaml
-from datetime import date
+from datetime import date, timedelta
 
 # import logging
 
@@ -349,3 +349,75 @@ class TestUserDateValidation(TestCase):
         )
         self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
         self.assertFalse(UserProfile.objects.filter(user_id=self.user).exists())
+
+
+class TestUserProfileEdit(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.client.login(username="testuser", password="testpass")
+        self.url = reverse("user_profile_edit")
+
+    def test_user_age_future_date(self):
+        # test for invalid user date of birth (future date)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year + 1}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(response, "Enter a valid Date of Birth", status_code=200)
+
+    def test_user_age_invalid(self):
+        # test for invalid user age (<18)
+        today = date.today()
+        user_profile_data = {
+            "ufirstname": "Test",
+            "ulastname": "User",
+            "uBio": "Test bio",
+            "uDOB": f"{today.year - 16}-01-01",
+        }
+        response = self.client.post(
+            reverse("user_profile_edit"), data=user_profile_data, follow=True
+        )
+        self.assertContains(
+            response,
+            "For safety concerns, DogHub user should be 18+",
+            status_code=200,
+        )
+
+    def test_valid_form_data(self):
+        response = self.client.post(
+            self.url,
+            {
+                "ufirstname": "New",
+                "ulastname": "Name",
+                "uDOB": date.today() - timedelta(days=365 * 25),
+                "uBio": "New bio",
+            },
+        )
+        self.assertRedirects(response, reverse("user_profile"))
+        self.user_profile.refresh_from_db()
+        self.assertEqual(self.user_profile.fname, "New")
+        self.assertEqual(self.user_profile.lname, "Name")
+        self.assertEqual(self.user_profile.bio, "New bio")
+
+    def test_get_request(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test")
+        self.assertContains(response, "User")
+        self.assertContains(response, "Test bio")
