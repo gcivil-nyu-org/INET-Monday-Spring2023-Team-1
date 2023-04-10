@@ -693,17 +693,7 @@ class PublicProfileTestCase(TestCase):
         self.assertEqual(response.context["user"], self.user1)
         self.assertEqual(response.context["public_prof"], self.public_profile1)
 
-
-"""     def test_public_profile_nonexisting_user(self):
-        url = reverse("public_profile", args=["nonexistent@example.com"])
-        self.client.login(email="user2@example.com", password="password456")
+    def test_public_profile_not_existing_user(self):
+        url = reverse("public-profile", args=["user3@example.com"])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "User not found.")
-
-    def test_public_profile_anonymous_user(self):
-        url = reverse("public_profile", args=["user1@example.com"])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)  # Redirect to login page
-        self.assertRedirects(response, f"{reverse('login')}?next={url}")
- """
+        self.assertEqual(response.status_code, 302)
