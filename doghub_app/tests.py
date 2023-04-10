@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from unittest.mock import patch
-from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park
+from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park, EventPost
 
 from doghub_app.tokens import verification_token_generator
 
@@ -284,7 +284,7 @@ class AddPostViewTestCase(TestCase):
             "user_id": self.user,
             "event_title": "Test Event",
             "event_description": "This is a test event",
-            "event_time": "2025-04-08T17:00",
+            "event_time": "2025-04-08T12:00",
             "location": "40.709070274158,-74.0013770043858",
         }
 
