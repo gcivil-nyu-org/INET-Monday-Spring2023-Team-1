@@ -655,3 +655,55 @@ class SearchUserTestCase(TestCase):
         response = self.client.get(reverse("search-user"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "doghub_app/search-results.html")
+
+
+class PublicProfileTestCase(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password456",
+        )
+        self.public_profile1 = UserProfile.objects.create(
+            user_id=self.user1,
+            fname="User",
+            lname="One",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+        self.public_profile2 = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="User",
+            lname="Two",
+            dob="2000-01-01",
+            bio="Test user bio",
+        )
+
+    def test_public_profile_existing_user(self):
+        url = reverse("public-profile", args=["user1@example.com"])
+        self.client.login(email="user2@example.com", password="password456")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/public_user_profile.html")
+        self.assertEqual(response.context["user"], self.user1)
+        self.assertEqual(response.context["public_prof"], self.public_profile1)
+
+
+"""     def test_public_profile_nonexisting_user(self):
+        url = reverse("public_profile", args=["nonexistent@example.com"])
+        self.client.login(email="user2@example.com", password="password456")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "User not found.")
+
+    def test_public_profile_anonymous_user(self):
+        url = reverse("public_profile", args=["user1@example.com"])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)  # Redirect to login page
+        self.assertRedirects(response, f"{reverse('login')}?next={url}")
+ """
