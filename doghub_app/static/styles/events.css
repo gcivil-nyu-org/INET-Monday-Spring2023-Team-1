@@ -18,6 +18,7 @@ body {
   height: 100%;
   width: 100%;
   position: fixed;
+  margin-top: 50px;
 }
 
 .side-bar {
@@ -25,7 +26,7 @@ body {
   flex-direction: column;
   position: fixed;
   /* width: 15.2%; */
-  width: 17rem;
+  width: 19.57rem;
   min-height: 100%;
   background-color: #1f1d36;
 }
@@ -389,57 +390,4 @@ ul {
   overflow: hidden;
   height: 65px;
   width:100%;
-}
-
-.navi {
-  background-color: #6f36a8;
-}
-
-.navi li {
-  width: fit-content;
-  float: left;
-  border-right: 1px solid #fbfdf7;
-  height: 65px;
-  width:5.6rem;
-}
-
-.navi li a {
-  display: block;
-  padding: 14px 16px;
-  color: #fbfdf7;
-  text-decoration: none;
-}
-
-.navi li a:hover:not(.active3) {
-  background-color: #0f101a;
-}
-
-.active {
-  background-color: #679d24;
-}
-
-.navi li:last-child {
-  float: right;
-}
-@media (max-width: 900px) {
-  .profile-img {
-    float: left;
-    width: 100%;
-    height: 200px;
-    border-color: #6f36a8;
-  }
-}
-
-.searchTerm {
-  width: 900px;
-  border: 3px solid #00b4cc;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9dbfaf;
-}
-
-.searchTerm:focus {
-  color: #8b00cc;
 }

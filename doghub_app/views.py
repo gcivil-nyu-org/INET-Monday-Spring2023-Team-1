@@ -457,19 +457,22 @@ def add_post(request):
     )
 
 
+@login_required
 def public_profile(request, email):
     if CustomUser.objects.filter(email=email).exists():
         user = CustomUser.objects.get(email=email)
-        user_prof = UserProfile.objects.get(user_id=user.id)
+        public_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
         events_list = EventPost.objects.filter(user_id=request.user.id)
+        user_prof = UserProfile.objects.get(user_id=request.user.id)
 
         context = {
             "user": user,
-            "userprof": user_prof,
+            "public_prof": public_prof,
             "dogprof": list(dog_prof),
             "media_url": settings.MEDIA_URL,
             "events_list": list(events_list),
+            "userprof": user_prof,
         }
         return render(
             request=request,
@@ -484,6 +487,7 @@ def public_profile(request, email):
 def search_user(request):
     if request.method == "POST":
         # f = open("output.txt", "w+")
+        user_prof = UserProfile.objects.get(user_id=request.user.id)
         show_users = False
         show_events = False
         searched = request.POST["searched"]
@@ -513,7 +517,6 @@ def search_user(request):
                 "lname": user.lname,
                 "email": user_object.email,
                 "pic": user.pic,
-                "user_prof": user,
             }
             u_list.append(d)
 
@@ -532,6 +535,7 @@ def search_user(request):
                 "show_users": show_users,
                 "show_events": show_events,
                 "media_url": settings.MEDIA_URL,
+                "userprof": user_prof,
             },
         )
     else:

@@ -664,41 +664,6 @@ button.createbtn i {
   background: #73bef5;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-.navi {
-  background-color: #6f36a8;
-}
-
-.navi li {
-  float: left;
-  border-right: 1px solid #fbfdf7;
-}
-
-.navi li a {
-  display: block;
-  padding: 14px 16px;
-  color: #fbfdf7;
-  text-decoration: none;
-}
-
-.navi li a:hover:not(.active1) {
-  background-color: #0f101a;
-}
-
-.active1 {
-  background-color: #679d24;
-}
-
-.navi li:last-child {
-  float: right;
-}
-
 .message {
   text-align: center;
 }
