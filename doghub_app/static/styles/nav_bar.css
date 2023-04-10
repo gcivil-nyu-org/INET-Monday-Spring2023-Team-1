@@ -42,6 +42,21 @@
   nav ul li a:hover:not(.active3) {
     background-color: #4ba3b1;
   }
+
+  .check_box {
+    display: flex;
+    align-items: center;
+    margin-left: -5px;
+    justify-content: center
+  }
+
+.check_box input[type="checkbox"] {
+    margin-right: 50px;
+}
+
+.check_box label{
+    margin-right: 50px;
+}
  
 .user{
     float: right;
