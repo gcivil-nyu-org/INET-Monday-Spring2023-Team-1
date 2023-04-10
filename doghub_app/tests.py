@@ -253,7 +253,7 @@ class AddPostViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="test@example.com", password="Tes")
+            username="testuser", email="test@example.com", password="Test@123")
         self.park = Park.objects.create(name='Test Fishbridge', latitude='40.709070274158', longitude='-74.0013770043858')
         self.url = reverse('add_post')
         self.url = reverse ('add_post')
@@ -261,7 +261,7 @@ class AddPostViewTestCase(TestCase):
             'event_title': 'Test Event',
             'event_description': 'This is a test event',
             'event_time': '2023-04-08T12:00',
-            'location': '40.709070274158', longitude='-74.0013770043858'
+            'location': '40.709070274158', longitude: '-74.0013770043858'
         }
 
     def test_add_post_view_with_valid_data(self):
