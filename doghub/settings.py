@@ -220,9 +220,14 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "custom",
         },
+        "file": {
+            "class": "logging.FileHandler",
+            "formatter": "custom",
+            "filename": BASE_DIR / "doghub_app" / "debug.log",
+        },
     },
     "root": {
-        "handlers": ["console"],
+        "handlers": ["console", "file"],
         "level": LOGGING_LEVEL,
     },
 }
