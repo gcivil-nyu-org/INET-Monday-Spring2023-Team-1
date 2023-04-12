@@ -6,7 +6,7 @@ import datetime as dt
 import logging
 
 
-def give_tag(model, model_id: dict[str, int], tag_id: int):
+def give_tag(model, model_id, tag_id):
     """
     adds tag_id to model if model doesn't have it
     not that model is the intersect table, examples below
