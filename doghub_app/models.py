@@ -190,15 +190,18 @@ class UserTag(models.Model):
         unique_together = (("user_id", "tag_id"),)
 
 
-
 class Chat(models.Model):
-    receiver = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chats_as_user2')
-    sender = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(
+        AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="chats_as_user2"
+    )
+    sender = models.ForeignKey(
+        AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_messages"
+    )
     text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Chat {self.id} ({self.sender.username} and {self.receiver.username})"
-    
+
     class Meta:
         db_table = "chat"
