@@ -205,3 +205,18 @@ class Chat(models.Model):
 
     class Meta:
         db_table = "chat"
+
+class Friends(models.Model):
+    fid = models.AutoField(primary_key=True)
+    sender = models.ForeignKey(
+        AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="sender_id", related_name="user1")
+    reciver =  models.ForeignKey(
+        AUTH_USER_MODEL, on_delete=models.CASCADE, db_column="reciver_id", related_name="user2")
+
+    class Meta:
+        db_table = "friends"
+        unique_together = (("sender", "reciver"),)
+
+
+    def __str__(self):
+        return f"Friends: {self.fid}: ({sender}, {reciver})"
