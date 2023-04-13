@@ -216,7 +216,7 @@ def events(request):
         return render(request, "doghub_app/register.html")
 
     context = {"userprof": user_prof}  # noqa: F841
-
+    park = list(Park.objects.all())
     event_posts = list(EventPost.objects.all())
     print(event_posts)
     event_posts.reverse()
@@ -224,6 +224,7 @@ def events(request):
         "userprof": user_prof,
         "event_posts": event_posts,
         "media_url": settings.MEDIA_URL,
+        "park": park,
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)

@@ -157,11 +157,11 @@ body {
   margin-left: 42%;
   display: flex;
   flex-direction: row;
-  height:17rem;
+  height:3rem;
 }
 
 .back_content_flipped{
-  height:17rem;
+  height:3rem;
 }
 
 .back_content_flipped_back{
@@ -281,7 +281,7 @@ body {
 } */
 .flipped{
   transform: rotateY(180deg);
-  height: 20rem;
+  height: 22rem;
 }
 
 .flipped_back{
@@ -290,7 +290,7 @@ body {
 }
 
 .card_flipped{
-  height: 20rem;
+  height: 22rem;
 }
 .card_flipped_back{
   height: 7rem;
@@ -390,4 +390,12 @@ ul {
   overflow: hidden;
   height: 65px;
   width:100%;
+}
+
+#map {
+
+  height: 200;
+  width: 100%;
+  margin: 0 auto;
+  
 }

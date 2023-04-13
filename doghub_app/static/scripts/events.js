@@ -99,5 +99,31 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
   } 
 }));
 
+//add event listener to map
 
 
+/* 
+
+  function initMap() {
+     
+      const trialpark = { lat: -74.0016, lng: 40.7093};
+     
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 40.730610, lng: -73.935242},
+      zoom: 12
+    });
+  }
+   
+
+
+
+
+  window.onload=function(){
+      const card_inners = document.querySelectorAll(".card-inner");
+      const map = document.getElementById("map");
+
+    
+      initMap();
+  };
+
+ */
