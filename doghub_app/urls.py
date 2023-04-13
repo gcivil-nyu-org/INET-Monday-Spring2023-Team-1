@@ -19,6 +19,7 @@ urlpatterns = [
     path("user_profile_edit", views.user_profile_edit, name="user_profile_edit"),
     path("dog_profile_edit/<int:pk>/", views.dog_profile_edit, name="dog_profile_edit"),
     path("dog_profile_add", views.dog_profile_add, name="dog_profile_add"),
+    path("inbox", views.inbox, name="inbox"),
     path(
         "dog_profile_delete/<int:pk>/",
         views.dog_profile_delete,

@@ -703,3 +703,20 @@ class PublicProfileTestCase(TestCase):
         url = reverse("public-profile", args=["user3@example.com"])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
+
+
+class InboxTestCase(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+
+    def test_inbox_template(self):
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("inbox")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/inbox.html")
+        self.assertEqual(response.context["user"], self.user1)

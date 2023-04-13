@@ -543,3 +543,9 @@ def search_user(request):
         )
     else:
         return render(request, "doghub_app/search-results.html", {})
+
+
+@login_required
+def inbox(request):
+    context = {}
+    return render(request, "doghub_app/inbox.html", context=context)
