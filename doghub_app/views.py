@@ -39,7 +39,7 @@ def forgot_password_email(request):
         if user:
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = PasswordResetTokenGenerator().make_token(user)
-            reset_url = f"http://127.0.0.1:8000/reset_password/confirm/{uidb64}/{token}"
+            reset_url = f"http://doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com/reset_password/confirm/{uidb64}/{token}"  # noqa: E501
 
             email = EmailMessage(
                 "Reset Password",
