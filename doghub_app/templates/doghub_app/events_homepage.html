@@ -117,7 +117,8 @@
                    
                     {% for parkinfo in park %}
                     {% if parkinfo.park_id == event.park_id.park_id %}
-                    <div id ="map-{{event.event_id}}" style= "height:200px; width:100%;"></div>
+                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
+                    
                   
                     <script>
                       function initMap() {
@@ -126,22 +127,23 @@
                               zoom: 17,
                               center: myLatLng
                           });
+                         
                           var marker = new google.maps.Marker({
                               position: myLatLng,
                               map: map
                           });
-                          
-
-                          map.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          });
+          
                       }
                       initMap();
-
+                      var mapListener = document.getElementById('map-{{event.event_id}}');
+                      mapListener.addEventListener("click",(e)=>{
+                        e.stopPropagation();
+                      });
                       
                   </script>
-                        <p>{{parkinfo.name}}, {{parkinfo.street}}</p>
+                    
+                        <p>{{parkinfo.name}}</p>
+                        <p> {{parkinfo.street}}</p>
                        
                         {% endif %}
                         {% endfor %}

@@ -281,7 +281,7 @@ body {
 } */
 .flipped{
   transform: rotateY(180deg);
-  height: 22rem;
+  height: 24rem;
 }
 
 .flipped_back{
@@ -290,7 +290,7 @@ body {
 }
 
 .card_flipped{
-  height: 22rem;
+  height: 24rem;
 }
 .card_flipped_back{
   height: 7rem;
