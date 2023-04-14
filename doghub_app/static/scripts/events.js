@@ -17,6 +17,8 @@ navs.forEach((nav) => {
   });
 });
 
+
+
 var registerBtnClicked=false;
 var registered=false;
 const registerBtns=document.querySelectorAll(".registerBtn")
@@ -98,6 +100,4 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
     back_content.classList.remove('back_content_flipped_back')
   } 
 }));
-
-
 

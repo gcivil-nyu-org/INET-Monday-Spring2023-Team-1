@@ -123,7 +123,7 @@
   pk: 12
   fields:
     name: Fox Playground Dog Run
-    street: null
+    street: "744 Fox St"
     city: "New York City"
     state: "NY"
     zipcode: "null"
@@ -289,7 +289,7 @@
   fields:
     name: Conference House Park Dog Run
     street: "Craig Ave &, Surf Ave"
-    city: null
+    city: "Staten Island"
     state: "NY"
     zipcode: "10307"
     latitude: "40.5002812819725"
@@ -343,7 +343,7 @@
   pk: 32
   fields:
     name: St. Nicholas Park Dog Run
-    street: null
+    street: "St. Nicholas Ave"
     city: "New York City"
     state: "NY"
     zipcode: "10032"
@@ -376,7 +376,7 @@
   pk: 35
   fields:
     name: J. Hood Wright Park Dog Run
-    street: null
+    street: "J. Hood Wright Park, W. 173 St & Haven Ave"
     city: "New York City"
     state: "NY"
     zipcode: "10033"
@@ -398,7 +398,7 @@
   pk: 37
   fields:
     name: Tribeca Dog Run
-    street: null
+    street: "114 Warren St"
     city: "New York City"
     state: "NY"
     zipcode: "10013"
@@ -442,7 +442,7 @@
   pk: 41
   fields:
     name: Pelham Bay Park Dog Run
-    street: null
+    street: "Unnamed Road"
     city: "Bronx"
     state: "NY"
     zipcode: "10465"
@@ -497,7 +497,7 @@
   pk: 46
   fields:
     name: Bellevue South Park Dog Run
-    street: null
+    street: "Mt Carmel Pl"
     city: "New York City"
     state: "NY"
     zipcode: "10016"
@@ -530,7 +530,7 @@
   pk: 49
   fields:
     name: Carl Schurz Park Small Dog Run
-    street: null
+    street: "East 86th Street & East End Ave"
     city: "New York City"
     state: "NY"
     zipcode: "10028"
@@ -728,7 +728,7 @@
   pk: 67
   fields:
     name: Coleman Oval Park Dog Run
-    street: null
+    street: "Monroe St"
     city: "New York City"
     state: "NY"
     zipcode: "10002"
@@ -761,10 +761,10 @@
   pk: 70
   fields:
     name: Tribeca Dog Park
-    street: null
+    street: "Hudson River Greenway"
     city: "New York City"
     state: "NY"
-    zipcode: "null"
+    zipcode: "10013"
     latitude: "40.7215355648627"
     longitude: "-74.0123351371298"
     use_coordinates: true
@@ -937,10 +937,10 @@
   pk: 87
   fields:
     name: Andrew Haswell Green Dog Run
-    street: null
+    street: "FDR Dr"
     city: "New York City"
     state: "NY"
-    zipcode: null
+    zipcode: "10002"
     latitude: "40.7602309329308"
     longitude: "-73.9568379736388"
     use_coordinates: true
