@@ -16,6 +16,7 @@ body {
     width: 100%;
     position: fixed;
     margin-top: 50px;
+    background-color:#e9e9e9
 }
 
 
@@ -149,6 +150,7 @@ body {
   .card:hover .content p {
     opacity:1;
   }
+
   
   .mail-area{
     display: block;
@@ -156,23 +158,24 @@ body {
     height: 100%;
     width: 100%;
     align-items: center;
-    background-color:#e9e9e9
-    ;
+    background-color:#e9e9e9;
+    overflow:visible;
   }
 
   .mail-area h1{
     position:center;
     height: 100%;
-    margin-left: 35%;
+    margin-left: 40%;
     margin-top: 5%;
   }
+
   .mail-area ul{
     list-style-type: none;
     position:center;
-    height: 85%;
+    height: 90%;
     width: 80%;
     padding-left: 32%;
-    overflow:auto;
+    overflow:scroll;
   }
 
   .mail-area li{

@@ -17,7 +17,7 @@ from datetime import date
 from .forms import (
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost, Park
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Park, Chat
 from _version import __version__
 from datetime import datetime
 import json
@@ -548,4 +548,8 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+    if Chat.objects.filter(receiver=request.user).exists():
+        messages = list(Chat.objects.filter(receiver=request.user))
+        messages.reverse()
+        context["messageList"] = messages
     return render(request, "doghub_app/inbox.html", context=context)
