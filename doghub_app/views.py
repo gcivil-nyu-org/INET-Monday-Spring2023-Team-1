@@ -17,7 +17,7 @@ from datetime import date
 from .forms import (
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost, Park, Chat
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Park, Chat, Attendee
 from _version import __version__
 from datetime import datetime
 import json
@@ -218,6 +218,7 @@ def events(request):
     context = {"userprof": user_prof}  # noqa: F841
 
     event_posts = list(EventPost.objects.all())
+    print(event_posts[0].event_id)
     print(event_posts)
     event_posts.reverse()
     context = {
@@ -243,10 +244,17 @@ def user_profile(request):
         return render(request, "doghub_app/register.html")
 
     dog_prof = DogProfile.objects.filter(user_id=request.user)
-    events_list = EventPost.objects.filter(user_id=request.user)
+    events_list = list(EventPost.objects.filter(user_id=request.user))
+    attendee_events = list(Attendee.objects.filter(user_id=request.user))
+    for attendee in attendee_events:
+        event = EventPost.objects.get(event_id=attendee.event_id.event_id)
+        if event.user_id != request.user:
+            print(event)
+            events_list.append(event)
+    print(events_list)
     context = {
         "userprof": user_prof,
-        "dogprof": list(dog_prof),
+        "dogprof": dog_prof,
         "media_url": settings.MEDIA_URL,
         "events_list": events_list,
     }
@@ -553,3 +561,16 @@ def inbox(request):
         messages.reverse()
         context["messageList"] = messages
     return render(request, "doghub_app/inbox.html", context=context)
+
+
+@login_required
+def rsvp_event(request, pk):
+    event = get_object_or_404(EventPost, pk=pk)
+    if request.method == "POST":
+        if Attendee.objects.filter(event_id=pk, user_id=request.user):
+            Attendee.objects.filter(event_id=pk, user_id=request.user).delete()
+        else:
+            rsvp = Attendee(event_id=event, user_id=request.user)
+            rsvp.save()
+    print("here")
+    return HttpResponse(status=200)

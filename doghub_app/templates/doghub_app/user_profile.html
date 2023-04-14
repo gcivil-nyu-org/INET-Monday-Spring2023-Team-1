@@ -188,7 +188,7 @@
           </div>  
           <div class="profile-reviews tab">
 
-    
+            <ul class="event_ls">
                 {% for event in events_list %}
 <!--                 <li class="">
                   <header style="border-radius: 10px;" class="proflist--item">                 
@@ -203,14 +203,13 @@
                   </header>
                </li> -->
 
-              <ul style="position:center;">
-
                 <li style="padding: 1rem; position:right; " >
                   <header style="display: inline-block;">
                   <div style=  "--border-radius: 0.75rem;
                --primary-color: #8012c0;
                --secondary-color: #3c3852;
                width: 450px;
+               min-height: 100px;
                font-family: 'Arial';
                padding: 1rem;
                cursor: pointer;
@@ -252,11 +251,11 @@
               </div>
             </header>
                 </li>
-
+                {% endfor %}
               </ul>
 
 
-                {% endfor %}
+              
 
 
           </div>

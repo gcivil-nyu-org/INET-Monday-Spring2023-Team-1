@@ -8,6 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {% load static %} 
     <link
       rel="stylesheet"
@@ -75,7 +76,7 @@
                       <div class="detail_content"><h3> Details</h3></div>
                      <div id="reg_ind" > <i  class="fa-regular fa-star"></i> </div>  
                     </div>
-                   <button class="registerBtn" id="registerBtn"><i id="registerIc" class="fa-regular fa-star"></i> RSVP</button>
+                   <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')"><i id="registerIc" class="fa-regular fa-star"></i> RSVP</button>
                 </div>
              </div>
            </li>

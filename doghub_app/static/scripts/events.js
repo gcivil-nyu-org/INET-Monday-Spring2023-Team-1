@@ -101,3 +101,15 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
 
 
 
+function rsvp_event(pk, token){
+  $.ajax({
+      url: 'rsvp_event/'+pk+'/',
+      type: 'POST',
+      data: { 
+      csrfmiddlewaretoken: token
+      },
+      success: function (res) {
+          return null
+      }
+  });
+}
