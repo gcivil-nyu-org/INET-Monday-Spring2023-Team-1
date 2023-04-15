@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAC2P9ywf4F9C4G6SuiL34zav0l0Gko3I"></script>
+
     {% load static %} 
     <link
       rel="stylesheet"
@@ -86,6 +88,42 @@
                       {% endif %}
                     </div>  
                     </div>
+                    
+                     {% for parkinfo in park %}
+                    {% if parkinfo.park_id == event.park_id.park_id %}
+                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
+                    
+                  
+                    <script>
+                      function initMap() {
+                          var myLatLng = {lat: {{ parkinfo.latitude }}, lng: {{ parkinfo.longitude }}};
+                          var map = new google.maps.Map(document.getElementById('map-{{ event.event_id }}'), {
+                              zoom: 17,
+                              center: myLatLng
+                          });
+                         
+                          var marker = new google.maps.Marker({
+                              position: myLatLng,
+                              map: map
+                          });
+          
+                      }
+                      initMap();
+                      var mapListener = document.getElementById('map-{{event.event_id}}');
+                      mapListener.addEventListener("click",(e)=>{
+                        e.stopPropagation();
+                      });
+                      
+                  </script>
+                    
+                        <p>{{parkinfo.name}}</p>
+                        <p> {{parkinfo.street}}</p>
+                       
+                        {% endif %}
+                        {% endfor %}
+                    
+                    
+                    
                     {% if event.host %}
                           <button class="registerBtn" id="registerBtn" style="pointer-events:none" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
                     {% else %}
@@ -97,6 +135,7 @@
                     <i id="registerIc" class="fa-regular fa-star"></i>
                     {% endif %}
                      RSVP</button>
+
                 </div>
              </div>
            </li>
@@ -117,4 +156,7 @@
 
   <script src= "{% static 'scripts/events.js' %}" ></script>
   </body>
+
+
+
 </html>

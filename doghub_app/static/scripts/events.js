@@ -17,6 +17,8 @@ navs.forEach((nav) => {
   });
 });
 
+
+
 var registerBtnClicked=false;
 var registered=false;
 const registerBtns=document.querySelectorAll(".registerBtn")
@@ -107,8 +109,6 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
   } 
 }));
 
-
-
 function rsvp_event(pk, token){
   $.ajax({
       url: 'rsvp_event/'+pk+'/',
@@ -121,3 +121,4 @@ function rsvp_event(pk, token){
       }
   });
 }
+
