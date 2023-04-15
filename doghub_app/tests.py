@@ -814,6 +814,12 @@ class TestRSVPfeature(TestCase):
             password="password123",
         )
 
+    def testRedirectRegister(self):
+        self.client.login(email="user1@host2.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/register.html")
+
     def testRsvp(self):
         self.event = EventPost.objects.create(
             user_id=self.user_host,
@@ -880,6 +886,6 @@ class PrivateUserProfileTestCases(TestCase):
         url = reverse("user_profile")
         response = self.client.get(url)
         self.assertTemplateUsed(response, "doghub_app/user_profile.html")
-
         self.assertEqual(len(response.context["events_list"]), 1)
         self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+        self.assertEqual(len(response.context["dogprof"]), 0)
