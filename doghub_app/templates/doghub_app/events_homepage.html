@@ -67,16 +67,36 @@
           <li class="card">
             <div class="card-inner">
                 <div class="front">
-                  <h3 class="card__title"> {{event.event_title}}</h3>
-                  <p> {{event.event_description}}</p>
-                   <div class="card__date">{{event.event_time}} </div>
+                  <h3 class="card__title"> {{event.event_info.event_title}}</h3>
+                  <p> Host By: {{event.hostname}}</p>
+                  <div class="event-description">
+                  <p> {{event.event_info.event_description}}</p>
+                  </div>
+                  
+                   <div class="card__date">{{event.event_info.event_time}} </div>
                 </div>
                 <div class="back">
                     <div class="back_content">
                       <div class="detail_content"><h3> Details</h3></div>
-                     <div id="reg_ind" > <i  class="fa-regular fa-star"></i> </div>  
+                     <div id="reg_ind" > 
+                      {% if event.attendee %}
+                       <i id="registerIc" class="fa-solid fa-star"></i>
+                      {% else %}
+                      <i id="registerIc" class="fa-regular fa-star"></i>
+                      {% endif %}
+                    </div>  
                     </div>
-                   <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')"><i id="registerIc" class="fa-regular fa-star"></i> RSVP</button>
+                    {% if event.host %}
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                    {% else %}
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                    {% endif %}    
+                    {% if event.attendee %}
+                    <i id="registerIc" class="fa-solid fa-star"></i>
+                    {% else %}
+                    <i id="registerIc" class="fa-regular fa-star"></i>
+                    {% endif %}
+                     RSVP</button>
                 </div>
              </div>
            </li>

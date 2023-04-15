@@ -221,9 +221,23 @@ def events(request):
     print(event_posts[0].event_id)
     print(event_posts)
     event_posts.reverse()
+    event_ls = []
+    for event in event_posts:
+        cur_event = {}
+        cur_event["event_info"] = event
+        cur_event["hostname"] = CustomUser.objects.get(id=event.user_id.id).username
+        if event.user_id == request.user:
+            cur_event["host"] = True
+        else:
+            cur_event["host"] = False
+        if Attendee.objects.filter(event_id=event.event_id, user_id=request.user):
+            cur_event["attendee"] = True
+        else:
+            cur_event["attendee"] = False
+        event_ls.append(cur_event)
     context = {
         "userprof": user_prof,
-        "event_posts": event_posts,
+        "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
     }  # noqa: F841
 
@@ -453,6 +467,8 @@ def add_post(request):
 
             event_post.user_id = request.user
             event_post.save()
+            attendee = Attendee(user_id=request.user, event_id=event_post)
+            attendee.save()
             messages.success(request, "Your post has been added!")
             return redirect("events")
     else:

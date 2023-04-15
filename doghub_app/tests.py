@@ -7,7 +7,15 @@ from django.contrib.auth import get_user_model
 
 from unittest.mock import patch
 
-from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park, EventPost
+from doghub_app.models import (
+    CustomUser,
+    UserProfile,
+    DogProfile,
+    Tag,
+    Park,
+    EventPost,
+    Attendee,
+)
 
 from doghub_app.tokens import verification_token_generator
 
@@ -335,6 +343,16 @@ class AddPostViewTestCase(TestCase):
         self.client.login(username="testuser@test.com", password="Test@123")
         response = self.client.get(self.url, data=self.valid_data)
         self.assertTemplateUsed(response, "doghub_app/add_event.html")
+
+    def test_attendee(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post(self.url, data=self.valid_data)
+        self.assertEqual(response.status_code, 302)
+        event_post = EventPost.objects.first()
+        self.assertNotEqual(
+            Attendee.objects.filter(event_id=event_post.event_id, user_id=self.user),
+            None,
+        )
 
     # def test_add_post_view_with_invalid_location(self):
     #   self.client.login(username='testuser', password='Test@123')
@@ -720,3 +738,40 @@ class InboxTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "doghub_app/inbox.html")
         self.assertEqual(response.context["user"], self.user1)
+
+
+class TestRSVPfeature(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user_attendee = CustomUser.objects.create_user(
+            username="user1@attendee.com",
+            email="user1@attendee1.com",
+            password="password123",
+        )
+        self.user_host = CustomUser.objects.create_user(
+            username="user1@host.com",
+            email="user1@host2.com",
+            password="password123",
+        )
+        self.event = EventPost.objects.create(
+            user_id=self.user_host,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+
+    def testRsvp(self):
+        self.client.login(email="user1@attendee.com", password="password123")
+        url = reverse("rsvp_event", args=[self.event.event_id])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200)
+        response.status_code
+        self.assertNotEqual(
+            Attendee.objects.filter(
+                event_id=self.event.event_id, user_id=self.user_attendee
+            ),
+            None,
+        )
