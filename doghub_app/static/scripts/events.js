@@ -1,5 +1,4 @@
 const navs = document.querySelectorAll(".side-bar > ul > li");
-
 navs.forEach((nav) => {
   nav.addEventListener("click", (e) => {
     document.querySelector(".nav-tab.active").classList.remove("active");
@@ -121,4 +120,3 @@ function rsvp_event(pk, token){
       }
   });
 }
-

@@ -15,6 +15,7 @@ from doghub_app.models import (
     Park,
     EventPost,
     Attendee,
+    Chat,
 )
 
 from doghub_app.tokens import verification_token_generator
@@ -730,6 +731,16 @@ class InboxTestCase(TestCase):
             email="user1@example.com",
             password="password123",
         )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password123",
+        )
+        self.message = Chat.objects.create(
+            receiver=self.user1,
+            sender=self.user2,
+            text="This is test Message",
+        )
 
     def test_inbox_template(self):
         self.client.login(email="user1@example.com", password="password123")
@@ -738,6 +749,42 @@ class InboxTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "doghub_app/inbox.html")
         self.assertEqual(response.context["user"], self.user1)
+
+    def test_inbox_messages(self):
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("inbox")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["messageList"]), 1)
+        self.assertEqual(response.context["messageList"][0].sender, self.user2)
+        self.assertEqual(response.context["messageList"][0].receiver, self.user1)
+        self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
+
+
+class ChatTestCases(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password123",
+        )
+        self.message = Chat.objects.create(
+            receiver=self.user1,
+            sender=self.user2,
+            text="This is test Message",
+        )
+
+    def createTest(self):
+        self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
+        chat_message = Chat.objects.count().first()
+        self.assertEqual(chat_message.sender, self.user2)
+        self.assertEqual(chat_message.receiver, self.user1)
+        self.assertEqual(chat_message.text, "This is test Message")
 
 
 class TestRSVPfeature(TestCase):
@@ -775,3 +822,42 @@ class TestRSVPfeature(TestCase):
             ),
             None,
         )
+
+    def retrieveEvent(self):
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        print(response.context)
+        self.assertEqual(len(response.context["events_list"]), 1)
+        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+
+
+class PrivateUserProfileTestCases(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user_attendee = CustomUser.objects.create_user(
+            username="user1@attendee.com",
+            email="user1@attendee1.com",
+            password="password123",
+        )
+        self.user_host = CustomUser.objects.create_user(
+            username="user1@host.com",
+            email="user1@host2.com",
+            password="password123",
+        )
+        self.event = EventPost.objects.create(
+            user_id=self.user_host,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+
+    def retrieveEvent(self):
+        self.client.login(email="user1@host2.com", password="password123")
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["events_list"]), 1)
+        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)

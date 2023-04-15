@@ -587,5 +587,4 @@ def rsvp_event(request, pk):
         else:
             rsvp = Attendee(event_id=event, user_id=request.user)
             rsvp.save()
-    print("here")
     return HttpResponse(status=200)

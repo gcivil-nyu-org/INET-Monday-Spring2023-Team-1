@@ -90,14 +90,14 @@
                     </div>
                     
                      {% for parkinfo in park %}
-                    {% if parkinfo.park_id == event.park_id.park_id %}
-                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
+                    {% if parkinfo.park_id == event.event_info.park_id.park_id %}
+                    <div id ="map-{{event.event_info.event_id}}" style= "height:200px; width:97%;"></div>
                     
                   
                     <script>
-                      function initMap() {
+                        function initMap() {
                           var myLatLng = {lat: {{ parkinfo.latitude }}, lng: {{ parkinfo.longitude }}};
-                          var map = new google.maps.Map(document.getElementById('map-{{ event.event_id }}'), {
+                          var map = new google.maps.Map(document.getElementById('map-{{event.event_info.event_id }}'), {
                               zoom: 17,
                               center: myLatLng
                           });
@@ -109,7 +109,8 @@
           
                       }
                       initMap();
-                      var mapListener = document.getElementById('map-{{event.event_id}}');
+                      console.log('init Map')
+                      var mapListener = document.getElementById('map-{{event.event_info.event_id}}');
                       mapListener.addEventListener("click",(e)=>{
                         e.stopPropagation();
                       });
