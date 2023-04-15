@@ -731,6 +731,13 @@ class InboxTestCase(TestCase):
             email="user1@example.com",
             password="password123",
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user1,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
         self.user2 = CustomUser.objects.create_user(
             username="user2@example.com",
             email="user2@example.com",
@@ -789,47 +796,46 @@ class ChatTestCases(TestCase):
 
 class TestRSVPfeature(TestCase):
     def setUp(self):
-        self.user1 = CustomUser.objects.create_user(
-            username="user1@example.com",
-            email="user1@example.com",
-            password="password123",
-        )
         self.user_attendee = CustomUser.objects.create_user(
             username="user1@attendee.com",
             email="user1@attendee1.com",
             password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user_attendee,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
         )
         self.user_host = CustomUser.objects.create_user(
             username="user1@host.com",
             email="user1@host2.com",
             password="password123",
         )
+
+    def testRsvp(self):
         self.event = EventPost.objects.create(
             user_id=self.user_host,
             event_title="Test Event",
             event_description="Test Description",
         )
-
-    def testRsvp(self):
         self.client.login(email="user1@attendee.com", password="password123")
         url = reverse("rsvp_event", args=[self.event.event_id])
         response = self.client.post(url)
         self.assertEqual(response.status_code, 200)
-        response.status_code
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["events_list"]), 1)
+        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+
         self.assertNotEqual(
             Attendee.objects.filter(
                 event_id=self.event.event_id, user_id=self.user_attendee
             ),
             None,
         )
-
-    def retrieveEvent(self):
-        url = reverse("user_profile")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        print(response.context)
-        self.assertEqual(len(response.context["events_list"]), 1)
-        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
 
 
 class PrivateUserProfileTestCases(TestCase):
@@ -839,6 +845,7 @@ class PrivateUserProfileTestCases(TestCase):
             email="user1@example.com",
             password="password123",
         )
+
         self.user_attendee = CustomUser.objects.create_user(
             username="user1@attendee.com",
             email="user1@attendee1.com",
@@ -849,15 +856,30 @@ class PrivateUserProfileTestCases(TestCase):
             email="user1@host2.com",
             password="password123",
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user_host,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
         self.event = EventPost.objects.create(
             user_id=self.user_host,
             event_title="Test Event",
             event_description="Test Description",
         )
 
-    def retrieveEvent(self):
+    def testRedirectRegister(self):
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/register.html")
+
+    def testEventRetrieve(self):
         self.client.login(email="user1@host2.com", password="password123")
         url = reverse("user_profile")
         response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/user_profile.html")
+
         self.assertEqual(len(response.context["events_list"]), 1)
         self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
