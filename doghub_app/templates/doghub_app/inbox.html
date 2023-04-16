@@ -21,47 +21,28 @@
   </head>
   <body>
     <div class="mail-area">
+        {% if messageList %}
         <ul>
+            {% for message in messageList %}
             <li>
                 <div class="container">
                     <div class="card">
                         <div class="cover">
-                            <h2><i class="fa fa-envelope"  aria-hidden="true"></i>Mail</h2>
-                            <p>From Helen Qi</p>
+                            <h2><i class="fa fa-envelope"  aria-hidden="true"></i>From {{message.sender.username}}</h2>
+                            <!-- <p>From {{message.sender.username}}</p> -->
+                            <p>Received at {{message.timestamp}}</p>
                         </div>
                         <div class="content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. </p>
+                            <p>{{message.text}} </p>
                         </div>
                     </div>
                 </div>
             </li>
-            <li>
-                <div class="container">
-                    <div class="card">
-                        <div class="cover">
-                            <h2><i class="fa fa-envelope"  aria-hidden="true"></i>Mail</h2>
-                            <p>From Helen Qi</p>
-                        </div>
-                        <div class="content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. </p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="container">
-                    <div class="card">
-                        <div class="cover">
-                            <h2><i class="fa fa-envelope"  aria-hidden="true"></i>Mail</h2>
-                            <p>From Helen Qi</p>
-                        </div>
-                        <div class="content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique senectus et netus. Neque vitae tempus quam pellentesque nec. </p>
-                        </div>
-                    </div>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
+        {% else %}
+        <h1>No Message</h1>
+        {% endif %} 
     </div>
     <script src= "{% static 'scripts/inbox.js' %}" ></script>
   </body>

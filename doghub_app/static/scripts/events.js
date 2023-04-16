@@ -1,5 +1,4 @@
 const navs = document.querySelectorAll(".side-bar > ul > li");
-
 navs.forEach((nav) => {
   nav.addEventListener("click", (e) => {
     document.querySelector(".nav-tab.active").classList.remove("active");
@@ -26,11 +25,19 @@ const registerBtns=document.querySelectorAll(".registerBtn")
     b.addEventListener("click",()=>{
       registerBtnClicked=true;
       console.log(b.classList)
-      console.log(b.firstChild)
+      console.log(b.firstElementChild)
+      if(b.firstElementChild.classList.contains('fa-solid')){
+        b.firstElementChild.classList.remove('fa-solid');
+        b.firstElementChild.classList.add('fa-regular');
+      }
+      else{
+        b.firstElementChild.classList.remove('fa-regular');
+        b.firstElementChild.classList.add('fa-solid');
+      }
       if(b.classList.contains('registered')){
         console.log("clicked_reg")
-        b.firstChild.classList.remove('fa-solid');
-        b.firstChild.classList.add('fa-regular');
+        // b.firstChild.classList.remove('fa-solid');
+        // b.firstChild.classList.add('fa-regular');
         registered=false;
         b.classList.remove('registered')
         b.style.backgroundColor="#6f36a8"
@@ -38,8 +45,8 @@ const registerBtns=document.querySelectorAll(".registerBtn")
       }
       else{   
         console.log(b.firstChild)
-        b.firstChild.classList.remove('fa-regula');
-        b.firstChild.classList.add('fa-solid');
+        // b.firstChild.classList.remove('fa-regula');
+        // b.firstChild.classList.add('fa-solid');
         b.classList.add('registered')
         registered=true;
         b.style.backgroundColor="#5886a8"
@@ -69,7 +76,7 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
     reg_icon= card.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.firstElementChild
     console.log(registered)
     registerBtnClicked=false;
-    if(registered){
+    if(reg_icon.classList.contains('fa-regular')){
       reg_icon.classList.remove('fa-regular');
       reg_icon.classList.add('fa-solid');
     }
@@ -101,3 +108,15 @@ card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
   } 
 }));
 
+function rsvp_event(pk, token){
+  $.ajax({
+      url: 'rsvp_event/'+pk+'/',
+      type: 'POST',
+      data: { 
+      csrfmiddlewaretoken: token
+      },
+      success: function (res) {
+          return null
+      }
+  });
+}

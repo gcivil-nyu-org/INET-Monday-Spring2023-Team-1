@@ -8,8 +8,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAC2P9ywf4F9C4G6SuiL34zav0l0Gko3I"></script>
-    
+
     {% load static %} 
     <link
       rel="stylesheet"
@@ -68,28 +69,35 @@
           <li class="card">
             <div class="card-inner">
                 <div class="front">
-                  <h3 class="card__title"> {{event.event_title}}</h3>
-                  <p> {{event.event_description}}</p>
-                   <div class="card__date">{{event.event_time}} </div>
+                  <h3 class="card__title"> {{event.event_info.event_title}}</h3>
+                  <p> Host By: {{event.hostname}}</p>
+                  <div class="event-description">
+                  <p> {{event.event_info.event_description}}</p>
+                  </div>
+                  
+                   <div class="card__date">{{event.event_info.event_time}} </div>
                 </div>
                 <div class="back">
                     <div class="back_content">
                       <div class="detail_content"><h3> Details</h3></div>
-           
-                     <div id="reg_ind" > <i  class="fa-regular fa-star"></i> </div>  
+                     <div id="reg_ind" > 
+                      {% if event.attendee %}
+                       <i id="registerIc" class="fa-solid fa-star"></i>
+                      {% else %}
+                      <i id="registerIc" class="fa-regular fa-star"></i>
+                      {% endif %}
+                    </div>  
                     </div>
-                 
-                 
-                   
-                    {% for parkinfo in park %}
-                    {% if parkinfo.park_id == event.park_id.park_id %}
-                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
+                    
+                     {% for parkinfo in park %}
+                    {% if parkinfo.park_id == event.event_info.park_id.park_id %}
+                    <div id ="map-{{event.event_info.event_id}}" style= "height:200px; width:97%;"></div>
                     
                   
                     <script>
-                      function initMap() {
+                        function initMap() {
                           var myLatLng = {lat: {{ parkinfo.latitude }}, lng: {{ parkinfo.longitude }}};
-                          var map = new google.maps.Map(document.getElementById('map-{{ event.event_id }}'), {
+                          var map = new google.maps.Map(document.getElementById('map-{{event.event_info.event_id }}'), {
                               zoom: 17,
                               center: myLatLng
                           });
@@ -101,7 +109,8 @@
           
                       }
                       initMap();
-                      var mapListener = document.getElementById('map-{{event.event_id}}');
+                      console.log('init Map')
+                      var mapListener = document.getElementById('map-{{event.event_info.event_id}}');
                       mapListener.addEventListener("click",(e)=>{
                         e.stopPropagation();
                       });
@@ -113,8 +122,21 @@
                        
                         {% endif %}
                         {% endfor %}
+                    
+                    
+                    
+                    {% if event.host %}
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                    {% else %}
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                    {% endif %}    
+                    {% if event.attendee %}
+                    <i id="registerIc" class="fa-solid fa-star" style="opacity: 0;"></i>
+                    {% else %}
+                    <i id="registerIc" class="fa-regular fa-star"></i>
+                    {% endif %}
+                     RSVP</button>
 
-                   <button class="registerBtn" id="registerBtn"><i id="registerIc" class="fa-regular fa-star"></i> RSVP</button>
                 </div>
              </div>
            </li>

@@ -17,7 +17,7 @@ from datetime import date
 from .forms import (
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost, Park
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Park, Chat, Attendee
 from _version import __version__
 from datetime import datetime
 import json
@@ -218,11 +218,24 @@ def events(request):
     context = {"userprof": user_prof}  # noqa: F841
     park = list(Park.objects.all())
     event_posts = list(EventPost.objects.all())
-    print(event_posts)
     event_posts.reverse()
+    event_ls = []
+    for event in event_posts:
+        cur_event = {}
+        cur_event["event_info"] = event
+        cur_event["hostname"] = CustomUser.objects.get(id=event.user_id.id).username
+        if event.user_id == request.user:
+            cur_event["host"] = True
+        else:
+            cur_event["host"] = False
+        if Attendee.objects.filter(event_id=event.event_id, user_id=request.user):
+            cur_event["attendee"] = True
+        else:
+            cur_event["attendee"] = False
+        event_ls.append(cur_event)
     context = {
         "userprof": user_prof,
-        "event_posts": event_posts,
+        "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
     }  # noqa: F841
@@ -244,10 +257,17 @@ def user_profile(request):
         return render(request, "doghub_app/register.html")
 
     dog_prof = DogProfile.objects.filter(user_id=request.user)
-    events_list = EventPost.objects.filter(user_id=request.user)
+    events_list = list(EventPost.objects.filter(user_id=request.user))
+    attendee_events = list(Attendee.objects.filter(user_id=request.user))
+    for attendee in attendee_events:
+        event = EventPost.objects.get(event_id=attendee.event_id.event_id)
+        if event.user_id != request.user:
+            print(event)
+            events_list.append(event)
+    print(events_list)
     context = {
         "userprof": user_prof,
-        "dogprof": list(dog_prof),
+        "dogprof": dog_prof,
         "media_url": settings.MEDIA_URL,
         "events_list": events_list,
     }
@@ -446,6 +466,8 @@ def add_post(request):
 
             event_post.user_id = request.user
             event_post.save()
+            attendee = Attendee(user_id=request.user, event_id=event_post)
+            attendee.save()
             messages.success(request, "Your post has been added!")
             return redirect("events")
     else:
@@ -549,4 +571,20 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+    if Chat.objects.filter(receiver=request.user).exists():
+        messages = list(Chat.objects.filter(receiver=request.user))
+        messages.reverse()
+        context["messageList"] = messages
     return render(request, "doghub_app/inbox.html", context=context)
+
+
+@login_required
+def rsvp_event(request, pk):
+    event = get_object_or_404(EventPost, pk=pk)
+    if request.method == "POST":
+        if Attendee.objects.filter(event_id=pk, user_id=request.user):
+            Attendee.objects.filter(event_id=pk, user_id=request.user).delete()
+        else:
+            rsvp = Attendee(event_id=event, user_id=request.user)
+            rsvp.save()
+    return HttpResponse(status=200)

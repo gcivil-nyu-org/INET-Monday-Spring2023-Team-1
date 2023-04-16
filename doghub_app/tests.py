@@ -7,7 +7,16 @@ from django.contrib.auth import get_user_model
 
 from unittest.mock import patch
 
-from doghub_app.models import CustomUser, UserProfile, DogProfile, Tag, Park, EventPost
+from doghub_app.models import (
+    CustomUser,
+    UserProfile,
+    DogProfile,
+    Tag,
+    Park,
+    EventPost,
+    Attendee,
+    Chat,
+)
 
 from doghub_app.tokens import verification_token_generator
 
@@ -335,6 +344,16 @@ class AddPostViewTestCase(TestCase):
         self.client.login(username="testuser@test.com", password="Test@123")
         response = self.client.get(self.url, data=self.valid_data)
         self.assertTemplateUsed(response, "doghub_app/add_event.html")
+
+    def test_attendee(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post(self.url, data=self.valid_data)
+        self.assertEqual(response.status_code, 302)
+        event_post = EventPost.objects.first()
+        self.assertNotEqual(
+            Attendee.objects.filter(event_id=event_post.event_id, user_id=self.user),
+            None,
+        )
 
     # def test_add_post_view_with_invalid_location(self):
     #   self.client.login(username='testuser', password='Test@123')
@@ -712,6 +731,23 @@ class InboxTestCase(TestCase):
             email="user1@example.com",
             password="password123",
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user1,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password123",
+        )
+        self.message = Chat.objects.create(
+            receiver=self.user1,
+            sender=self.user2,
+            text="This is test Message",
+        )
 
     def test_inbox_template(self):
         self.client.login(email="user1@example.com", password="password123")
@@ -720,3 +756,136 @@ class InboxTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "doghub_app/inbox.html")
         self.assertEqual(response.context["user"], self.user1)
+
+    def test_inbox_messages(self):
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("inbox")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["messageList"]), 1)
+        self.assertEqual(response.context["messageList"][0].sender, self.user2)
+        self.assertEqual(response.context["messageList"][0].receiver, self.user1)
+        self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
+
+
+class ChatTestCases(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@example.com",
+            email="user2@example.com",
+            password="password123",
+        )
+        self.message = Chat.objects.create(
+            receiver=self.user1,
+            sender=self.user2,
+            text="This is test Message",
+        )
+
+    def createTest(self):
+        self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
+        chat_message = Chat.objects.count().first()
+        self.assertEqual(chat_message.sender, self.user2)
+        self.assertEqual(chat_message.receiver, self.user1)
+        self.assertEqual(chat_message.text, "This is test Message")
+
+
+class TestRSVPfeature(TestCase):
+    def setUp(self):
+        self.user_attendee = CustomUser.objects.create_user(
+            username="user1@attendee.com",
+            email="user1@attendee1.com",
+            password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user_attendee,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.user_host = CustomUser.objects.create_user(
+            username="user1@host.com",
+            email="user1@host2.com",
+            password="password123",
+        )
+
+    def testRedirectRegister(self):
+        self.client.login(email="user1@host2.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/register.html")
+
+    def testRsvp(self):
+        self.event = EventPost.objects.create(
+            user_id=self.user_host,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+        self.client.login(email="user1@attendee.com", password="password123")
+        url = reverse("rsvp_event", args=[self.event.event_id])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200)
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["events_list"]), 1)
+        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+
+        self.assertNotEqual(
+            Attendee.objects.filter(
+                event_id=self.event.event_id, user_id=self.user_attendee
+            ),
+            None,
+        )
+
+
+class PrivateUserProfileTestCases(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1@example.com",
+            email="user1@example.com",
+            password="password123",
+        )
+
+        self.user_attendee = CustomUser.objects.create_user(
+            username="user1@attendee.com",
+            email="user1@attendee1.com",
+            password="password123",
+        )
+        self.user_host = CustomUser.objects.create_user(
+            username="user1@host.com",
+            email="user1@host2.com",
+            password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user_host,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.event = EventPost.objects.create(
+            user_id=self.user_host,
+            event_title="Test Event",
+            event_description="Test Description",
+        )
+
+    def testRedirectRegister(self):
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/register.html")
+
+    def testEventRetrieve(self):
+        self.client.login(email="user1@host2.com", password="password123")
+        url = reverse("user_profile")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/user_profile.html")
+        self.assertEqual(len(response.context["events_list"]), 1)
+        self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+        self.assertEqual(len(response.context["dogprof"]), 0)

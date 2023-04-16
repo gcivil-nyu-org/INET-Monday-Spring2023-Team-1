@@ -85,7 +85,7 @@
   }
 
   .s1.open-menu{
-    max-height: 300px;
+    min-height: 340px;
   }
   .s2{
     background: #9a7dc8;

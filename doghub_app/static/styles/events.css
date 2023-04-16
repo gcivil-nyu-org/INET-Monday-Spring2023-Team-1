@@ -244,7 +244,7 @@ body {
 
 .card{
   width: 29rem;
-  height: 7rem;
+  height: 15rem;
   font-family: 'Arial';
 }
 
@@ -253,7 +253,7 @@ body {
   --primary-color: #8012c0;
   --secondary-color: #3c3852;
   width: 29rem;
-  height: 7rem;
+  height: 15rem;
   font-family: 'Arial';
   padding: 1rem;
   cursor: pointer;
@@ -275,7 +275,9 @@ body {
    -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
 }
-
+.card__date{
+  margin-top: 2rem;
+}
 /* .card:hover .card-inner{
   transform: rotateY(180deg);
 } */
@@ -286,14 +288,14 @@ body {
 
 .flipped_back{
   transform: rotateY(360deg);
-  height: 7rem;
+  height: 15rem;
 }
 
 .card_flipped{
   height: 24rem;
 }
 .card_flipped_back{
-  height: 7rem;
+  height: 15rem;
 }
 
 
@@ -307,6 +309,9 @@ body {
   backface-visibility: hidden;
 }
 
+.front p{
+  font-size: 20px;
+}
 
 /* Style the back side */
 .back {
@@ -390,4 +395,19 @@ ul {
   overflow: hidden;
   height: 65px;
   width:100%;
+}
+
+.event-description{
+    width: 20rem;
+    height: 3rem;
+    font-family: 'Arial';
+    padding: 1rem;
+    margin-left: 3rem;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    border-width: 5px;
+    text-align: center;
+    background: #f1f1f3;
+    position: relative;
+    overflow:auto
 }
