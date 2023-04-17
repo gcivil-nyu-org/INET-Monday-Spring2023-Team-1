@@ -45,6 +45,12 @@
       <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/user_profile.css' %}" />
       <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/tags.css' %}" />
+      <div class="message" >
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success" id="fade">{{ message }}</div>
+          {% endfor %}
+        {% endif %}</div>
       <title>Log In</title>
   </head>
   <body>
@@ -82,8 +88,10 @@
           </div>
           <div class="profile-btn">
             <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
-            <button class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Follow</button>
-          </div>
+            <form action="{% url 'add_friend' email=friend.email %}" method="post">
+              {% csrf_token %}
+            <button type="submit" class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Add Friend</button>
+          </form></div>
           <!-- <div class="user-rating">
             <h3 class="rating">4.5</h3>
             <div class="rate">

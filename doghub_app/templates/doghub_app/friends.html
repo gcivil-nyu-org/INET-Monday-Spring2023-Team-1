@@ -1,0 +1,35 @@
+{% include "doghub_app/nav_bar.html" %}{% load static %} 
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="{% static 'styles/friends.css' %}"
+    />
+{% block content %}<div class="friend">
+  <h2>Friends List</h2>
+  
+  <div class="tab-pane fade active show" id="profile-friends">
+    <div class="m-b-10"><b>Friend List</b></div>
+    {% for user_profile in user_profiles %}
+    <ul class="friend-list clearfix">
+        <li>
+            <a href="{% url 'public-profile' user_profile.email   %}">
+                <div class="friend-img"><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}">
+                </div>
+                <div class="friend-info">
+                    <h4>{{ user_profile.fname }}</h4>
+                    <h4>{{ user_profile.lname }}</h4>
+                    <p>{{ user_profile.email }}</p>
+                </div>
+            </a>
+        </li>
+        {% empty %}
+    <li>You have no friends.</li>
+    {% endfor %}
+    
+       
+        
+    </ul>
+</div>
+</div></div>
+{% endblock %}

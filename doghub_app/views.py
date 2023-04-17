@@ -17,9 +17,20 @@ from datetime import date
 from .forms import (
     EventPostForm,
 )
-from .models import CustomUser, UserProfile, DogProfile, EventPost, Park, Chat, Attendee
+from .models import (
+    CustomUser,
+    UserProfile,
+    DogProfile,
+    EventPost,
+    Park,
+    Chat,
+    Attendee,
+    Friends,
+)
 from _version import __version__
 from datetime import datetime
+from django.db.models import Q
+
 import json
 
 
@@ -220,6 +231,8 @@ def events(request):
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
     event_ls = []
+    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    print(friends)
     for event in event_posts:
         cur_event = {}
         cur_event["event_info"] = event
@@ -238,6 +251,7 @@ def events(request):
         "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
+        "friends": friends,
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
@@ -491,6 +505,7 @@ def public_profile(request, email):
         dog_prof = DogProfile.objects.filter(user_id=user.id)
         events_list = EventPost.objects.filter(user_id=request.user.id)
         user_prof = UserProfile.objects.get(user_id=request.user.id)
+        friend = get_object_or_404(CustomUser, email=email)
 
         context = {
             "user": user,
@@ -499,6 +514,7 @@ def public_profile(request, email):
             "media_url": settings.MEDIA_URL,
             "events_list": list(events_list),
             "userprof": user_prof,
+            "friend": friend,
         }
         return render(
             request=request,
@@ -588,3 +604,45 @@ def rsvp_event(request, pk):
             rsvp = Attendee(event_id=event, user_id=request.user)
             rsvp.save()
     return HttpResponse(status=200)
+
+
+@login_required
+def add_friend(request, email):
+    friend = get_object_or_404(CustomUser, email=email)
+    if request.user == friend:
+        messages.warning(request, "You cannot add yourself as a friend.")
+        return redirect("public-profile", email=email)
+
+    if Friends.objects.filter(sender=request.user, receiver=friend).exists():
+        messages.warning(request, f"You are already friends with {friend.email}.")
+        return redirect("public-profile", email=email)
+
+    Friends.objects.create(sender=request.user, receiver=friend)
+    messages.success(request, f"You have added {friend.email} as a friend.")
+    return redirect("public-profile", email=email)
+
+
+@login_required
+def friends(request):
+    # friend_profiles = []
+    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    user_profiles = []
+    for friend in friends:
+        if friend.sender == request.user:
+            friend_user = friend.receiver
+        else:
+            friend_user = friend.sender
+        friend_profile = UserProfile.objects.get(user_id=friend_user.id)
+        user_profiles.append(
+            {
+                "fname": friend_profile.fname,
+                "lname": friend_profile.lname,
+                "email": friend_user.email,
+                "pic": friend_profile.pic,
+            }
+        )
+    context = {
+        "user_profiles": user_profiles,
+        "media_url": settings.MEDIA_URL,
+    }
+    return render(request, "doghub_app/friends.html", context)
