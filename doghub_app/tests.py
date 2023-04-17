@@ -16,6 +16,7 @@ from doghub_app.models import (
     EventPost,
     Attendee,
     Chat,
+    Friends,
 )
 
 from doghub_app.tokens import verification_token_generator
@@ -889,3 +890,35 @@ class PrivateUserProfileTestCases(TestCase):
         self.assertEqual(len(response.context["events_list"]), 1)
         self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
         self.assertEqual(len(response.context["dogprof"]), 0)
+
+
+class AddFriendTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            username="testuser", email="testuser@example.com", password="testpass"
+        )
+        self.friend = CustomUser.objects.create_user(
+            username="testfriend", email="testfriend@example.com", password="testpass"
+        )
+        self.url = reverse("add_friend", args=[self.friend.email])
+        self.client.login(username="testuser", password="testpass")
+
+    def test_add_friend(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Friends.objects.count(), 1)
+        self.assertEqual(Friends.objects.first().sender, self.user)
+        self.assertEqual(Friends.objects.first().receiver, self.friend)
+
+    def test_add_self_as_friend(self):
+        url = reverse("add_friend", args=[self.user.email])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Friends.objects.count(), 0)
+
+    def test_add_existing_friend(self):
+        Friends.objects.create(sender=self.user, receiver=self.friend)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Friends.objects.count(), 1)

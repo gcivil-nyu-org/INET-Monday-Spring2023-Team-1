@@ -40,7 +40,7 @@
           </a>
         </li>
         <li class="nav-tab" data-view-name="friend">
-          <a href="#">
+          <a href="{% url 'friends' %}">
             <i class="fa-brands fa-gratipay"></i>
             <span>
               Friends
@@ -146,8 +146,9 @@
         <h1>No Posts</h1>
         {% endif %}
       </div>
-      <div class="friend" data-view-active="false">
+      <div class="friend" data-view-active="true">
         <h1>Friends</h1>
+        
       </div>
       <div class="group" data-view-active="false">
         <h1>Groups</h1>

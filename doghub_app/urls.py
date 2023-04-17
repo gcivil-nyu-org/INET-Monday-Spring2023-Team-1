@@ -48,6 +48,8 @@ urlpatterns = [
     path("public-profile/<email>", views.public_profile, name="public-profile"),
     path("search-user", views.search_user, name="search-user"),
     path("rsvp_event/<int:pk>/", views.rsvp_event, name="rsvp_event"),
+    path("friends/", views.friends, name="friends"),
+    path("add-friend/<str:email>/", views.add_friend, name="add_friend"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
