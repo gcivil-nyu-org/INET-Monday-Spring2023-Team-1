@@ -258,6 +258,7 @@ def user_profile(request):
 
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     events_list = list(EventPost.objects.filter(user_id=request.user))
+    events_list.reverse()
     attendee_events = list(Attendee.objects.filter(user_id=request.user))
     for attendee in attendee_events:
         event = EventPost.objects.get(event_id=attendee.event_id.event_id)
