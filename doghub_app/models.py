@@ -65,7 +65,7 @@ class DogProfile(models.Model):
     name = models.CharField(max_length=MID_CHAR_SIZE)
     dob = models.DateField()
     bio = models.CharField(max_length=LARGE_CHAR_SIZE)
-    user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+    user_id = models.ForeignKey(AUTH_USER_MODEL, models.CASCADE, db_column="user_id")
     bre_id = models.ForeignKey(
         DogBreed, models.DO_NOTHING, db_column="bre_id", null=True, blank=True
     )
@@ -130,7 +130,7 @@ class Tag(models.Model):
 
 class DogTag(models.Model):
     dtag_id = models.AutoField(primary_key=True)
-    dog_id = models.ForeignKey(DogProfile, models.DO_NOTHING, db_column="dog_id")
+    dog_id = models.ForeignKey(DogProfile, models.CASCADE, db_column="dog_id")
     tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
 
     class Meta:
@@ -140,7 +140,7 @@ class DogTag(models.Model):
 
 class EventTag(models.Model):
     etag_id = models.AutoField(primary_key=True)
-    event_id = models.ForeignKey(EventPost, models.DO_NOTHING, db_column="event_id")
+    event_id = models.ForeignKey(EventPost, models.CASCADE, db_column="event_id")
     tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
 
     class Meta:
@@ -150,7 +150,7 @@ class EventTag(models.Model):
 
 class Attendee(models.Model):
     attendee_id = models.AutoField(primary_key=True)
-    event_id = models.ForeignKey(EventPost, models.DO_NOTHING, db_column="event_id")
+    event_id = models.ForeignKey(EventPost, models.CASCADE, db_column="event_id")
     user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
 
     class Meta:
@@ -160,7 +160,7 @@ class Attendee(models.Model):
 
 class ParkTag(models.Model):
     ptag_id = models.AutoField(primary_key=True)
-    park_id = models.ForeignKey(Park, models.DO_NOTHING, db_column="park_id")
+    park_id = models.ForeignKey(Park, models.CASCADE, db_column="park_id")
     tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
 
     class Meta:
@@ -179,7 +179,7 @@ class Service(models.Model):
 
 class UserTag(models.Model):
     utag_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+    user_id = models.ForeignKey(AUTH_USER_MODEL, models.CASCADE, db_column="user_id")
     tag_id = models.ForeignKey(Tag, models.DO_NOTHING, db_column="tag_id")
 
     def __str__(self):
