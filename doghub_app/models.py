@@ -221,6 +221,7 @@ class Friends(models.Model):
         db_column="receiver_id",
         related_name="user2",
     )
+    pending = models.BooleanField(default=True)
 
     class Meta:
         db_table = "friends"
