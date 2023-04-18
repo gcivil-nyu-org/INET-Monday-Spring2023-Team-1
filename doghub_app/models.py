@@ -262,6 +262,3 @@ class GroupMember(models.Model):
     class Meta:
         db_table = "group_member"
         unique_together = (("group", "member"),)
-
-
-
