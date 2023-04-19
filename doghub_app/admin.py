@@ -10,6 +10,7 @@ from .models import (
     Chat,
     Attendee,
     Friends,
+    Service,
 )
 
 admin.site.register(CustomUser)
@@ -19,6 +20,7 @@ admin.site.register(EventPost)
 admin.site.register(Chat)
 admin.site.register(Attendee)
 admin.site.register(Friends)
+admin.site.register(Service)
 
 
 class CustomUserAdmin(UserAdmin):

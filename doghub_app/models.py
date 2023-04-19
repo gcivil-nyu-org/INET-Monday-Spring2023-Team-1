@@ -169,12 +169,19 @@ class ParkTag(models.Model):
 
 
 class Service(models.Model):
-    ser_id = models.AutoField(primary_key=True)
-    ser_name = models.CharField(max_length=MID_CHAR_SIZE)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=MID_CHAR_SIZE)
+    description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
+    rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    contact_details = models.CharField(max_length=255, default="")
+    address = models.CharField(max_length=255, blank=True, null=True)
     tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
 
     class Meta:
         db_table = "service"
+
+    def __str__(self):
+        return self.service_title
 
 
 class UserTag(models.Model):
