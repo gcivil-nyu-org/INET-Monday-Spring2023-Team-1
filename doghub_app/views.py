@@ -587,10 +587,32 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+    if request.method == "POST":
+        print(request)
+        receiver = CustomUser.objects.get(pk=request.POST.get("receiver"))
+        message = Chat(
+            receiver=receiver, text=request.POST.get("message"), sender=request.user
+        )
+        message.save()
+        return HttpResponse(status=200)
     if Chat.objects.filter(receiver=request.user).exists():
         messages = list(Chat.objects.filter(receiver=request.user))
         messages.reverse()
         context["messageList"] = messages
+    friendsLs = []
+    if Friends.objects.filter(receiver=request.user, pending=False).exists():
+        for relationship in list(
+            Friends.objects.filter(receiver=request.user, pending=False)
+        ):
+            friendsLs.append(relationship.sender)
+    if Friends.objects.filter(sender=request.user, pending=False).exists():
+        for relationship in list(
+            Friends.objects.filter(sender=request.user, pending=False)
+        ):
+            if relationship.receiver not in friendsLs:
+                friendsLs.append(relationship.receiver)
+    context["friendsLs"] = friendsLs
+
     return render(request, "doghub_app/inbox.html", context=context)
 
 
