@@ -145,26 +145,21 @@
             <a  href="{% url 'dog_profile_add'%}" class="add-dog-pof">
               <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
+
+
             {% if dogprof %} 
             <ul class="proflist">
-              {% for dog in dogprof %} 
-              <div id="pop-up" class="wind">
-                <div>
-                  <div onclick="closeWind()" class = "closewind">
-                    <i class="fa fa-times"></i>
-                  </div>
-                  <div class = "windprompt">
-                  <h3>Are you sure you want to delete {{ dog.name }}?</h3>
-                </div>
-                <a href="{% url 'dog_profile_delete' dog.pk %}">
-                  <button class="deletebtn">Delete</button>
-                </a>
-                </div>
-              </div>
+              {% for dog in dogprof %}     
               <li class="proflist--item">
-                <form id="delDog" action="{% url 'dog_profile_delete' dog.pk %}" method="post">
+
+                
+                <form id="delDog{{ forloop.counter }}" action="{% url 'dog_profile_delete' dog.name %}" method="post"> 
                   {% csrf_token %}
+                  
+                  <input  type="hidden" name="dog_id" value="{{ dog.dog_id }}">
+                  <input  type="hidden" name="dog_name" value="{{ dog.name }}">
                   <div class="delete-bin" >
+
                     <button type="submit" style="  margin: auto;
                     color: #6f36a8;
                     text-align: center;
@@ -179,7 +174,7 @@
                     top: 0px;" onclick='  event.preventDefault();
                                           Swal.fire({
                                           title: "Are you sure?",
-                                          text: "This will delete your Dog Profile!",
+                                          text: "This will delete {{dog.name}}!",
                                           icon: "warning",
                                           showCancelButton: true,
                                           confirmButtonColor: "#3085d6",
@@ -189,13 +184,13 @@
                                           if (result.isConfirmed) {
                                             Swal.fire({
                                                       icon: "success",
-                                                      title: "Dog Profile deleted!",
+                                                      title: "Dog Profile {{dog_name}} deleted!",
                                                       showConfirmButton: false,
                                                       timer: 1500,
                                                       timerProgressBar: true
                                                     })
                                                     setTimeout(() => {
-                                                      document.getElementById("delDog").submit(); // submit the form after 2 seconds
+                                                      document.getElementById("delDog{{ forloop.counter }}").submit(); // submit the form after 2 seconds
                                                     }, 2000);
                                           }
                                         })'>
@@ -207,6 +202,7 @@
                     </button>
                   </div>
                 </form>
+                
                   
                   <img src="{{media_url}}{{dog.pic}}" alt="DOG"class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
