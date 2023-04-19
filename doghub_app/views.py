@@ -437,13 +437,13 @@ def dog_profile_add(request):
 
 @login_required
 def dog_profile_delete(request, name):
-    dog_name = request.POST.get('dog_name')
-    dog_id = request.POST.get('dog_id')
+    dog_name = request.POST.get("dog_name")
+    dog_id = request.POST.get("dog_id")
     dog_profile = DogProfile.objects.get(dog_id=dog_id)
-    #dog_id = request.POST.get('dog_name')
-    #logging.debug("Dog name",dog_id)
-    #fet =  DogProfile.objects.get(dog_id=int(dog_id))
-    #logging.debug("Deleting dog",dog_profile.name)
+    # dog_id = request.POST.get('dog_name')
+    # logging.debug("Dog name",dog_id)
+    # fet =  DogProfile.objects.get(dog_id=int(dog_id))
+    # logging.debug("Deleting dog",dog_profile.name)
     logging.debug("DELETING")
     logging.debug(str(dog_name))
     dog_profile.delete()
