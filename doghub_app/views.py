@@ -165,7 +165,11 @@ def register_details_request(request):
                     request, "For safety concerns, DogHub user should be 18+"
                 )
                 return redirect("register_details")
+        else:
+            messages.error(request, "Enter a valid Date of Birth.")
+            return redirect("register_details")
         user_profile.save()
+
         return redirect("events")
     if DogProfile.objects.filter(user_id=request.user).exists():
         dogprofiles = DogProfile.objects.filter(user_id=request.user)
