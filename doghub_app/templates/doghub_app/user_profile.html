@@ -47,7 +47,8 @@
       <div class="message" >
         {% if messages %}
           {% for message in messages %}
-            <div class="alert alert-success" id="fade">{{ message }}</div>
+            <div class="alert alert-success" id="fade" style="background-color: rgba(0, 206, 0, 0.499) !important; border-radius: 5px; padding: 10px !important;">
+              {{ message }}</div>
           {% endfor %}
         {% endif %}</div>
       <title>Log In</title>
@@ -108,8 +109,8 @@
             </p>
           </div>
           <div class="profile-btn">
-            <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
-            <button class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Follow</button>
+             <!--  button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
+            <button class="createbtn" id="follow-user"><i id= "follow_icon" class="fa fa-plus"></i> Follow</button> -->
           </div>
           <!-- <div class="user-rating">
             <h3 class="rating">4.5</h3>
@@ -144,27 +145,65 @@
             <a  href="{% url 'dog_profile_add'%}" class="add-dog-pof">
               <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
-            {% if dogprof %}
+
+
+            {% if dogprof %} 
             <ul class="proflist">
-              {% for dog in dogprof %}
-              <div id="pop-up" class="wind">
-                <div>
-                  <div onclick="closeWind()" class = "closewind">
-                    <i class="fa fa-times"></i>
-                  </div>
-                  <div class = "windprompt">
-                  <h3>Are you sure you want to delete this dog profile?</h3>
-                </div>
-                <a href="{% url 'dog_profile_delete' dog.pk %}">
-                  <button class="deletebtn">Delete</button>
-                </a>
-                </div>
-              </div>
+              {% for dog in dogprof %}     
               <li class="proflist--item">
-                  <div class="delete-bin" onclick="funcWind()">
-              
-                    <i class="fa fa-trash" aria-hidden="true" onclick="funcWind()"></i>
+
+                
+                <form id="delDog{{ forloop.counter }}" action="{% url 'dog_profile_delete' dog.name %}" method="post"> 
+                  {% csrf_token %}
+                  
+                  <input  type="hidden" name="dog_id" value="{{ dog.dog_id }}">
+                  <input  type="hidden" name="dog_name" value="{{ dog.name }}">
+                  <div class="delete-bin" >
+
+                    <button type="submit" style="  margin: auto;
+                    color: #6f36a8;
+                    text-align: center;
+                    cursor: pointer;
+                    border: none;
+                    transition: 0.25s;
+                    font-size: 1.1rem;
+                    width: 1.1rem;
+                    background-color: transparent;
+                    height: 1.1rem;
+                  
+                    top: 0px;" onclick='  event.preventDefault();
+                                          Swal.fire({
+                                          title: "Are you sure?",
+                                          text: "This will delete {{dog.name}}!",
+                                          icon: "warning",
+                                          showCancelButton: true,
+                                          confirmButtonColor: "#3085d6",
+                                          cancelButtonColor: "#d33",
+                                          confirmButtonText: "Yes, delete it!"
+                                        }).then((result) => {
+                                          if (result.isConfirmed) {
+                                            Swal.fire({
+                                                      icon: "success",
+                                                      title: "Dog Profile {{dog_name}} deleted!",
+                                                      showConfirmButton: false,
+                                                      timer: 1500,
+                                                      timerProgressBar: true
+                                                    })
+                                                    setTimeout(() => {
+                                                      document.getElementById("delDog{{ forloop.counter }}").submit(); // submit the form after 2 seconds
+                                                    }, 2000);
+                                          }
+                                        })'>
+                    
+                    
+
+                    <!--onclick="return confirm('Are you sure you want to delete this?')"-->
+                      <i class="fa fa-trash" aria-hidden="true" ></i>
+                    </button>
                   </div>
+                </form>
+                
+                  
                   <img src="{{media_url}}{{dog.pic}}" alt="DOG"class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
                   <span class="toggle">
@@ -312,6 +351,7 @@
     </div>
   </div>
   <script src= "{% static 'scripts/user_profile.js' %}" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
 {% endblock %}

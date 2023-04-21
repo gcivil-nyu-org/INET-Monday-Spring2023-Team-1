@@ -169,12 +169,19 @@ class ParkTag(models.Model):
 
 
 class Service(models.Model):
-    ser_id = models.AutoField(primary_key=True)
-    ser_name = models.CharField(max_length=MID_CHAR_SIZE)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=MID_CHAR_SIZE)
+    description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
+    rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    contact_details = models.CharField(max_length=255, default="")
+    address = models.CharField(max_length=255, blank=True, null=True)
     tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
 
     class Meta:
         db_table = "service"
+
+    def __str__(self):
+        return self.service_title
 
 
 class UserTag(models.Model):
@@ -229,3 +236,29 @@ class Friends(models.Model):
 
     def __str__(self):
         return f"Friends: {self.fid}: ({self.sender}, {self.receiver})"
+
+
+class Groups(models.Model):
+    group_id = models.AutoField(primary_key=True, editable=False)
+    group_title = models.CharField(max_length=MID_CHAR_SIZE, unique=True)
+    group_description = models.CharField(max_length=LARGE_CHAR_SIZE)
+    group_owner = models.ForeignKey(
+        AUTH_USER_MODEL, models.CASCADE, db_column="user_id", related_name="group_owner"
+    )
+
+    class Meta:
+        db_table = "groups"
+
+    def __str__(self):
+        return self.group_title
+
+
+class GroupMember(models.Model):
+    gm_id = models.AutoField(primary_key=True)
+    group = models.ForeignKey(Groups, models.CASCADE, db_column="group_id")
+    member = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
+    pending = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "group_member"
+        unique_together = (("group", "member"),)

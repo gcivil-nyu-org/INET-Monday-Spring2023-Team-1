@@ -11,6 +11,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.urls import reverse
 from django.conf import settings
+import logging
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
 from datetime import date
@@ -435,8 +436,16 @@ def dog_profile_add(request):
 
 
 @login_required
-def dog_profile_delete(request, pk):
-    dog_profile = get_object_or_404(DogProfile, pk=pk)
+def dog_profile_delete(request, name):
+    dog_name = request.POST.get("dog_name")
+    dog_id = request.POST.get("dog_id")
+    dog_profile = DogProfile.objects.get(dog_id=dog_id)
+    # dog_id = request.POST.get('dog_name')
+    # logging.debug("Dog name",dog_id)
+    # fet =  DogProfile.objects.get(dog_id=int(dog_id))
+    # logging.debug("Deleting dog",dog_profile.name)
+    logging.debug("DELETING")
+    logging.debug(str(dog_name))
     dog_profile.delete()
     return redirect("user_profile")
 
