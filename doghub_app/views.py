@@ -416,7 +416,7 @@ def dog_profile_add(request):
         )
         if "dogPic" in request.FILES:
             dog_profile.pic = request.FILES["dogPic"]
-            logging.error("here",request.POST.get("dogDOB"))
+            logging.error("here", request.POST.get("dogDOB"))
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
