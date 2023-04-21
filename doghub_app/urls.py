@@ -21,7 +21,7 @@ urlpatterns = [
     path("dog_profile_add", views.dog_profile_add, name="dog_profile_add"),
     path("inbox", views.inbox, name="inbox"),
     path(
-        "dog_profile_delete/<int:pk>/",
+        "dog_profile_delete/<name>/",
         views.dog_profile_delete,
         name="dog_profile_delete",
     ),
