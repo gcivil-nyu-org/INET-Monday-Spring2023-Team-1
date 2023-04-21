@@ -68,6 +68,7 @@ function friendName(name, friend){
     console.log(friend)
     receiver=friend
     recipient.innerHTML=name.innerHTML
+
 }
 
 function send_message(token){
@@ -83,12 +84,14 @@ function send_message(token){
         return
     }
     if(error) return
+    receiver_post = receiver
+    receiver=null
     $.ajax({
         url: 'inbox',
         type: 'POST',
         data: { 
         csrfmiddlewaretoken: token,
-        receiver: receiver,
+        receiver: receiver_post,
         message: sending_text.value
         },
         success: function (res) {
@@ -106,6 +109,8 @@ function send_message(token){
             }
             switchIcon(document.getElementById('add_icon'), '<i class="fa fa-check-circle" aria-hidden="true"></i>', 100)
             switchIcon(document.getElementById('add_icon'), '<i class="fa-solid fa-circle-plus"></i>', 800)
+            sending_text.value=''
+            receiver= null
             return null
         }
     });

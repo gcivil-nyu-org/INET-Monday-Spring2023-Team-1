@@ -417,6 +417,7 @@ body {
     margin-top:-2.5rem;
     border-radius: 10px;
     transition: all 0.4s ease-in-out;
+    overflow: auto;
   }
 
   .recipient.expand{
@@ -428,6 +429,7 @@ body {
     border-radius: 10px;
     transition: all 0.4s ease-in-out;
     text-align: center;
+    overflow: auto;
   }
 
 
@@ -466,6 +468,7 @@ body {
     border-width: 2px;
     text-align: center;
     font-weight: bold;
+    overflow: auto;
   }
 
   .dropdown-friend li:hover{
