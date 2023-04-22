@@ -768,6 +768,14 @@ class InboxTestCase(TestCase):
         self.assertEqual(response.context["messageList"][0].receiver, self.user1)
         self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
 
+    def test_retrieve_friends(self):
+        Friends.objects.create(receiver=self.user1, sender=self.user2, pending=False)
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("inbox")
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["friendsLs"]), 1)
+        self.assertEqual(response.context["friendsLs"][0], self.user2)
+
 
 class ChatTestCases(TestCase):
     def setUp(self):
