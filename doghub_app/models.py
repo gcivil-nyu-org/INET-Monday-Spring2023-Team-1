@@ -181,7 +181,7 @@ class Service(models.Model):
         db_table = "service"
 
     def __str__(self):
-        return self.service_title
+        return self.title
 
 
 class UserTag(models.Model):

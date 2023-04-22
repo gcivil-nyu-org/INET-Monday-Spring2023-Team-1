@@ -20,6 +20,7 @@ from .forms import (
 )
 from .models import (
     CustomUser,
+    Service,
     UserProfile,
     DogProfile,
     EventPost,
@@ -552,6 +553,7 @@ def search_user(request):
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         show_users = False
         show_events = False
+        show_services = False
         searched = request.POST["searched"]
 
         if request.POST.get("filter_users") == "users":
@@ -559,6 +561,9 @@ def search_user(request):
 
         if request.POST.get("filter_events") == "events":
             show_events = True
+
+        if request.POST.get("filter_services") == "services":
+            show_services = True
 
         user_profiles_fname = list(
             UserProfile.objects.filter(fname__icontains=searched)
@@ -583,6 +588,7 @@ def search_user(request):
             u_list.append(d)
 
         events = EventPost.objects.filter(event_title__icontains=searched)
+        services = Service.objects.filter(title__contains=searched)
 
         return render(
             request,
@@ -592,10 +598,12 @@ def search_user(request):
                 "user_profiles_fname": user_profiles_fname,
                 "user_profiles_lname": user_profiles_lname,
                 "events": events,
+                "services": services,
                 "users_list": users_list,
                 "u_list": u_list,
                 "show_users": show_users,
                 "show_events": show_events,
+                "show_services": show_services,
                 "media_url": settings.MEDIA_URL,
                 "userprof": user_prof,
             },
