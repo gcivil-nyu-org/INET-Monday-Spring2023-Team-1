@@ -197,6 +197,9 @@ def dog_profile_create(request):
             if date_obj >= date.today() or date.today().year - date_obj.year > 31:
                 messages.error(request, "Enter a valid Date of Birth")
                 return redirect("register_details")
+        else:
+            messages.error(request, "Enter a valid Date of Birth")
+            return redirect("register_details")
         dog_profile.save()
         return redirect("register_details")
     return render(request=request, template_name="doghub_app/register.html")
@@ -417,12 +420,16 @@ def dog_profile_add(request):
         )
         if "dogPic" in request.FILES:
             dog_profile.pic = request.FILES["dogPic"]
+            logging.error("here", request.POST.get("dogDOB"))
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today() or date.today().year - date_obj.year > 31:
                 messages.error(request, "Enter a valid Date of Birth")
                 return redirect("dog_profile_add")
+        else:
+            messages.error(request, "Enter a valid Date of Birth")
+            return redirect("dog_profile_add")
         dog_profile.save()
         return redirect("dog_profile_add")
     else:
