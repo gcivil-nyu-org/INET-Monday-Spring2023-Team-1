@@ -1,3 +1,5 @@
+<!-- {% extends "./events_homepage.html" %} -->
+<!-- {% block mygroups %} -->
 <h3> Welcome {{ request.user.userprofile.fname }}! </h3>
 {% if groups_owned %}
 <h4> Groups I own </h4>
@@ -6,6 +8,8 @@
 <li> {{ g.group_title }} </li>
 {% endfor %}
 </ul>
+{% else %}
+<p> You do not own any groups, why not create one? </p>
 {% endif %}
 
 {% if groups_joined %}
@@ -15,13 +19,13 @@
 <li> {{ g.group_title }} </li>
 {% endfor %}
 </ul>
-
 {% else %}
-<p> No groups found </p>
+<p> You have not joined any groups, why not join a group ? </p>
 {% endif %}
+
 <p>
   <a href="{% url 'join_group' %}">Join Group</a>
   <a href="{% url 'create_group' %}"> Create Group </a>
   <a href="{% url 'leave_group' %}"> Leave Group </a>
 </p>
-
+<!-- {% endblock %} -->

@@ -836,6 +836,7 @@ def join_group(request):
         }
     return render(request, "doghub_app/join_group.html", context=context)
 
+
 @login_required
 def leave_group(request):
     if request.method == "POST":
