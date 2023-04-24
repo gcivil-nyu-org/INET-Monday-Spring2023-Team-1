@@ -153,6 +153,9 @@ body {
   transform: rotateZ(180deg);
   color:#5886a8;
 } 
+
+
+
 .back_content{
   margin-left: 42%;
   display: flex;
