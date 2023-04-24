@@ -37,7 +37,6 @@ from datetime import datetime
 from django.db.models import Q
 
 import json
-import logging
 
 
 # Create your views here.
@@ -852,13 +851,13 @@ def leave_group(request):
         logging.debug(gids)
         # remove member from the checked groups
         for group_id in gids:
-            GroupMember.objects.get(group_id=group_id, member_id=request.user.pk).delete()
+            GroupMember.objects.get(
+                group_id=group_id, member_id=request.user.pk
+            ).delete()
         return HttpResponseRedirect("/my-groups/")
     else:
         # display the groups for which the user is a member
         context = {
-            "groups": [
-                g.group
-                for g in GroupMember.objects.filter(member=request.user)]
+            "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
         }
     return render(request, "doghub_app/leave_group.html", context=context)
