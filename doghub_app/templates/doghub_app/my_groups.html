@@ -1,5 +1,3 @@
-<!-- {% extends "./events_homepage.html" %} -->
-<!-- {% block mygroups %} -->
 <h3> Welcome {{ request.user.userprofile.fname }}! </h3>
 {% if groups_owned %}
 <h4> Groups I own </h4>
@@ -28,4 +26,3 @@
   <a href="{% url 'create_group' %}"> Create Group </a>
   <a href="{% url 'leave_group' %}"> Leave Group </a>
 </p>
-<!-- {% endblock %} -->
