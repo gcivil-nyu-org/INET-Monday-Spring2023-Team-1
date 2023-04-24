@@ -1,0 +1,46 @@
+.card {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .media {
+    margin-bottom: 20px;
+  }
+  
+  .media img {
+    margin-right: 20px;
+  }
+  
+  .buttongroup {
+    margin-top: 10px;
+  }
+  
+  .btn {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+  
