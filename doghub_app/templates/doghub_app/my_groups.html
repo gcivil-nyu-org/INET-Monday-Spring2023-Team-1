@@ -1,0 +1,27 @@
+<h3> Welcome {{ request.user.userprofile.fname }}! </h3>
+{% if groups_owned %}
+<h4> Groups I own </h4>
+<ul>
+{% for g in groups_owned %}
+<li> {{ g.group_title }} </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if groups_joined %}
+<h4> Groups I joined </h4>
+<ul>
+{% for g in groups_joined %}
+<li> {{ g.group_title }} </li>
+{% endfor %}
+</ul>
+
+{% else %}
+<p> No groups found </p>
+{% endif %}
+<p>
+  <a href="{% url 'join_group' %}">Join Group</a>
+  <a href="{% url 'create_group' %}"> Create Group </a>
+  <a href="{% url 'leave_group' %}"> Leave Group </a>
+</p>
+

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, UserProfile, DogProfile, EventPost
+from .models import CustomUser, UserProfile, DogProfile, EventPost, Groups
 from django.forms import DateTimeInput
 
 
@@ -68,3 +68,11 @@ class EventPostForm(forms.ModelForm):
                 attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"
             )
         }
+
+
+class CreateGroupForm(forms.ModelForm):
+    class Meta:
+        model = Groups
+        fields = ["group_title", "group_description"]
+
+        widgets = {"group_description": forms.Textarea()}
