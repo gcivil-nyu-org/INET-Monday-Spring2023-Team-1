@@ -768,6 +768,14 @@ class InboxTestCase(TestCase):
         self.assertEqual(response.context["messageList"][0].receiver, self.user1)
         self.assertEqual(Chat.objects.count(), 1)  # noqa: F821
 
+    def test_retrieve_friends(self):
+        Friends.objects.create(receiver=self.user1, sender=self.user2, pending=False)
+        self.client.login(email="user1@example.com", password="password123")
+        url = reverse("inbox")
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["friendsLs"]), 1)
+        self.assertEqual(response.context["friendsLs"][0], self.user2)
+
 
 class ChatTestCases(TestCase):
     def setUp(self):
@@ -922,3 +930,51 @@ class AddFriendTestCase(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Friends.objects.count(), 1)
+
+
+class TestCreateMessage(TestCase):
+    def setUp(self):
+        self.user_sender = CustomUser.objects.create_user(
+            username="user1@attendee.com",
+            email="user1@sender.com",
+            password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user_sender,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.user_receiver = CustomUser.objects.create_user(
+            username="user1@host.com",
+            email="user1@receiver.com",
+            password="password123",
+        )
+
+    def testCreateMessage(self):
+        self.client.login(email="user1@sender.com", password="password123")
+        url = reverse("inbox")
+        data = {"receiver": self.user_receiver.id, "message": "Test Message"}
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Chat.objects.count(), 1)
+        self.assertEqual(Chat.objects.first().sender, self.user_sender)
+        self.assertEqual(Chat.objects.first().receiver, self.user_receiver)
+        self.assertEqual(Chat.objects.first().text, "Test Message")
+        # self.client.login(email="user1@attendee.com", password="password123")
+        # url = reverse("rsvp_event", args=[self.event.event_id])
+        # response = self.client.post(url)
+        # self.assertEqual(response.status_code, 200)
+        # url = reverse("user_profile")
+        # response = self.client.get(url)
+        # self.assertEqual(response.status_code, 200)
+        # self.assertEqual(len(response.context["events_list"]), 1)
+        # self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
+
+        # self.assertNotEqual(
+        #     Attendee.objects.filter(
+        #         event_id=self.event.event_id, user_id=self.user_attendee
+        #     ),
+        #     None,
+        # )
