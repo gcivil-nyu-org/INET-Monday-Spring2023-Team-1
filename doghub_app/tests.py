@@ -1057,6 +1057,9 @@ class GroupsTestCase(TestCase):
         self.user = CustomUser.objects.create_user(
             username="Hades", email="Hades@doghub.com", password="Test@123"
         )
+        self.user2 = CustomUser.objects.create_user(
+            username="Hermes", email="Hermes@doghub.com", password="Test@123"
+        )
 
         self.client.login(email="Hades@doghub.com", password="Test@123")
 
@@ -1084,20 +1087,9 @@ class GroupsTestCase(TestCase):
             Groups.objects.first().group_description, new_group["group_description"]
         )
 
-    def test_create_group(self):
-        new_group = {
-            "group_title": "Hades Group",
-            "group_description": "Hades Group Desc",
-        }
+    def test_join_group(self):
+        self.client.login(email="Hermes@doghub.com", password="Test@123")
 
-        response = self.client.post(
-            reverse("create_group"), data=new_group, follow=True
-        )
+        response = self.client.post(reverse("join_group"), data={}, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Groups.objects.count(), 1)
-        self.assertEqual(Groups.objects.first().group_owner, self.user)
-        self.assertEqual(Groups.objects.first().group_title, new_group["group_title"])
-        self.assertEqual(
-            Groups.objects.first().group_description, new_group["group_description"]
-        )
