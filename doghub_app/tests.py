@@ -1052,6 +1052,7 @@ class FriendsTestCase(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Friend request declined.")
 
+
 class GroupsTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
