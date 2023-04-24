@@ -978,3 +978,75 @@ class TestCreateMessage(TestCase):
         #     ),
         #     None,
         # )
+
+
+class FriendsTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            username="testuser2@gmail.com",
+            email="testuser2@gmail.com",
+            password="password",
+        )
+        self.friend_user = CustomUser.objects.create_user(
+            username="frienduser2@gmail.com",
+            email="frienduser2@gmail.com",
+            password="password",
+        )
+
+    def test_friend_requests(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("friend_requests"))
+        self.assertEqual(response.status_code, 200)
+
+        friend_request = Friends.objects.create(
+            sender=self.friend_user, receiver=self.user, pending=True
+        )
+        response = self.client.get(reverse("friend_requests"))
+        self.assertContains(response, self.friend_user.email)
+
+        friend_request.delete()
+        response = self.client.get(reverse("friend_requests"))
+        self.assertContains(response, "You have no friend requests.")
+
+    def test_accept_friend_request(self):
+        friend_request = Friends.objects.create(
+            sender=self.friend_user, receiver=self.user, pending=True
+        )
+        self.client.force_login(self.user)
+        response = self.client.get(
+            reverse("accept_friend_request", args=[friend_request.fid])
+        )
+        self.assertRedirects(response, reverse("friend_requests"))
+
+        friend_request.refresh_from_db()
+        self.assertFalse(friend_request.pending)
+        self.assertTrue(
+            Friends.objects.filter(
+                sender=self.friend_user, receiver=self.user, pending=False
+            ).exists()
+        )
+
+        response = self.client.get(reverse("friend_requests"))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]), f"You are now friends with {self.friend_user.email}."
+        )
+
+    def test_decline_friend_request(self):
+        friend_request = Friends.objects.create(
+            sender=self.friend_user, receiver=self.user, pending=True
+        )
+        self.client.force_login(self.user)
+        response = self.client.get(
+            reverse("decline_friend_request", args=[friend_request.fid])
+        )
+        self.assertRedirects(response, reverse("friend_requests"))
+
+        self.assertFalse(Friends.objects.filter(fid=friend_request.fid).exists())
+
+        response = self.client.get(reverse("friend_requests"))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Friend request declined.")
