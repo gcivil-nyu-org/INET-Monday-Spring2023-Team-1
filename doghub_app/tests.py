@@ -1060,6 +1060,30 @@ class GroupsTestCase(TestCase):
 
         self.client.login(email="Hades@doghub.com", password="Test@123")
 
+    def test_group_urls(self):
+        urls = ["create_group", "join_group", "my_groups", "leave_group"]
+        for u in urls:
+            resp = self.client.get(reverse(u), follow=True)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_create_group(self):
+        new_group = {
+            "group_title": "Hades Group",
+            "group_description": "Hades Group Desc",
+        }
+
+        response = self.client.post(
+            reverse("create_group"), data=new_group, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Groups.objects.count(), 1)
+        self.assertEqual(Groups.objects.first().group_owner, self.user)
+        self.assertEqual(Groups.objects.first().group_title, new_group["group_title"])
+        self.assertEqual(
+            Groups.objects.first().group_description, new_group["group_description"]
+        )
+
     def test_create_group(self):
         new_group = {
             "group_title": "Hades Group",
