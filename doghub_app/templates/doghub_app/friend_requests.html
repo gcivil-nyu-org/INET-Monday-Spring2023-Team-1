@@ -1,0 +1,23 @@
+
+{% block content %}
+<h1>Friend Requests</h1>
+{% if friend_requests %}
+<ul>
+{% for request in friend_requests %}
+    <li>
+        <div class="media">
+            <img src="{{ media_url }}/{{ request.sender.profile.pic }}" alt="{{ request.sender.profile.fname }} {{ request.sender.profile.lname }}" class="mr-3 rounded-circle" width="64" height="64">
+            <div class="media-body">
+                <h5 class="mt-0">{{ request.sender.profile.fname }} {{ request.sender.profile.lname }}</h5>
+                <p>{{ request.sender.email }}</p>
+                <a href="{% url 'accept_friend_request' request.fid %}" class="btn btn-success btn-sm mr-2">Accept</a>
+                <a href="{% url 'decline_friend_request' request.fid %}" class="btn btn-danger btn-sm">Reject</a>
+            </div>
+        </div>
+    </li>
+{% endfor %}
+</ul>
+{% else %}
+<p>You have no friend requests.</p>
+{% endif %}
+{% endblock %}

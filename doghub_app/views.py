@@ -526,6 +526,9 @@ def public_profile(request, email):
         events_list = EventPost.objects.filter(user_id=request.user.id)
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         friend = get_object_or_404(CustomUser, email=email)
+        friend_request_sent = Friends.objects.filter(
+            sender=request.user, receiver=friend, pending=True
+        ).first()
 
         context = {
             "user": user,
@@ -535,6 +538,7 @@ def public_profile(request, email):
             "events_list": list(events_list),
             "userprof": user_prof,
             "friend": friend,
+            "friend_request_sent": friend_request_sent,
         }
         return render(
             request=request,
@@ -656,18 +660,72 @@ def add_friend(request, email):
         return redirect("public-profile", email=email)
 
     if Friends.objects.filter(sender=request.user, receiver=friend).exists():
-        messages.warning(request, f"You are already friends with {friend.email}.")
+        messages.warning(
+            request, f"You have already sent a friend request to {friend.email}."
+        )
         return redirect("public-profile", email=email)
 
-    Friends.objects.create(sender=request.user, receiver=friend)
-    messages.success(request, f"You have added {friend.email} as a friend.")
+    if Friends.objects.filter(
+        sender=friend, receiver=request.user, pending=True
+    ).exists():
+        messages.warning(
+            request, f"{friend.email} has already sent you a friend request."
+        )
+        return redirect("public-profile", email=email)
+
+    Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+    messages.success(request, f"Friend request sent to {friend.email}.")
     return redirect("public-profile", email=email)
+
+
+# @login_required
+# def friend_requests(request):
+#    incoming_requests = Friends.objects.filter(receiver=request.user, pending=True)
+#    outgoing_requests = Friends.objects.filter(sender=request.user, pending=True)
+#
+#    context = {
+#        "incoming_requests": incoming_requests,
+#        "outgoing_requests": outgoing_requests,
+#    }
+#    return render(request, "doghub_app/friend_requests.html", context)
+@login_required
+def friend_requests(request):
+    friend_requests = Friends.objects.filter(receiver=request.user, pending=True)
+    return render(
+        request, "doghub_app/friend_requests.html", {"friend_requests": friend_requests}
+    )
+
+
+@login_required
+def accept_friend_request(request, fid):
+    friend_request = get_object_or_404(
+        Friends, fid=fid, receiver=request.user, pending=True
+    )
+    friend_request.pending = False
+    friend_request.save()
+
+    messages.success(
+        request, f"You are now friends with {friend_request.sender.email}."
+    )
+    return redirect("friend_requests")
+
+
+@login_required
+def decline_friend_request(request, fid):
+    friend_request = get_object_or_404(
+        Friends, fid=fid, receiver=request.user, pending=True
+    )
+    friend_request.delete()
+
+    messages.success(request, "Friend request declined.")
+    return redirect("friend_requests")
 
 
 @login_required
 def friends(request):
-    # friend_profiles = []
-    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    friends = Friends.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user), pending=False
+    )
     user_profiles = []
     for friend in friends:
         if friend.sender == request.user:
