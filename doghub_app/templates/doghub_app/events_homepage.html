@@ -40,7 +40,8 @@
           </a>
         </li>
         <li class="nav-tab" data-view-name="friend">
-          <a href="{% url 'friends' %}">
+          <!-- <a href="{% url 'friends' %}"> -->
+          <a href="#">
             <i class="fa-brands fa-gratipay"></i>
             <span>
               Friends
@@ -146,9 +147,28 @@
         <h1>No Posts</h1>
         {% endif %}
       </div>
-      <div class="friend" data-view-active="true">
-        <h1>Friends</h1>
-        
+      <div class="friend" data-view-active="false">
+        <!-- <h1>Friendsssss</h1> -->
+        <ul>
+          {% for user_profile in user_profiles %}
+          <div class="friend-list clearfix">
+            <li>
+                <a href="{% url 'public-profile' user_profile.email   %}">
+                    <div class="friend-img"><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}">
+                    </div>
+                    <div class="friend-info">
+                        <h4>{{ user_profile.fname }}</h4>
+                        <h4>{{ user_profile.lname }}</h4>
+                        <p>{{ user_profile.email }}</p>
+                    </div>
+                </a>
+            </li>
+          </div>
+            {% empty %}
+        <li>You have no friends.</li>
+        {% endfor %}
+        </ul>
+        <!-- <p>okkkk</p> -->
       </div>
       <div class="group" data-view-active="false">
         <h1>Groups</h1>

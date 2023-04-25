@@ -232,8 +232,6 @@ def events(request):
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
     event_ls = []
-    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
-    print(friends)
     for event in event_posts:
         cur_event = {}
         cur_event["event_info"] = event
@@ -247,12 +245,29 @@ def events(request):
         else:
             cur_event["attendee"] = False
         event_ls.append(cur_event)
+
+    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    user_profiles = []
+    for friend in friends:
+        if friend.sender == request.user:
+            friend_user = friend.receiver
+        else:
+            friend_user = friend.sender
+        friend_profile = UserProfile.objects.get(user_id=friend_user.id)
+        user_profiles.append(
+            {
+                "fname": friend_profile.fname,
+                "lname": friend_profile.lname,
+                "email": friend_user.email,
+                "pic": friend_profile.pic,
+            }
+        )
     context = {
         "userprof": user_prof,
         "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
-        "friends": friends,
+        "user_profiles": user_profiles,
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
