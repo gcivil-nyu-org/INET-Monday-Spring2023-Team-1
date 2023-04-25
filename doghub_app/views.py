@@ -254,7 +254,9 @@ def events(request):
             cur_event["attendee"] = False
         event_ls.append(cur_event)
 
-    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    friends = Friends.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user), pending=False
+    )
     user_profiles = []
     for friend in friends:
         if friend.sender == request.user:
@@ -270,13 +272,14 @@ def events(request):
                 "pic": friend_profile.pic,
             }
         )
-    context = {
-        "userprof": user_prof,
-        "event_posts": event_ls,
-        "media_url": settings.MEDIA_URL,
-        "park": park,
-        "user_profiles": user_profiles,
-    }  # noqa: F841
+
+        context = {
+            "userprof": user_prof,
+            "event_posts": event_ls,
+            "media_url": settings.MEDIA_URL,
+            "park": park,
+            "user_profiles": user_profiles,
+        }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
 
