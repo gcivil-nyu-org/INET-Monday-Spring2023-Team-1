@@ -206,9 +206,10 @@
 
                   <img src="{{media_url}}{{dog.pic}}" alt="DOG"class="prof-img" />
                   <h3 class="prof-name">{{dog.name}}</h3>
-                  <p>Bio: {{dog.bio}}</p>
                   <p>DOB: {{dog.dob}}</p>
-                  <a class="toggle" href="{% url 'dog_profile_edit' dog.pk %}" class="dog-edit">
+                  <p>Bio: {{dog.bio}}</p>
+                  
+                  <a class="toggle" href="{% url 'dog_profile_edit' dog.pk %}" >
                     <i class="fa fa-pencil-square-o" true></i>
                   </a>
 
