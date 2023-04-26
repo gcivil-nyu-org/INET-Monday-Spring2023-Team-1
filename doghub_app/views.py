@@ -418,17 +418,16 @@ def dog_profile_edit(request, pk):
 def dog_profile_add(request):
     context = {}
     if request.method == "POST":
-
-        name=request.POST.get("dogName")
-        if name is None or name is "":
+        name = request.POST.get("dogName")
+        if name is None or name is "":  # noqa: F632
             messages.error(request, "Enter a valid Name for the Dog")
             return redirect("register_details")
-        
-        bio=request.POST.get("dogBio")
-        if bio is None or bio is "":
+
+        bio = request.POST.get("dogBio")
+        if bio is None or bio is "":  # noqa: F632
             messages.error(request, "Enter a valid Bio for the Dog")
             return redirect("register_details")
-        
+
         dog_profile = DogProfile(
             user_id=request.user,
             name=request.POST.get("dogName"),
