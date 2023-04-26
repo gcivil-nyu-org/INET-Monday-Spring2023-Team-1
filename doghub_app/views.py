@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -17,6 +17,7 @@ from doghub_app.tokens import verification_token_generator
 from datetime import date
 from .forms import (
     EventPostForm,
+    CreateGroupForm,
 )
 from .models import (
     CustomUser,
@@ -28,6 +29,8 @@ from .models import (
     Chat,
     Attendee,
     Friends,
+    Groups,
+    GroupMember,
 )
 from _version import __version__
 from datetime import datetime
@@ -777,3 +780,84 @@ def friends(request):
         "userprof": userprof,
     }
     return render(request, "doghub_app/friends.html", context)
+
+
+@login_required
+def create_group(request):
+    if request.method == "POST":
+        form = CreateGroupForm(request.POST)
+        if form.is_valid():
+            g = form.save(commit=False)
+            g.group_owner = request.user
+            g.save()
+            return HttpResponseRedirect("/my-groups/")
+    else:
+        form = CreateGroupForm()
+    return render(request, "doghub_app/create_group.html", {"form": form})
+
+
+@login_required
+def my_groups(request):
+    context = {
+        "groups_owned": Groups.objects.filter(group_owner=request.user),
+        "groups_joined": [
+            g.group for g in GroupMember.objects.filter(member=request.user)
+        ],
+    }
+    return render(request, "doghub_app/my_groups.html", context=context)
+
+
+@login_required
+def join_group(request):
+    if request.method == "POST":
+        logging.debug(request.POST)
+        gids = []  # group ids checked
+        for k in request.POST.keys():
+            try:
+                int(k)
+            except ValueError:
+                pass  # not a checkbox
+            else:
+                gids.append(int(k))
+        logging.debug(gids)
+        # add user to the member list of the checked groups
+        for group_id in gids:
+            GroupMember(group_id=group_id, member_id=request.user.pk).save()
+        return HttpResponseRedirect("/my-groups/")
+    else:
+        # display the groups for which the user is not a member
+        context = {
+            "groups": [
+                g
+                for g in Groups.objects.filter(~Q(group_owner=request.user))
+                if request.user not in [u.member for u in g.groupmember_set.all()]
+            ]
+        }
+    return render(request, "doghub_app/join_group.html", context=context)
+
+
+@login_required
+def leave_group(request):
+    if request.method == "POST":
+        logging.debug(request.POST)
+        gids = []  # group ids checked
+        for k in request.POST.keys():
+            try:
+                int(k)
+            except ValueError:
+                pass  # not a checkbox
+            else:
+                gids.append(int(k))
+        logging.debug(gids)
+        # remove member from the checked groups
+        for group_id in gids:
+            GroupMember.objects.get(
+                group_id=group_id, member_id=request.user.pk
+            ).delete()
+        return HttpResponseRedirect("/my-groups/")
+    else:
+        # display the groups for which the user is a member
+        context = {
+            "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
+        }
+    return render(request, "doghub_app/leave_group.html", context=context)

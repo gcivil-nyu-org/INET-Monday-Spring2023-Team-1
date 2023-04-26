@@ -48,7 +48,7 @@
           </a>
         </li>
         <li class="nav-tab" data-view-name="group">
-          <a href="#">
+          <a href="{% url 'my_groups' %}">
             <i class="fa-solid fa-people-group"></i>
             <span>
               Groups
@@ -152,6 +152,8 @@
       </div>
       <div class="group" data-view-active="false">
         <h1>Groups</h1>
+	{% block groups %}
+	{% endblock %}
       </div>
     </div>
 
