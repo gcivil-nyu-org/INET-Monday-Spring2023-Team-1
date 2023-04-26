@@ -435,7 +435,7 @@ button.createbtn i {
   background-color: #e40046;
   border: #73bef5;
 }
-.prof_expand{
+.prof_expand {
   margin-top: 2rem;
 }
 .prof-name {
@@ -461,7 +461,7 @@ button.createbtn i {
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 50%;
-  background-color: #6f36a8;
+  background-color: #43077e;
   display: inline-block;
   justify-content: center;
   align-items: center;
@@ -702,8 +702,8 @@ button.savepassbtn {
   box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.3);
 }
 
-.event_ls{
-  position:center;
+.event_ls {
+  position: center;
   list-style-type: none;
   margin: 0 auto;
   min-height: 620px;
