@@ -12,6 +12,7 @@
 .friend-list > li {
     float: left;
     width: 50%;
+    height: 100%;
 }
 .friend-list > li > a {
     display: block;
