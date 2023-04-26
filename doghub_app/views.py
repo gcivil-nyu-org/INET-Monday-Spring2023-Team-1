@@ -20,6 +20,7 @@ from .forms import (
 )
 from .models import (
     CustomUser,
+    Service,
     UserProfile,
     DogProfile,
     EventPost,
@@ -165,7 +166,11 @@ def register_details_request(request):
                     request, "For safety concerns, DogHub user should be 18+"
                 )
                 return redirect("register_details")
+        else:
+            messages.error(request, "Enter a valid Date of Birth.")
+            return redirect("register_details")
         user_profile.save()
+
         return redirect("events")
     if DogProfile.objects.filter(user_id=request.user).exists():
         dogprofiles = DogProfile.objects.filter(user_id=request.user)
@@ -193,6 +198,9 @@ def dog_profile_create(request):
             if date_obj >= date.today() or date.today().year - date_obj.year > 31:
                 messages.error(request, "Enter a valid Date of Birth")
                 return redirect("register_details")
+        else:
+            messages.error(request, "Enter a valid Date of Birth")
+            return redirect("register_details")
         dog_profile.save()
         return redirect("register_details")
     return render(request=request, template_name="doghub_app/register.html")
@@ -246,7 +254,9 @@ def events(request):
             cur_event["attendee"] = False
         event_ls.append(cur_event)
 
-    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    friends = Friends.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user), pending=False
+    )
     user_profiles = []
     for friend in friends:
         if friend.sender == request.user:
@@ -262,13 +272,14 @@ def events(request):
                 "pic": friend_profile.pic,
             }
         )
-    context = {
-        "userprof": user_prof,
-        "event_posts": event_ls,
-        "media_url": settings.MEDIA_URL,
-        "park": park,
-        "user_profiles": user_profiles,
-    }  # noqa: F841
+
+        context = {
+            "userprof": user_prof,
+            "event_posts": event_ls,
+            "media_url": settings.MEDIA_URL,
+            "park": park,
+            "user_profiles": user_profiles,
+        }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
 
@@ -428,12 +439,16 @@ def dog_profile_add(request):
         )
         if "dogPic" in request.FILES:
             dog_profile.pic = request.FILES["dogPic"]
+            logging.error("here", request.POST.get("dogDOB"))
         if request.POST.get("dogDOB") != "":
             dog_profile.dob = request.POST.get("dogDOB")
             date_obj = datetime.strptime(dog_profile.dob, "%Y-%m-%d").date()
             if date_obj >= date.today() or date.today().year - date_obj.year > 31:
                 messages.error(request, "Enter a valid Date of Birth")
                 return redirect("dog_profile_add")
+        else:
+            messages.error(request, "Enter a valid Date of Birth")
+            return redirect("dog_profile_add")
         dog_profile.save()
         return redirect("dog_profile_add")
     else:
@@ -530,6 +545,9 @@ def public_profile(request, email):
         events_list = EventPost.objects.filter(user_id=request.user.id)
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         friend = get_object_or_404(CustomUser, email=email)
+        friend_request_sent = Friends.objects.filter(
+            sender=request.user, receiver=friend, pending=True
+        ).first()
 
         context = {
             "user": user,
@@ -539,6 +557,7 @@ def public_profile(request, email):
             "events_list": list(events_list),
             "userprof": user_prof,
             "friend": friend,
+            "friend_request_sent": friend_request_sent,
         }
         return render(
             request=request,
@@ -556,6 +575,7 @@ def search_user(request):
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         show_users = False
         show_events = False
+        show_services = False
         searched = request.POST["searched"]
 
         if request.POST.get("filter_users") == "users":
@@ -563,6 +583,9 @@ def search_user(request):
 
         if request.POST.get("filter_events") == "events":
             show_events = True
+
+        if request.POST.get("filter_services") == "services":
+            show_services = True
 
         user_profiles_fname = list(
             UserProfile.objects.filter(fname__icontains=searched)
@@ -587,6 +610,7 @@ def search_user(request):
             u_list.append(d)
 
         events = EventPost.objects.filter(event_title__icontains=searched)
+        services = Service.objects.filter(title__contains=searched)
 
         return render(
             request,
@@ -596,10 +620,12 @@ def search_user(request):
                 "user_profiles_fname": user_profiles_fname,
                 "user_profiles_lname": user_profiles_lname,
                 "events": events,
+                "services": services,
                 "users_list": users_list,
                 "u_list": u_list,
                 "show_users": show_users,
                 "show_events": show_events,
+                "show_services": show_services,
                 "media_url": settings.MEDIA_URL,
                 "userprof": user_prof,
             },
@@ -660,19 +686,95 @@ def add_friend(request, email):
         return redirect("public-profile", email=email)
 
     if Friends.objects.filter(sender=request.user, receiver=friend).exists():
-        messages.warning(request, f"You are already friends with {friend.email}.")
+        messages.warning(
+            request, f"You have already sent a friend request to {friend.email}."
+        )
         return redirect("public-profile", email=email)
 
-    Friends.objects.create(sender=request.user, receiver=friend)
-    messages.success(request, f"You have added {friend.email} as a friend.")
+    if Friends.objects.filter(
+        sender=friend, receiver=request.user, pending=True
+    ).exists():
+        messages.warning(
+            request, f"{friend.email} has already sent you a friend request."
+        )
+        return redirect("public-profile", email=email)
+
+    Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+    messages.success(request, f"Friend request sent to {friend.email}.")
     return redirect("public-profile", email=email)
+
+
+# @login_required
+# def friend_requests(request):
+#    incoming_requests = Friends.objects.filter(receiver=request.user, pending=True)
+#    outgoing_requests = Friends.objects.filter(sender=request.user, pending=True)
+#
+#    context = {
+#        "incoming_requests": incoming_requests,
+#        "outgoing_requests": outgoing_requests,
+#    }
+#    return render(request, "doghub_app/friend_requests.html", context)
+@login_required
+def friend_requests(request):
+    friend_requests = Friends.objects.filter(receiver=request.user, pending=True)
+    # friend_profiles=[]
+    # userprof = UserProfile.objects.get(user_id=request.user)
+    # for friend in friend_requests:
+    #     if friend.receiver == request.user:
+    #         friend_user = friend.sender
+    #     else:
+    #         friend_user = friend.receiver
+    #     friend_profile = UserProfile.objects.get(user_id=friend_user.id)
+    #     friend_profiles.append(
+    #         {
+    #             "fname": friend_profile.fname,
+    #             "lname": friend_profile.lname,
+    #             "email": friend_user.email,
+    #             "pic": friend_profile.pic,
+    #         }
+    #     )
+    # context = {
+    #     "friend_profiles": friend_profiles,
+    #     "media_url": settings.MEDIA_URL,
+    #     "userprof": userprof,
+    # }
+    return render(
+        request, "doghub_app/friend_requests.html", {"friend_requests": friend_requests}
+    )
+
+
+@login_required
+def accept_friend_request(request, fid):
+    friend_request = get_object_or_404(
+        Friends, fid=fid, receiver=request.user, pending=True
+    )
+    friend_request.pending = False
+    friend_request.save()
+
+    messages.success(
+        request, f"You are now friends with {friend_request.sender.email}."
+    )
+    return redirect("friend_requests")
+
+
+@login_required
+def decline_friend_request(request, fid):
+    friend_request = get_object_or_404(
+        Friends, fid=fid, receiver=request.user, pending=True
+    )
+    friend_request.delete()
+
+    messages.success(request, "Friend request declined.")
+    return redirect("friend_requests")
 
 
 @login_required
 def friends(request):
-    # friend_profiles = []
-    friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+    friends = Friends.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user), pending=False
+    )
     user_profiles = []
+    userprof = UserProfile.objects.get(user_id=request.user)
     for friend in friends:
         if friend.sender == request.user:
             friend_user = friend.receiver
@@ -690,5 +792,6 @@ def friends(request):
     context = {
         "user_profiles": user_profiles,
         "media_url": settings.MEDIA_URL,
+        "userprof": userprof,
     }
     return render(request, "doghub_app/friends.html", context)
