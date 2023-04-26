@@ -61,6 +61,11 @@ urlpatterns = [
         views.decline_friend_request,
         name="decline_friend_request",
     ),
+    path("create-group/", views.create_group, name="create_group"),
+    path("join-group/", views.join_group, name="join_group"),
+    path("my-groups/", views.my_groups, name="my_groups"),
+    path("leave-group/", views.leave_group, name="leave_group"),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

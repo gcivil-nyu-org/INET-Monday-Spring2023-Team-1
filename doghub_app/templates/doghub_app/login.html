@@ -9,6 +9,7 @@
       src="https://kit.fontawesome.com/472ce279d4.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link
       rel="stylesheet"
       type="text/css"
@@ -19,9 +20,7 @@
   </head>
 
   <body>
-    <span>
-     Version:  {{ version }}
-    </span>
+    <span> Version: {{ version }} </span>
     <div class="container" id="container">
       <div class="form-container sign-up-container">
         <form action="/register" method="post" id="reg_form">
@@ -34,18 +33,28 @@
           </div>
           <span>or use your email for registration</span>
           {% if errors %}
-            <span style="font-weight:bold">{{ errorTitle }}</span>
+          <span style="font-weight: bold">{{ errorTitle }}</span>
           {% endif %}
-          <input type="email" name="reg_uemail" id = "reg_uemail" placeholder="Email" />
-          <input type="password" name="reg_psw" id = "reg_psw" placeholder="Password" />
+          <input
+            type="email"
+            name="reg_uemail"
+            id="reg_uemail"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            name="reg_psw"
+            id="reg_psw"
+            placeholder="Password"
+          />
           {% if errors %}
           <ul id="err_ls">
             {% for error in errors %}
-              <li><span style="font-size: 10px;">{{ error }}</span></li>
+            <li><span style="font-size: 10px">{{ error }}</span></li>
             {% endfor %}
           </ul>
           {% endif %}
-         <button id="signUpPost">Sign Up</button>
+          <button id="signUpPost">Sign Up</button>
         </form>
       </div>
       <div class="form-container sign-in-container">
@@ -59,7 +68,8 @@
           </div>
           <span>or use your account</span>
           {% if messages %} {% for message in messages %}
-          <h5>{{ message }}</h5>
+          <h5 style="color: rgba(0, 113, 218, 0.778)">{{ message }}</h5>
+
           {% endfor %} {% endif %}
           <input type="email" name="uemail" placeholder="Email" />
           <input type="password" name="psw" placeholder="Password" />
@@ -87,5 +97,6 @@
       </div>
     </div>
     <script src="{% static 'scripts/login.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
