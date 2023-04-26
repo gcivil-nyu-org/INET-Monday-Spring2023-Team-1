@@ -1,0 +1,7 @@
+<h3> Welcome {{ request.user.userprofile.fname }}! </h3>
+<p> Create a new group </p>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>

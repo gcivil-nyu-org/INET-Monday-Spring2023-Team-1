@@ -17,6 +17,7 @@ from doghub_app.models import (
     Attendee,
     Chat,
     Friends,
+    Groups,
 )
 
 from doghub_app.tokens import verification_token_generator
@@ -1050,3 +1051,46 @@ class FriendsTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Friend request declined.")
+
+
+class GroupsTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="Hades", email="Hades@doghub.com", password="Test@123"
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="Hermes", email="Hermes@doghub.com", password="Test@123"
+        )
+
+        self.client.login(email="Hades@doghub.com", password="Test@123")
+
+    def test_group_urls(self):
+        urls = ["create_group", "join_group", "my_groups", "leave_group"]
+        for u in urls:
+            resp = self.client.get(reverse(u), follow=True)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_create_group(self):
+        new_group = {
+            "group_title": "Hades Group",
+            "group_description": "Hades Group Desc",
+        }
+
+        response = self.client.post(
+            reverse("create_group"), data=new_group, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Groups.objects.count(), 1)
+        self.assertEqual(Groups.objects.first().group_owner, self.user)
+        self.assertEqual(Groups.objects.first().group_title, new_group["group_title"])
+        self.assertEqual(
+            Groups.objects.first().group_description, new_group["group_description"]
+        )
+
+    def test_join_group(self):
+        self.client.login(email="Hermes@doghub.com", password="Test@123")
+
+        response = self.client.post(reverse("join_group"), data={}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
