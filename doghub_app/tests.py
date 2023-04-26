@@ -993,6 +993,12 @@ class TestEventPageFriendList(TestCase):
         )
         Friends.objects.create(receiver=self.user, sender=self.user2, pending=False)
 
+    def testHtml(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/events_homepage.html")
+
     def testRetrieveFriends(self):
         self.client.login(email="user1@test.com", password="password123")
         url = reverse("events")
@@ -1001,6 +1007,7 @@ class TestEventPageFriendList(TestCase):
         self.assertEqual(
             list(response.context["user_profiles"])[0]["email"], "user2@test.com"
         )
+        self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
 
 
 class FriendsTestCase(TestCase):
