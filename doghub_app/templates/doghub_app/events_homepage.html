@@ -154,7 +154,7 @@
           <div class="friend-list clearfix">
             <li>
                 <a href="{% url 'public-profile' user_profile.email   %}">
-                    <div class="friend-img"><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}">
+                    <div><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}" class="friend-img">
                     </div>
                     <div class="friend-info">
                         <h4>{{ user_profile.fname }}</h4>
