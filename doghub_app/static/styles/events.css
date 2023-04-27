@@ -185,7 +185,6 @@ body {
   display: block;
   justify-content: center;
   align-items: center;
-  /* background-color: red; */
   height:100%;
 }
 
@@ -200,8 +199,7 @@ body {
 }
 
 .main-content .event ul,
-.main-content .friend ul,
-.main-content .group ul{
+.main-content .friend ul{
   position:center;
   height: 85%;
   width: 80%;
@@ -209,8 +207,7 @@ body {
   overflow:auto;
 }
 .main-content .event li,
-.main-content .friend li,
-.main-content .group li{
+.main-content .friend li{
   padding: 1rem; 
   margin-bottom: 2rem;
   margin-top: 1rem;
@@ -467,4 +464,18 @@ ul {
 .friend-list .friend-info p {
     color: #666;
     margin: 0;
+}
+
+.group-content{
+  margin-left: 30%;
+}
+
+.group-content ul{
+  position:center;
+  height: 20%;
+  overflow:auto;
+}
+
+.group-content li{
+  padding: 1rem; 
 }

@@ -275,14 +275,17 @@ def events(request):
                 "pic": friend_profile.pic,
             }
         )
-
-        context = {
-            "userprof": user_prof,
-            "event_posts": event_ls,
-            "media_url": settings.MEDIA_URL,
-            "park": park,
-            "user_profiles": user_profiles,
-        }  # noqa: F841
+    context = {
+        "userprof": user_prof,
+        "event_posts": event_ls,
+        "media_url": settings.MEDIA_URL,
+        "park": park,
+        "user_profiles": user_profiles,
+        "groups_owned": Groups.objects.filter(group_owner=request.user),
+        "groups_joined": [
+            g.group for g in GroupMember.objects.filter(member=request.user)
+        ],
+    }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
 
@@ -808,7 +811,7 @@ def create_group(request):
             g = form.save(commit=False)
             g.group_owner = request.user
             g.save()
-            return HttpResponseRedirect("/my-groups/")
+            return HttpResponseRedirect("/events")
     else:
         form = CreateGroupForm()
     return render(request, "doghub_app/create_group.html", {"form": form})
@@ -841,7 +844,7 @@ def join_group(request):
         # add user to the member list of the checked groups
         for group_id in gids:
             GroupMember(group_id=group_id, member_id=request.user.pk).save()
-        return HttpResponseRedirect("/my-groups/")
+        return HttpResponseRedirect("/events")
     else:
         # display the groups for which the user is not a member
         context = {
@@ -872,7 +875,7 @@ def leave_group(request):
             GroupMember.objects.get(
                 group_id=group_id, member_id=request.user.pk
             ).delete()
-        return HttpResponseRedirect("/my-groups/")
+        return HttpResponseRedirect("/events")
     else:
         # display the groups for which the user is a member
         context = {
