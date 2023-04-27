@@ -27,6 +27,7 @@ from .models import (
     Chat,
     Attendee,
     Friends,
+    Service,
 )
 from _version import __version__
 from datetime import datetime
@@ -236,8 +237,26 @@ def events(request):
 
     context = {"userprof": user_prof}  # noqa: F841
     park = list(Park.objects.all())
+
     event_posts = list(EventPost.objects.all())
-    event_posts.reverse()
+    for post in event_posts:
+        post.type='event'
+
+    service_posts = list(Service.objects.all())
+    for post in service_posts:
+        post.type='service'
+    #service_posts.reverse()
+    #event_posts.reverse()
+
+    #combining event_posts and service_posts
+    post_list = []
+    post_list.extend(event_posts)
+    post_list.extend(service_posts)
+
+
+    post_list = sorted(post_list, key=lambda post: post.date_created, reverse=True)
+
+
     event_ls = []
     friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
     print(friends)
@@ -254,12 +273,15 @@ def events(request):
         else:
             cur_event["attendee"] = False
         event_ls.append(cur_event)
+    print(post_list)
     context = {
         "userprof": user_prof,
         "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
+        "service_posts": service_posts,
         "friends": friends,
+        "post_list":post_list,
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
@@ -670,56 +692,36 @@ def friends(request):
 
 @login_required
 def add_service(request):
-    ''' current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
-    parks = list(Park.objects.values())
-    park_data = json.dumps(parks)
-    # park_data = Park.objects.all()
-    # park_data_list = list(park_data)
+   #    id = models.AutoField(primary_key=True)
+   # title = models.CharField(max_length=MID_CHAR_SIZE)
+   ## description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
+   # rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+   # contact_details = models.CharField(max_length=255, default="")
+   # address = models.CharField(max_length=255, blank=True, null=True)
+   # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    
     if request.method == "POST":
-        event_post_form = EventPostForm(request.POST)
-        if event_post_form.is_valid():
-            event_post = event_post_form.save(commit=False)
+        title = request.POST.get('title')
+        s_type = request.POST.get('service_type')
 
-            event_post = EventPost(
-                event_title=request.POST.get("event_title"),
-                event_description=request.POST.get("event_description"),
-                event_time=request.POST.get("event_time"),
-            )
+        description = request.POST.get('service_description')
+        rate= request.POST.get('rate')
+        contact_details = request.POST.get('contact')
+        address= request.POST.get('address', None)
 
-            location = request.POST.get("location")
-            if "," not in location:
-                messages.error(request, "Invalid location format")
-                return redirect("add_post")
-            latitude, longitude = location.split(",")
-            # latitude, longitude = location[0], location[1]
-            try:
-                park = Park.objects.get(latitude=latitude, longitude=longitude)
-            except Park.DoesNotExist:
-                messages.error(request, "No park found for the given info")
-                return redirect("add_post")
-            event_post.park_id = park
 
-            user = request.user
-            user = CustomUser.objects.get(id=user.id)
-            if not user.email_verified:
-                messages.error(request, "Verify your email before posting an Event.")
-                return redirect("events")
+        service = Service(
+            title = title,
+            s_type = s_type,
+            description = description,
+            rate = rate,
+            contact_details = contact_details,
+            address = address,
+        )
+        service.save()
+        return redirect("events")
 
-            event_post.user_id = request.user
-            event_post.save()
-            attendee = Attendee(user_id=request.user, event_id=event_post)
-            attendee.save()
-            messages.success(request, "Your post has been added!")
-            return redirect("events")
-    else:
-        event_post_form = EventPostForm()
-
-    context = {
-        "event_post_form": event_post_form,
-        "current_datetime": current_datetime,
-        "park_data": park_data,
-    } '''
+     
     return render(
-        request=request, template_name="doghub_app/add_service.html"
-    )
+        request=request, template_name="doghub_app/add_service.html")
 

@@ -3,7 +3,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/add_event.css' %}" />
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/add_service.css' %}" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAC2P9ywf4F9C4G6SuiL34zav0l0Gko3I"></script>
 </head>
@@ -11,27 +11,33 @@
 <body>
 <!--div class="add_event"-->
     <div class="card">
-        <div class="row">
+     
           
-                <h3 class="card__title">Add an Service!</h3>
-    
+                <h3 class="card__title">Add a Service!</h3>
+  
                 <div class="card__content">
                     <form method="POST">
                     {% csrf_token %}
                   
 
+                    <div class = "input-inline">
+                        <label>Service Title:</label>
+                        <input type = "text" name = "title" id = "title" placeholder = "title" required/>
+                    </div>
                     <div class="input-inline-desc">
-                        <label for="service_description">Service</label>
-                        <div class="dropdown">
-                          <textarea name="service_description" id="service_description" placeholder="Description" required></textarea>
-                          <div class="dropdown-content">
-                            <button type="button" value="Option 1">Option 1</button>
-                            <button type="button" value="Option 2">Option 2</button>
-                            <button type="button" value="Option 3">Option 3</button>
-                          </div>
+                        <label for="service_type">Service Type</label>
+                            <div class="dropdown">
+                          <select name="service_type" id="service_type" placeholder="Service Type" required style="width:210px;">
+                            <div class="dropdown-content">
+                            <option value="walker">Dog Walker</option>
+                            <option type="button" value="breeder">Breeder</option>
+                            <option type="button" value="Groomer">Groomer</option>
+                          </select>
+                            </div>
                         </div>
-                      </div>
-                <div class = "input-inline-desc-2">
+                     
+                      
+                    <div class = "input-inline-desc">
                     <label>Service Description</label>
                     <textarea name ="service_description" id="service_description" placeholder="Description" required></textarea>
 
@@ -74,7 +80,7 @@
 
               
          
-        </div>
+    
     </div>
 
     <script>

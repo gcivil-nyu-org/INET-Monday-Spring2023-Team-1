@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from datetime import datetime
+from django.utils import timezone
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "doghub_app.CustomUser")
 
@@ -100,6 +101,7 @@ class EventPost(models.Model):
     event_title = models.CharField(max_length=MID_CHAR_SIZE)
     event_description = models.CharField(max_length=LARGE_CHAR_SIZE)
     event_time = models.DateTimeField(default=datetime.now)
+    date_created = models.DateTimeField(default=timezone.now, editable=False, blank=True)
     park_id = models.ForeignKey(
         "Park", models.DO_NOTHING, blank=True, null=True, db_column="park_id"
     )
@@ -171,17 +173,19 @@ class ParkTag(models.Model):
 class Service(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=MID_CHAR_SIZE)
+    s_type = models.CharField(max_length=MID_CHAR_SIZE, default="other")
     description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
     rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     contact_details = models.CharField(max_length=255, default="")
     address = models.CharField(max_length=255, blank=True, null=True)
-    tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    #tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    date_created = models.DateTimeField(default=timezone.now, editable=False, blank=True)
 
     class Meta:
         db_table = "service"
 
-    def __str__(self):
-        return self.service_title
+ #   def __str__(self):
+  #      return self.service_title
 
 
 class UserTag(models.Model):
