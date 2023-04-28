@@ -1,3 +1,9 @@
+{% csrf_token %} {% if user.is_authenticated %} {% url 'events' as events_url
+%}{% csrf_token %}
+<script>
+  window.location.href = "{% url 'events' %}";
+</script>
+{% endif %}
 <!DOCTYPE html>
 {% load static %}
 <html>
