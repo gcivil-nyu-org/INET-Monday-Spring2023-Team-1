@@ -1,16 +1,43 @@
-<h3> Welcome {{ request.user.userprofile.fname }}! </h3>
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/join_leave_group.css' %}" />
+</head>
+
+<h3> Join Groups </h3>
 {% if groups %}
-<p> Available Groups </p>
 <form action="" method="post">
-  <ul>
     {% csrf_token %}
     {% for g in groups %}
-    <li> {{ g.group_title }} <input type="checkbox", name={{ g.pk }}> </li>
+    <div class="flip-card">
+      <div class="flip-card-inner">
+	<div class="flip-card-front">
+	  <div class="title">
+	    <p> {{ g.group_title }} </p>
+	  </div>
+	  <div class="owner">
+	    Made by: <a href="/public-profile/{{ g.group_owner.email }}">
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	    </a>
+	  </div>
+	</div>
+	<div class="flip-card-back">
+	  <div class="desc">
+	    {{ g.group_description }}
+	  </div>
+	  <div class="owner">
+	    Made by: <a href="/public-profile/{{ g.group_owner.email }}">
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	    </a>
+	  </div>
+	  <div class="check">
+	    <input type="checkbox", name={{ g.pk }}>
+	  </div>
+	</div>
+      </div>
+    </div>
     {% endfor %}
-    </ul>
     <input type="submit" value="Join">
 </form>
 {% else %}
-<p> No groups to join
-</p>
+<p> No groups to join </p>
 {% endif %}

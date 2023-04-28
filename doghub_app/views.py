@@ -831,7 +831,7 @@ def my_groups(request):
 @login_required
 def join_group(request):
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -840,11 +840,11 @@ def join_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # add user to the member list of the checked groups
         for group_id in gids:
             GroupMember(group_id=group_id, member_id=request.user.pk).save()
-        return HttpResponseRedirect("/events")
+        return HttpResponseRedirect("/my-groups")
     else:
         # display the groups for which the user is not a member
         context = {
@@ -875,7 +875,7 @@ def leave_group(request):
             GroupMember.objects.get(
                 group_id=group_id, member_id=request.user.pk
             ).delete()
-        return HttpResponseRedirect("/events")
+        return HttpResponseRedirect("/my-groups")
     else:
         # display the groups for which the user is a member
         context = {

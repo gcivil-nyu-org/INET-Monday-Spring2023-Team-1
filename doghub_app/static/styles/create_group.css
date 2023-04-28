@@ -37,16 +37,6 @@ textarea {
 }
 
 
-input[type=button], input[type=submit], input[type=reset] {
-  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
 input[type=button], input[type=submit], input[type=reset] {		
     border-radius: 20px;
     background-color: #6F36A8;
