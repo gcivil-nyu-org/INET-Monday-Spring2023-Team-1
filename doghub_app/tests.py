@@ -1011,6 +1011,21 @@ class TestEventPageFriendList(TestCase):
         self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
 
 
+# class FriendsTestCase(TestCase):
+#     def setUp(self):
+#         self.client = Client()
+#         self.user = CustomUser.objects.create_user(
+#             username="testuser2@gmail.com",
+#             email="testuser2@gmail.com",
+#             password="password",
+#         )
+#         self.friend_user = CustomUser.objects.create_user(
+#             username="frienduser2@gmail.com",
+#             email="frienduser2@gmail.com",
+#             password="password",
+#         )
+
+
 class FriendsTestCase(TestCase):
     def setUp(self):
         self.client = Client()
@@ -1024,6 +1039,13 @@ class FriendsTestCase(TestCase):
             email="frienduser2@gmail.com",
             password="password",
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.friend_user,
+            fname="Friend",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test Friend bio",
+        )
 
     def test_friend_requests(self):
         self.client.force_login(self.user)
@@ -1035,6 +1057,8 @@ class FriendsTestCase(TestCase):
         )
         response = self.client.get(reverse("friend_requests"))
         self.assertContains(response, self.friend_user.email)
+        self.assertContains(response, self.user_profile.fname)
+        self.assertContains(response, self.user_profile.lname)
 
         friend_request.delete()
         response = self.client.get(reverse("friend_requests"))

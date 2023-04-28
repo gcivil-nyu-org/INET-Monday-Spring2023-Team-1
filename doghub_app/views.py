@@ -723,30 +723,30 @@ def add_friend(request, email):
 @login_required
 def friend_requests(request):
     friend_requests = Friends.objects.filter(receiver=request.user, pending=True)
-    # friend_profiles=[]
+    friend_profiles = []
     # userprof = UserProfile.objects.get(user_id=request.user)
-    # for friend in friend_requests:
-    #     if friend.receiver == request.user:
-    #         friend_user = friend.sender
-    #     else:
-    #         friend_user = friend.receiver
-    #     friend_profile = UserProfile.objects.get(user_id=friend_user.id)
-    #     friend_profiles.append(
-    #         {
-    #             "fname": friend_profile.fname,
-    #             "lname": friend_profile.lname,
-    #             "email": friend_user.email,
-    #             "pic": friend_profile.pic,
-    #         }
-    #     )
-    # context = {
-    #     "friend_profiles": friend_profiles,
-    #     "media_url": settings.MEDIA_URL,
-    #     "userprof": userprof,
-    # }
-    return render(
-        request, "doghub_app/friend_requests.html", {"friend_requests": friend_requests}
-    )
+    for friend in friend_requests:
+        #     if friend.receiver == request.user:
+        friend_user = friend.sender
+        #     else:
+        #         friend_user = friend.receiver
+        friend_profile = UserProfile.objects.get(user_id=friend_user.id)
+        friend_profiles.append(
+            {
+                "fname": friend_profile.fname,
+                "lname": friend_profile.lname,
+                "email": friend_user.email,
+                "pic": friend_profile.pic,
+                "fid": friend.fid,
+            }
+        )
+    context = {
+        "friend_requests": friend_requests,
+        "friend_profiles": friend_profiles,
+        "media_url": settings.MEDIA_URL,
+        # "userprof": userprof,
+    }
+    return render(request, "doghub_app/friend_requests.html", context=context)
 
 
 @login_required
