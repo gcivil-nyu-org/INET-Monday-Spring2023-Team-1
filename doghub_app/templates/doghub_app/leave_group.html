@@ -1,3 +1,8 @@
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/join_leave_group.css' %}" />
+</head>
+
 <h3> Welcome {{ request.user.userprofile.fname }}! </h3>
 {% if groups %}
 <p> Leave Group </p>

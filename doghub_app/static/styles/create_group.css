@@ -1,0 +1,51 @@
+body {
+  background-color: #f1f1f3;
+}
+
+h3 {
+    color: rebeccapurple;
+}
+
+h3 + p {
+    face: bold;
+}
+
+#id_group_description label {
+    display:block;
+}
+
+textarea {
+  display: flex;
+  align-items: center;
+}
+
+textarea {
+  width: 50%;
+  height: 300px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+@media only screen and (max-width: 800px) {
+  textarea {
+    width: 100%;
+  }
+}
+
+
+input[type=button], input[type=submit], input[type=reset] {		
+    border-radius: 20px;
+    background-color: #6F36A8;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    margin-top: 20px;
+}
