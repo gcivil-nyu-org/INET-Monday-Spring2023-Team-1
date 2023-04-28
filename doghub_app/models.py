@@ -101,7 +101,9 @@ class EventPost(models.Model):
     event_title = models.CharField(max_length=MID_CHAR_SIZE)
     event_description = models.CharField(max_length=LARGE_CHAR_SIZE)
     event_time = models.DateTimeField(default=datetime.now)
-    date_created = models.DateTimeField(default=timezone.now, editable=False, blank=True)
+    date_created = models.DateTimeField(
+        default=timezone.now, editable=False, blank=True
+    )
     park_id = models.ForeignKey(
         "Park", models.DO_NOTHING, blank=True, null=True, db_column="park_id"
     )
@@ -178,14 +180,17 @@ class Service(models.Model):
     rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     contact_details = models.CharField(max_length=255, default="")
     address = models.CharField(max_length=255, blank=True, null=True)
-    #tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
-    date_created = models.DateTimeField(default=timezone.now, editable=False, blank=True)
+    # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    date_created = models.DateTimeField(
+        default=timezone.now, editable=False, blank=True
+    )
 
     class Meta:
         db_table = "service"
 
- #   def __str__(self):
-  #      return self.service_title
+
+#   def __str__(self):
+#      return self.service_title
 
 
 class UserTag(models.Model):

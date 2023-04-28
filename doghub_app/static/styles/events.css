@@ -323,10 +323,10 @@ body {
   height: 15rem;
 }
 
-.card-inner.card_flipped{
+.card_flipped{
   height: 24rem;
 }
-.card-inner.card_flipped_back{
+.card_flipped_back{
   height: 15rem;
 }
 
@@ -341,10 +341,10 @@ body {
   height: 15rem;
 }
 
-.card-inner-service.card_flipped{
+.card.service-card.card_flipped{
   height: 15rem;
 }
-.card-inner-service .card_flipped_back{
+.card.service-card.card_flipped_back{
   height: 15rem;
 }
 

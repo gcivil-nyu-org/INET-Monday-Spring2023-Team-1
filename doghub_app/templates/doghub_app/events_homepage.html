@@ -146,11 +146,11 @@
 
 
           {% elif "service" in event.type %}
-          <li class="card">
+          <li class="card service-card">
             <div class="card-inner-service">
                 <div class="front">
                   <h3 class="card__title"> {{event.title}}</h3>
-                  <p> Host By:+ {{event.hostname}}</p>
+                  <!-- <p> Host By:+ {{event.hostname}}</p> -->
                   <p> Service {{event.s_type}}</p>
                   <div class="event-description">
                   <p> {{event.description}}</p>

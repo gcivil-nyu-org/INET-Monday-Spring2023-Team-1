@@ -240,48 +240,38 @@ def events(request):
 
     event_posts = list(EventPost.objects.all())
     for post in event_posts:
-        post.type='event'
+        post.type = "event"
+        post.event_info = post
+        post.hostname = CustomUser.objects.get(id=post.user_id.id).username
+        if post.user_id == request.user:
+            post.host = True
+        else:
+            post.host = False
+        if Attendee.objects.filter(event_id=post.event_id, user_id=request.user):
+            post.attendee = True
+        else:
+            post.attendee = False
 
     service_posts = list(Service.objects.all())
     for post in service_posts:
-        post.type='service'
-    #service_posts.reverse()
-    #event_posts.reverse()
+        post.type = "service"
 
-    #combining event_posts and service_posts
+    # combining event_posts and service_posts
     post_list = []
     post_list.extend(event_posts)
     post_list.extend(service_posts)
-
-
     post_list = sorted(post_list, key=lambda post: post.date_created, reverse=True)
 
-
-    event_ls = []
     friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
-    print(friends)
-    for event in event_posts:
-        cur_event = {}
-        cur_event["event_info"] = event
-        cur_event["hostname"] = CustomUser.objects.get(id=event.user_id.id).username
-        if event.user_id == request.user:
-            cur_event["host"] = True
-        else:
-            cur_event["host"] = False
-        if Attendee.objects.filter(event_id=event.event_id, user_id=request.user):
-            cur_event["attendee"] = True
-        else:
-            cur_event["attendee"] = False
-        event_ls.append(cur_event)
     print(post_list)
     context = {
         "userprof": user_prof,
-        "event_posts": event_ls,
+        # "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
         "service_posts": service_posts,
         "friends": friends,
-        "post_list":post_list,
+        "post_list": post_list,
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
@@ -692,36 +682,32 @@ def friends(request):
 
 @login_required
 def add_service(request):
-   #    id = models.AutoField(primary_key=True)
-   # title = models.CharField(max_length=MID_CHAR_SIZE)
-   ## description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
-   # rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-   # contact_details = models.CharField(max_length=255, default="")
-   # address = models.CharField(max_length=255, blank=True, null=True)
-   # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
-    
+    #    id = models.AutoField(primary_key=True)
+    # title = models.CharField(max_length=MID_CHAR_SIZE)
+    ## description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
+    # rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    # contact_details = models.CharField(max_length=255, default="")
+    # address = models.CharField(max_length=255, blank=True, null=True)
+    # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+
     if request.method == "POST":
-        title = request.POST.get('title')
-        s_type = request.POST.get('service_type')
+        title = request.POST.get("title")
+        s_type = request.POST.get("service_type")
 
-        description = request.POST.get('service_description')
-        rate= request.POST.get('rate')
-        contact_details = request.POST.get('contact')
-        address= request.POST.get('address', None)
-
+        description = request.POST.get("service_description")
+        rate = request.POST.get("rate")
+        contact_details = request.POST.get("contact")
+        address = request.POST.get("address", None)
 
         service = Service(
-            title = title,
-            s_type = s_type,
-            description = description,
-            rate = rate,
-            contact_details = contact_details,
-            address = address,
+            title=title,
+            s_type=s_type,
+            description=description,
+            rate=rate,
+            contact_details=contact_details,
+            address=address,
         )
         service.save()
         return redirect("events")
 
-     
-    return render(
-        request=request, template_name="doghub_app/add_service.html")
-
+    return render(request=request, template_name="doghub_app/add_service.html")
