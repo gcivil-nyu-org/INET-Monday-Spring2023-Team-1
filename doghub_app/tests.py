@@ -18,6 +18,7 @@ from doghub_app.models import (
     Chat,
     Friends,
     Groups,
+    GroupMember,
 )
 
 from doghub_app.tokens import verification_token_generator
@@ -963,22 +964,66 @@ class TestCreateMessage(TestCase):
         self.assertEqual(Chat.objects.first().sender, self.user_sender)
         self.assertEqual(Chat.objects.first().receiver, self.user_receiver)
         self.assertEqual(Chat.objects.first().text, "Test Message")
-        # self.client.login(email="user1@attendee.com", password="password123")
-        # url = reverse("rsvp_event", args=[self.event.event_id])
-        # response = self.client.post(url)
-        # self.assertEqual(response.status_code, 200)
-        # url = reverse("user_profile")
-        # response = self.client.get(url)
-        # self.assertEqual(response.status_code, 200)
-        # self.assertEqual(len(response.context["events_list"]), 1)
-        # self.assertEqual(response.context["events_list"][0].user_id, self.user_host)
 
-        # self.assertNotEqual(
-        #     Attendee.objects.filter(
-        #         event_id=self.event.event_id, user_id=self.user_attendee
-        #     ),
-        #     None,
-        # )
+
+class TestEventPageFriendList(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="user1@test.com",
+            email="user1@test.com",
+            password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2@test.com",
+            email="user2@test.com",
+            password="password123",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test2",
+            lname="User2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        Friends.objects.create(receiver=self.user, sender=self.user2, pending=False)
+
+    def testHtml(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/events_homepage.html")
+
+    def testRetrieveFriends(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["user_profiles"]), 1)
+        self.assertEqual(
+            list(response.context["user_profiles"])[0]["email"], "user2@test.com"
+        )
+        self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
+
+
+# class FriendsTestCase(TestCase):
+#     def setUp(self):
+#         self.client = Client()
+#         self.user = CustomUser.objects.create_user(
+#             username="testuser2@gmail.com",
+#             email="testuser2@gmail.com",
+#             password="password",
+#         )
+#         self.friend_user = CustomUser.objects.create_user(
+#             username="frienduser2@gmail.com",
+#             email="frienduser2@gmail.com",
+#             password="password",
+#         )
 
 
 class FriendsTestCase(TestCase):
@@ -994,6 +1039,13 @@ class FriendsTestCase(TestCase):
             email="frienduser2@gmail.com",
             password="password",
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.friend_user,
+            fname="Friend",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test Friend bio",
+        )
 
     def test_friend_requests(self):
         self.client.force_login(self.user)
@@ -1005,6 +1057,8 @@ class FriendsTestCase(TestCase):
         )
         response = self.client.get(reverse("friend_requests"))
         self.assertContains(response, self.friend_user.email)
+        self.assertContains(response, self.user_profile.fname)
+        self.assertContains(response, self.user_profile.lname)
 
         friend_request.delete()
         response = self.client.get(reverse("friend_requests"))
@@ -1094,3 +1148,63 @@ class GroupsTestCase(TestCase):
         response = self.client.post(reverse("join_group"), data={}, follow=True)
 
         self.assertEqual(response.status_code, 200)
+
+
+class GroupEventPage(TestCase):
+    def setUp(self):
+        self.user1 = CustomUser.objects.create_user(
+            username="user1", email="user1@test.com", password="password123"
+        )
+        self.user2 = CustomUser.objects.create_user(
+            username="user2", email="user2@test.com", password="password123"
+        )
+        self.user_profile1 = UserProfile.objects.create(
+            user_id=self.user1,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+        self.myGroup = Groups.objects.create(
+            group_title="MyGroup",
+            group_description="Test Group",
+            group_owner=self.user1,
+        )
+        self.notMyGroup = Groups.objects.create(
+            group_title="NotMyGroup",
+            group_description="Test Group",
+            group_owner=self.user2,
+        )
+        GroupMember.objects.create(
+            group=self.notMyGroup, member=self.user1, pending=False
+        )
+
+    def testHtml(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, "doghub_app/events_homepage.html")
+        self.assertEqual(Groups.objects.count(), 2)
+        self.assertEqual(len(list(Groups.objects.filter(group_owner=self.user1))), 1)
+        self.assertEqual(len(list(Groups.objects.filter(group_owner=self.user2))), 1)
+
+    def testMyGroup(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        print(response.context)
+        self.assertEqual(len(list(response.context["groups_owned"])), 1)
+        self.assertEqual(
+            list(response.context["groups_owned"])[0].group_title, "MyGroup"
+        )
+        self.assertEqual(
+            list(response.context["groups_owned"])[0].group_owner, self.user1
+        )
+
+    def testJoinedGroup(self):
+        self.client.login(email="user1@test.com", password="password123")
+        url = reverse("events")
+        response = self.client.get(url)
+        self.assertEqual(len(response.context["groups_joined"]), 1)
+        self.assertEqual(response.context["groups_joined"][0].group_title, "NotMyGroup")
+        self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
