@@ -28,6 +28,8 @@ from .models import (
     Attendee,
     Friends,
     Service,
+    Groups,
+    GroupMember,
 )
 from _version import __version__
 from datetime import datetime
@@ -478,6 +480,9 @@ def add_post(request):
     current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
     parks = list(Park.objects.values())
     park_data = json.dumps(parks)
+    groups = list(Groups.objects.values())
+    in_group = []
+    group_members = list(GroupMember.objects.values())
     # park_data = Park.objects.all()
     # park_data_list = list(park_data)
     if request.method == "POST":
@@ -489,7 +494,19 @@ def add_post(request):
                 event_title=request.POST.get("event_title"),
                 event_description=request.POST.get("event_description"),
                 event_time=request.POST.get("event_time"),
+                event_group = request.POST.get("event_group") or None,
             )
+
+            for member in group_members:
+                if member.user_id == request.user:
+                    in_group.append(member.group_id)
+
+            for group in groups:
+                if event_post.event_group == group['group_title']:
+                    event_post.event_group = group['group_id']
+                    print(event_post.event_group)
+            if event_post.event_group is None or event_post.event_group=="":
+                event_post.event_group=0
 
             location = request.POST.get("location")
             if "," not in location:
@@ -523,6 +540,8 @@ def add_post(request):
         "event_post_form": event_post_form,
         "current_datetime": current_datetime,
         "park_data": park_data,
+        "groups":groups,
+        "in_group":in_group
     }
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context

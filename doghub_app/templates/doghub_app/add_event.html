@@ -43,7 +43,18 @@
 
                 </div>
 
+                <div class = "input-inline">
+                    <label>Would you like to make this event group specific?:</label>
 
+                    <select id="event_group" name="event_group" size="4" multiple>
+                        {% for group in groups %}
+                    <option value="{{group.group_id}}">{{ group.group_title}}</option>
+                    {% endfor %}
+                    {% for group in in_group %}
+                    <option value="{{group.group_id}}">{{ group.group_title}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
                     <button class="button" type="submit">Submit</button>
 
                   
