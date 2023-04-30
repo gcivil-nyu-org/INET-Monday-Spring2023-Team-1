@@ -822,7 +822,7 @@ def create_group(request):
             g = form.save(commit=False)
             g.group_owner = request.user
             g.save()
-            return HttpResponseRedirect("/events")
+            return HttpResponseRedirect("/my-groups")
     else:
         form = CreateGroupForm()
     return render(request, "doghub_app/create_group.html", {"form": form})
