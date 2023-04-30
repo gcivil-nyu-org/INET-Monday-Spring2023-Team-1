@@ -517,23 +517,26 @@ def add_post(request):
     current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
     parks = list(Park.objects.values())
     park_data = json.dumps(parks)
-    groups = list(Groups.objects.values())
+    groups = list(Groups.objects.all())
     in_group = []
     show_group=[]
     user_id = request.user.id
-    group_members = list(GroupMember.objects.values())
-    # park_data = Park.objects.all()
-    # park_data_list = list(park_data)
+    group_members = list(GroupMember.objects.all())
+
+    print("groups")
 
 
-   # for group in groups:
-    #    if user_id == group['user_id']:
-     #       show_group.append(group)
-      #      print(show_group)
+      
+    for group in groups:
+        if group.group_owner == request.user:
+            show_group.append(group)
 
-    #for member in group_members:
-     #   if member.user_id == user_id:
-      #      in_group.append(member.group_id)
+    for group in group_members:
+        if group.member == request.user:
+            show_group.append(group.group)
+
+    print("Show group:")        
+    print(show_group)
 
 
     if request.method == "POST":
@@ -547,11 +550,11 @@ def add_post(request):
                 event_time=request.POST.get("event_time"),
                 event_group = request.POST.get("event_group") or None,
             )
-           
+         
 
             for group in groups:
-                if event_post.event_group == group['group_title']:
-                    event_post.event_group = group['group_id']
+                if event_post.event_group == group.group_title:
+                    event_post.event_group = group.group_id
                     print(event_post.event_group)
                     print('group_id')
                     print(group['group_id'])
@@ -752,13 +755,6 @@ def friends(request):
 
 @login_required
 def add_service(request):
-    #    id = models.AutoField(primary_key=True)
-    # title = models.CharField(max_length=MID_CHAR_SIZE)
-    ## description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
-    # rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    # contact_details = models.CharField(max_length=255, default="")
-    # address = models.CharField(max_length=255, blank=True, null=True)
-    # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
 
     if request.method == "POST":
         title = request.POST.get("title")
