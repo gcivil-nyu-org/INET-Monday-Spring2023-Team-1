@@ -71,3 +71,22 @@ input[type=button], input[type=submit], input[type=reset] {
     face: bold;
 }
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+.column {
+    width: 20%;
+    padding: 0 1rem;
+    
+}
+
+@media only screen and (max-width: 800px) {
+.row{
+    flex-direction: column;
+}
+.column {
+    width: 100%;
+}
