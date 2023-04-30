@@ -239,9 +239,46 @@ def events(request):
 
     context = {"userprof": user_prof}  # noqa: F841
     park = list(Park.objects.all())
+    member_of = list(GroupMember.objects.all())
 
+
+    groups = list(Groups.objects.all())
+    group_member = []
+
+    for group in groups:
+        if group.group_owner == request.user:
+            group_member.append(group)
+    
+    for group in member_of:
+        if group.member == request.user:
+            group_member.append(group)     
+            #print(group.group_owner)   
+
+   
+    show_posts = []
+    
     event_posts = list(EventPost.objects.all())
-    for post in event_posts:
+    for event in event_posts:
+        if event.event_group == '0' or event.event_group is None:
+            if event.event_id not in show_posts:
+                show_posts.append(event)
+
+    
+    for event in event_posts:
+        for group in group_member:
+            print(f"event.event_group = {event.event_group}, group.group_id = {group.group_id}")
+           
+            if int(event.event_group) == int(group.group_id):
+                if event not in show_posts:
+                    show_posts.append(event)
+                    print("Posts:")
+                    print(show_posts)
+                
+    
+   
+
+   
+    for post in show_posts:
         post.type = "event"
         post.event_info = post
         post.hostname = CustomUser.objects.get(id=post.user_id.id).username
@@ -260,12 +297,12 @@ def events(request):
 
     # combining event_posts and service_posts
     post_list = []
-    post_list.extend(event_posts)
+    post_list.extend(show_posts)
     post_list.extend(service_posts)
     post_list = sorted(post_list, key=lambda post: post.date_created, reverse=True)
 
     friends = Friends.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
-    print(post_list)
+    #print(post_list)
     context = {
         "userprof": user_prof,
         # "event_posts": event_ls,
@@ -482,9 +519,23 @@ def add_post(request):
     park_data = json.dumps(parks)
     groups = list(Groups.objects.values())
     in_group = []
+    show_group=[]
+    user_id = request.user.id
     group_members = list(GroupMember.objects.values())
     # park_data = Park.objects.all()
     # park_data_list = list(park_data)
+
+
+   # for group in groups:
+    #    if user_id == group['user_id']:
+     #       show_group.append(group)
+      #      print(show_group)
+
+    #for member in group_members:
+     #   if member.user_id == user_id:
+      #      in_group.append(member.group_id)
+
+
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
@@ -496,15 +547,14 @@ def add_post(request):
                 event_time=request.POST.get("event_time"),
                 event_group = request.POST.get("event_group") or None,
             )
-
-            for member in group_members:
-                if member.user_id == request.user:
-                    in_group.append(member.group_id)
+           
 
             for group in groups:
                 if event_post.event_group == group['group_title']:
                     event_post.event_group = group['group_id']
                     print(event_post.event_group)
+                    print('group_id')
+                    print(group['group_id'])
             if event_post.event_group is None or event_post.event_group=="":
                 event_post.event_group=0
 
@@ -541,6 +591,7 @@ def add_post(request):
         "current_datetime": current_datetime,
         "park_data": park_data,
         "groups":groups,
+        "show_group":show_group,
         "in_group":in_group
     }
     return render(
