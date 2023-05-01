@@ -189,9 +189,8 @@ class Service(models.Model):
     class Meta:
         db_table = "service"
 
-
-#   def __str__(self):
-#      return self.service_title
+    def __str__(self):
+        return self.title
 
 
 class UserTag(models.Model):

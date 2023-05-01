@@ -51,6 +51,22 @@ urlpatterns = [
     path("rsvp_event/<int:pk>/", views.rsvp_event, name="rsvp_event"),
     path("friends/", views.friends, name="friends"),
     path("add-friend/<str:email>/", views.add_friend, name="add_friend"),
+    path("friend_requests/", views.friend_requests, name="friend_requests"),
+    path(
+        "accept_friend_request/<int:fid>/",
+        views.accept_friend_request,
+        name="accept_friend_request",
+    ),
+    path(
+        "decline_friend_request/<int:fid>/",
+        views.decline_friend_request,
+        name="decline_friend_request",
+    ),
+    path("create-group/", views.create_group, name="create_group"),
+    path("join-group/", views.join_group, name="join_group"),
+    path("my-groups/", views.my_groups, name="my_groups"),
+    path("leave-group/", views.leave_group, name="leave_group"),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

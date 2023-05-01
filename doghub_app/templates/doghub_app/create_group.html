@@ -1,0 +1,12 @@
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/create_group.css' %}" />
+</head>
+
+<h3> Create a new group! </h3>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>

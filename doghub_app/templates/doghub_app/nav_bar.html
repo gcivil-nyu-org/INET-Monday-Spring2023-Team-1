@@ -19,12 +19,14 @@
 
                 <form method="post" action="{% url 'search-user' %}">
                     {% csrf_token %}
-                    <input  placeholder ="Search user..." class = "searchTerm" type="text" name="searched" /> 
+                    <input  placeholder ="Search..." class = "searchTerm" type="text" name="searched" /> 
                     </br><div class="check_box">
                     <input type="checkbox" name="filter_users" value="users" checked>
                       <label style="color: white;" for="users">Users</label> </br>
                     <input type="checkbox" name="filter_events" value="events" checked>
-                    <label style="color: white;" for="events">Events</label></div>
+                    <label style="color: white;" for="events">Events</label>
+                    <input type="checkbox" name="filter_services" value="services" checked>
+                    <label style="color: white;" for="services">Services</label>
                   </form>
             </li>
             

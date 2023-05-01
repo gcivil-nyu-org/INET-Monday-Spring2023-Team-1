@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://kit.fontawesome.com/472ce279d4.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {% load static %} 
     <link
       rel="stylesheet"
@@ -21,6 +22,7 @@
   </head>
   <body>
     <div class="mail-area">
+
         {% if messageList %}
         <ul>
             {% for message in messageList %}
@@ -29,7 +31,6 @@
                     <div class="card">
                         <div class="cover">
                             <h2><i class="fa fa-envelope"  aria-hidden="true"></i>From {{message.sender.username}}</h2>
-                            <!-- <p>From {{message.sender.username}}</p> -->
                             <p>Received at {{message.timestamp}}</p>
                         </div>
                         <div class="content">
@@ -43,6 +44,31 @@
         {% else %}
         <h1>No Message</h1>
         {% endif %} 
+        <div class= "add_message" id="add_icon"><i class="fa-solid fa-circle-plus"></i></div>
+        <label class="warning_message" id="recipient_warning">Reciepient Can't be Empty</label>
+        <label class="warning_message" id="content_warning">Message Can't be Empty</label>
+        <div class="sending_container">
+          <div class="card">
+              <div class="sending_cover">
+                  <p>Recipient: </p><div class="recipient" type="text" id="recipient"></div><div type="text"/>
+                  <div class="dropdown-friend">
+                    {% if friendsLs %}
+                    <ul>
+                      {% for friend in friendsLs %}
+                          <li onclick='friendName(this,"{{friend.id}}")'>{{friend.username}}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                  </div>
+              </div>
+              <div class=" sending_icon" onclick="send_message('{{csrf_token}}')">
+                <i class="fa fa-paper-plane-o sending_icon" aria-hidden="true"></i>
+              </div>
+              <div class="sending_content">
+                <textarea id="sending_text" rows="4" cols="50" class="sending_text" required></textarea>
+              </div>
+          </div>
+      </div>
     </div>
     <script src= "{% static 'scripts/inbox.js' %}" ></script>
   </body>
