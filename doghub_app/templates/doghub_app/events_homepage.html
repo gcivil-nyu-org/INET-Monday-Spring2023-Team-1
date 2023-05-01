@@ -1,4 +1,3 @@
-
 {% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
 <div class="alert alert-{{ message.tags }}">{{ message }}</div>
 {% endfor %} {% endif %}
@@ -61,29 +60,36 @@
     <div class="main-content">
   
       <div class="event" data-view-active="true">
+
+      
+        
+
+        {% if post_list %}
+
         <div class="dropdown">
           <a class="add_event" href="#">
             <i class="fa-solid fa-circle-plus"></i>
           </a>
           <div class="dropdown-content">
             <a href="{% url 'add_post' %}">Add Event</a>
-            <a href="">Add Service</a>
+            <a href="{% url 'add_service' %}">Add Service</a>
           </div>
         </div>
         
-        {% if event_posts %}
         <ul>
-        {% for event in event_posts %}
+        {% for event in post_list %}
+
+        {% if "event" in event.type%}
           <li class="card">
             <div class="card-inner">
                 <div class="front">
-                  <h3 class="card__title"> {{event.event_info.event_title}}</h3>
-                  <p> Host By: {{event.hostname}}</p>
+                  <h3 class="card__title"> {{event.event_title}}</h3>
+                  <p> Host By:+ {{event.hostname}}</p>
                   <div class="event-description">
-                  <p> {{event.event_info.event_description}}</p>
+                  <p> {{event.event_description}}</p>
                   </div>
                   
-                   <div class="card__date">{{event.event_info.event_time}} </div>
+                   <div class="card__date">{{event.event_time}} </div>
                 </div>
                 <div class="back">
                     <div class="back_content">
@@ -98,14 +104,14 @@
                     </div>
                     
                      {% for parkinfo in park %}
-                    {% if parkinfo.park_id == event.event_info.park_id.park_id %}
-                    <div id ="map-{{event.event_info.event_id}}" style= "height:200px; width:97%;"></div>
+                    {% if parkinfo.park_id == event.park_id.park_id %}
+                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
                     
                   
                     <script>
                         function initMap() {
                           var myLatLng = {lat: {{ parkinfo.latitude }}, lng: {{ parkinfo.longitude }}};
-                          var map = new google.maps.Map(document.getElementById('map-{{event.event_info.event_id }}'), {
+                          var map = new google.maps.Map(document.getElementById('map-{{event.event_id }}'), {
                               zoom: 17,
                               center: myLatLng
                           });
@@ -118,7 +124,7 @@
                       }
                       initMap();
                       console.log('init Map')
-                      var mapListener = document.getElementById('map-{{event.event_info.event_id}}');
+                      var mapListener = document.getElementById('map-{{event.event_id}}');
                       mapListener.addEventListener("click",(e)=>{
                         e.stopPropagation();
                       });
@@ -134,9 +140,9 @@
                     
                     
                     {% if event.host %}
-                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
                     {% else %}
-                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
                     {% endif %}    
                     {% if event.attendee %}
                     <i id="registerIc" class="fa-solid fa-star" style="opacity: 0;"></i>
@@ -148,6 +154,57 @@
                 </div>
              </div>
            </li>
+
+
+          {% elif "service" in event.type %}
+          <li class="card service-card">
+            <div class="card-inner-service">
+                <div class="front">
+                  <h3 class="card__title"> {{event.title}}</h3>
+                  <!-- <p> Host By:+ {{event.hostname}}</p> -->
+                  <p> Service {{event.s_type}}</p>
+                  <div class="event-description">
+                  <p> {{event.description}}</p>
+                  </div>
+                  
+                  
+                </div>
+                <div class="back">
+                    <div class="back_content">
+                      <div class="detail_content"><h3> Details</h3></div>
+                     
+                     <div id="reg_ind" > 
+                      {% if event.attendee %}
+                       <i id="registerIc" class="fa-solid fa-star"></i>
+                      {% else %}
+                      <i id="registerIc" class="fa-regular fa-star"></i>
+                      {% endif %}
+                      
+                    </div>  
+                    </div>
+                    
+                    <p> Contact Info: {{event.contact_details}}</p>
+                  
+                    {%if address%}
+                    <p> Address: {{event.address}}</p>
+                    {% endif%}
+                 <!--  {% if event.host %}
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
+                    {% else %}
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
+                    {% endif %}    
+                    {% if event.attendee %}
+                    <i id="registerIc" class="fa-solid fa-star" style="opacity: 0;"></i>
+                    {% else %}
+                    <i id="registerIc" class="fa-regular fa-star"></i>
+                    {% endif %}
+                     Contact</button>
+                          -->
+
+                </div>
+             </div>
+           </li>
+           {% endif %}
         {% endfor %}
         </ul>
         {% else %}

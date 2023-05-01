@@ -70,7 +70,8 @@ function index(el,cards) {
 
 const card_containers = document.querySelectorAll(".card");
 
-const card_inners = document.querySelectorAll(".card-inner");
+var card_inners = document.querySelectorAll(".card-inner, .card-inner-service");
+console.log(card_inners)
 card_inners.forEach((card)=>card.addEventListener("click",(e)=>{
   if(registerBtnClicked){
     reg_icon= card.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.firstElementChild

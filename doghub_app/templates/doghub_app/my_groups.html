@@ -1,22 +1,83 @@
+{% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %} {% endif %}
+
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/groups.css' %}" />
+</head>
+
 <h3> Welcome {{ request.user.userprofile.fname }}! </h3>
 {% if groups_owned %}
 <h4> Groups I own </h4>
-<ul>
-{% for g in groups_owned %}
-<li> {{ g.group_title }} </li>
-{% endfor %}
-</ul>
+    <div class="row">
+    {% for g in groups_owned %}
+    <div class="column">
+    <div class="flip-card">
+      <div class="flip-card-inner">
+	<div class="flip-card-front">
+	  <div class="title">
+	    <p> {{ g.group_title }} </p>
+	  </div>
+	  <div class="owner">
+	    Made by:
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	  </div>
+	</div>
+	<div class="flip-card-back">
+	  <div class="owner">
+	    By: <a href="/public-profile/{{ g.group_owner.email }}", target="_blank">
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	    </a>
+	  </div>
+	  <br>
+	  </br>
+	  <div class="desc">
+	    {{ g.group_description }}
+	  </div>
+	</div>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
 {% else %}
 <p> You do not own any groups, why not create one? </p>
 {% endif %}
 
 {% if groups_joined %}
 <h4> Groups I joined </h4>
-<ul>
-{% for g in groups_joined %}
-<li> {{ g.group_title }} </li>
-{% endfor %}
-</ul>
+    <div class="row">
+    {% for g in groups_joined %}
+    <div class="column">
+    <div class="flip-card">
+      <div class="flip-card-inner">
+	<div class="flip-card-front">
+	  <div class="title">
+	    <p> {{ g.group_title }} </p>
+	  </div>
+	  <div class="owner">
+	    Made by:
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	  </div>
+	</div>
+	<div class="flip-card-back">
+	  <div class="owner">
+	    By: <a href="/public-profile/{{ g.group_owner.email }}", target="_blank">
+	      {{ g.group_owner.userprofile.fname }} {{ g.group_owner.userprofile.lname }}
+	    </a>
+	  </div>
+	  <br>
+	  </br>
+	  <div class="desc">
+	    {{ g.group_description }}
+	  </div>
+	</div>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
 {% else %}
 <p> You have not joined any groups, why not join a group ? </p>
 {% endif %}
