@@ -939,7 +939,7 @@ class AddFriendTestCase(TestCase):
         messages = list(response.wsgi_request._messages)
         self.assertEqual(len(messages), 1)
         self.assertEqual(
-            str(messages[0]), f"You are already friends with testfriend@example.com."
+            str(messages[0]), f"You are already friends with {self.friend.email}."
         )
 
 
