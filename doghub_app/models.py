@@ -176,7 +176,7 @@ class ParkTag(models.Model):
 
 
 class Service(models.Model):
-    id = models.AutoField(primary_key=True)
+    service_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=MID_CHAR_SIZE)
     s_type = models.CharField(max_length=MID_CHAR_SIZE, default="other")
     description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
