@@ -150,6 +150,20 @@ body {
   top: 0px;
 }
 
+.request-img{
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 68%;
+}
+.request-data{
+  text-decoration: none;
+  text-align: center;
+}
+
+
 
 
 .back_content{

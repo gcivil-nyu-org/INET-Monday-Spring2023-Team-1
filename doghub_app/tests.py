@@ -928,10 +928,19 @@ class AddFriendTestCase(TestCase):
         self.assertEqual(Friends.objects.count(), 0)
 
     def test_add_existing_friend(self):
-        Friends.objects.create(sender=self.user, receiver=self.friend)
+        Friends.objects.create(sender=self.user, receiver=self.friend, pending=False)
+
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Friends.objects.count(), 1)
+        existing_friend = Friends.objects.first()
+        self.assertEqual(existing_friend.sender, self.user)
+        self.assertEqual(existing_friend.receiver, self.friend)
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]), f"You are already friends with {self.friend.email}."
+        )
 
 
 class TestCreateMessage(TestCase):
@@ -1039,9 +1048,16 @@ class FriendsTestCase(TestCase):
             email="frienduser2@gmail.com",
             password="password",
         )
-        self.user_profile = UserProfile.objects.create(
+        self.friend_user_profile = UserProfile.objects.create(
             user_id=self.friend_user,
             fname="Friend",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test Friend bio",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="User",
             lname="User",
             dob=date.today() - timedelta(days=365 * 20),
             bio="Test Friend bio",

@@ -206,6 +206,7 @@
       </div>
       <div class="friend" data-view-active="false">
         <!-- <h1>Friendsssss</h1> -->
+        <a href="{% url 'friend_requests' %}" class="request-data"><img src="{% static 'images/friend_request.png' %}" class="request-img"></a>
         <ul>
           {% for user_profile in user_profiles %}
           <div class="friend-list clearfix">
