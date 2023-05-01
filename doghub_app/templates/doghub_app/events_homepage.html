@@ -165,7 +165,7 @@
                 <div class="back">
                     <div class="back_content">
                       <div class="detail_content"><h3> Details</h3></div>
-                     
+                      
                      <div id="reg_ind" > 
                       {% if event.attendee %}
                        <i id="registerIc" class="fa-solid fa-star"></i>
@@ -177,6 +177,8 @@
                     </div>
                     
                     <p> Contact Info: {{event.contact_details}}</p>
+                    <br>
+                    <p> Hourly Rate: ${{event.rate}}</p>
                   
                     {%if address%}
                     <p> Address: {{event.address}}</p>
