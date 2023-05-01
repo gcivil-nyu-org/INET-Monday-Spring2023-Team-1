@@ -859,13 +859,14 @@ def join_group(request):
     else:
         # display the groups for which the user is not a member
         context = {
+            "Join": True,
             "groups": [
                 g
                 for g in Groups.objects.filter(~Q(group_owner=request.user))
                 if request.user not in [u.member for u in g.groupmember_set.all()]
-            ]
+            ],
         }
-    return render(request, "doghub_app/join_group.html", context=context)
+    return render(request, "doghub_app/join_leave_group.html", context=context)
 
 
 @login_required
@@ -892,4 +893,4 @@ def leave_group(request):
         context = {
             "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
         }
-    return render(request, "doghub_app/leave_group.html", context=context)
+    return render(request, "doghub_app/join_leave_group.html", context=context)
