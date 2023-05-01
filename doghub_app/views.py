@@ -359,10 +359,13 @@ def user_profile(request):
     events_list = list(EventPost.objects.filter(user_id=request.user))
     attendee_events = list(Attendee.objects.filter(user_id=request.user))
     for attendee in attendee_events:
-        event = EventPost.objects.get(event_id=attendee.event_id.event_id)
-        if event.user_id != request.user:
-            print(event)
-            events_list.append(event)
+        try:
+            event = EventPost.objects.get(event_id=attendee.event_id.event_id)
+            if event.user_id != request.user:
+                print(event)
+                events_list.append(event)
+        except EventPost.DoesNotExist:
+            pass
     print(events_list)
     context = {
         "userprof": user_prof,
