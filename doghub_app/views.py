@@ -310,8 +310,8 @@ def events(request):
   
     #print(post_list)
 
-            cur_event["attendee"] = False
-        event_ls.append(cur_event)
+    #cur_event["attendee"] = False
+    #event_ls.append(cur_event)
 
     friends = Friends.objects.filter(
         Q(sender=request.user) | Q(receiver=request.user), pending=False
@@ -501,12 +501,12 @@ def dog_profile_add(request):
     context = {}
     if request.method == "POST":
         name = request.POST.get("dogName")
-        if name is None or name is "":  # noqa: F632
+        if name is None or name == "":  # noqa: F632
             messages.error(request, "Enter a valid Name for the Dog")
             return redirect("register_details")
 
         bio = request.POST.get("dogBio")
-        if bio is None or bio is "":  # noqa: F632
+        if bio is None or bio == "":  # noqa: F632
             messages.error(request, "Enter a valid Bio for the Dog")
             return redirect("register_details")
 
