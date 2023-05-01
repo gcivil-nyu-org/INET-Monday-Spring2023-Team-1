@@ -1,0 +1,105 @@
+{% load static %}
+
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link  rel = "stylesheet" type = 'text/css' media="screen"  href="{% static 'styles/add_service.css' %}" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAC2P9ywf4F9C4G6SuiL34zav0l0Gko3I"></script>
+</head>
+
+<body>
+<!--div class="add_event"-->
+    <div class="card">
+     
+          
+                <h3 class="card__title">Add a Service!</h3>
+  
+                <div class="card__content">
+                    <form method="POST">
+                    {% csrf_token %}
+                  
+
+                    <div class = "input-inline">
+                        <label>Service Title:</label>
+                        <input type = "text" name = "title" id = "title" placeholder = "title" required/>
+                    </div>
+                    <div class="input-inline-desc">
+                        <label for="service_type">Service Type</label>
+                            <div class="dropdown">
+                          <select name="service_type" id="service_type" placeholder="Service Type" required style="width:210px;">
+                            <div class="dropdown-content">
+                            <option value="walker">Dog Walker</option>
+                            <option type="button" value="breeder">Breeder</option>
+                            <option type="button" value="Groomer">Groomer</option>
+                          </select>
+                            </div>
+                        </div>
+                     
+                      
+                    <div class = "input-inline-desc">
+                    <label>Service Description</label>
+                    <textarea name ="service_description" id="service_description" placeholder="Description" required></textarea>
+
+                </div>
+                <div class = "input-inline">
+                    <label>Rate:</label>
+                    <input type="number" name ="rate" id="rate" step="0.01" min="0" placeholder="Rate" required/>
+                </div>
+
+                <div class = "input-inline">
+                    <label>Contact Info:</label>
+                    <input type = "text" name = "contact" id = "contact" placeholder = "Contact info" required/>
+                </div>
+
+                <div class = "input-inline">
+                    <label>Address (optional):</label>
+                    <input type = "text" name = "address" id = "address" placeholder = "Address" /> 
+                </div>
+
+                <!--div class = "input-inline">
+                    <label>Date and Time of the Event:</label>
+                    <input type="datetime-local" id="event_time" name ="event_time" min="{{ current_datetime }}" required/>
+
+                </div-->
+
+                <!--div class = "input-inline">
+                    <label>Location:</label>
+                    <input type="text" id="location" readonly name ="location" required/>
+
+                </div-->
+
+
+                    <button class="button" type="submit">Submit</button>
+
+                  
+                    </form>
+
+                  
+                </div>
+
+              
+         
+    
+    </div>
+
+    <script>
+        var dropdown = document.querySelector('.dropdown');
+        var dropdownContent = document.querySelector('.dropdown-content');
+      
+        dropdown.addEventListener('click', function() {
+          dropdownContent.classList.toggle('show');
+        });
+      
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropdown')) {
+            dropdownContent.classList.remove('show');
+          }
+        }
+      </script>
+      
+</body>
+
+
+
+
