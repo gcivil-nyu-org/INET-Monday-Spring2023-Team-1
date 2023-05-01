@@ -785,22 +785,27 @@ def add_friend(request, email):
         messages.warning(request, "You cannot add yourself as a friend.")
         return redirect("public-profile", email=email)
 
-    if Friends.objects.filter(sender=request.user, receiver=friend).exists():
-        messages.warning(
-            request, f"You have already sent a friend request to {friend.email}."
-        )
+    elif (
+        Friends.objects.filter(
+            sender=request.user, receiver=friend, pending=False
+        ).exists()
+        or Friends.objects.filter(
+            sender=friend, receiver=request.user, pending=False
+        ).exists()
+    ):
+        messages.warning(request, f"You are already friends with {friend.email}.")
         return redirect("public-profile", email=email)
 
-    if Friends.objects.filter(
+    elif Friends.objects.filter(
         sender=friend, receiver=request.user, pending=True
     ).exists():
         messages.warning(
             request, f"{friend.email} has already sent you a friend request."
         )
         return redirect("public-profile", email=email)
-
-    Friends.objects.create(sender=request.user, receiver=friend, pending=True)
-    messages.success(request, f"Friend request sent to {friend.email}.")
+    else:
+        Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+        messages.success(request, f"Friend request sent to {friend.email}.")
     return redirect("public-profile", email=email)
 
 
@@ -818,7 +823,7 @@ def add_friend(request, email):
 def friend_requests(request):
     friend_requests = Friends.objects.filter(receiver=request.user, pending=True)
     friend_profiles = []
-    # userprof = UserProfile.objects.get(user_id=request.user)
+    userprof = UserProfile.objects.get(user_id=request.user)
     for friend in friend_requests:
         #     if friend.receiver == request.user:
         friend_user = friend.sender
@@ -838,7 +843,7 @@ def friend_requests(request):
         "friend_requests": friend_requests,
         "friend_profiles": friend_profiles,
         "media_url": settings.MEDIA_URL,
-        # "userprof": userprof,
+        "userprof": userprof,
     }
     return render(request, "doghub_app/friend_requests.html", context=context)
 

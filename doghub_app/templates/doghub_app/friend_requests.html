@@ -1,7 +1,8 @@
-
+{% include "doghub_app/nav_bar.html" %}
 {% load static %}
 
 {% block content %}
+<div class="friend-request">
   <h1 id="friend-requests-heading">Friend Requests</h1>
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/friend_requests.css' %}">
   <div class="card" id="friend-requests-card">
@@ -26,5 +27,5 @@
     {% else %}
       <p id="no-friend-requests-msg">You have no friend requests.</p>
     {% endif %}
-  </div>
+  </div></div>
 {% endblock %}
