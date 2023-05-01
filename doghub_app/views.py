@@ -29,7 +29,6 @@ from .models import (
     Chat,
     Attendee,
     Friends,
-    Service,
     Groups,
     GroupMember,
 )
@@ -244,45 +243,40 @@ def events(request):
     park = list(Park.objects.all())
     member_of = list(GroupMember.objects.all())
 
-
     groups = list(Groups.objects.all())
     group_member = []
 
     for group in groups:
         if group.group_owner == request.user:
             group_member.append(group)
-    
+
     for group in member_of:
         if group.member == request.user:
-            group_member.append(group)     
-            #print(group.group_owner)   
+            group_member.append(group)
+            # print(group.group_owner)
 
-   
     show_posts = []
-    
+
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
-    event_ls = []
+    # event_ls = []
     for event in event_posts:
-        if event.event_group == '0' or event.event_group is None:
+        if event.event_group == "0" or event.event_group is None:
             if event.event_id not in show_posts:
                 show_posts.append(event)
 
-    
     for event in event_posts:
         for group in group_member:
-            print(f"event.event_group = {event.event_group}, group.group_id = {group.group_id}")
-           
+            print(
+                f"event.event_group = {event.event_group}, group.group_id = {group.group_id}"
+            )
+
             if int(event.event_group) == int(group.group_id):
                 if event not in show_posts:
                     show_posts.append(event)
                     print("Posts:")
                     print(show_posts)
-                
-    
-   
 
-   
     for post in show_posts:
         post.type = "event"
         post.event_info = post
@@ -294,7 +288,6 @@ def events(request):
         if Attendee.objects.filter(event_id=post.event_id, user_id=request.user):
             post.attendee = True
         else:
-
             post.attendee = False
 
     service_posts = list(Service.objects.all())
@@ -307,11 +300,10 @@ def events(request):
     post_list.extend(service_posts)
     post_list = sorted(post_list, key=lambda post: post.date_created, reverse=True)
 
-  
-    #print(post_list)
+    # print(post_list)
 
-    #cur_event["attendee"] = False
-    #event_ls.append(cur_event)
+    # cur_event["attendee"] = False
+    # event_ls.append(cur_event)
 
     friends = Friends.objects.filter(
         Q(sender=request.user) | Q(receiver=request.user), pending=False
@@ -340,13 +332,11 @@ def events(request):
         "service_posts": service_posts,
         "friends": friends,
         "post_list": post_list,
-
         "user_profiles": user_profiles,
         "groups_owned": Groups.objects.filter(group_owner=request.user),
         "groups_joined": [
             g.group for g in GroupMember.objects.filter(member=request.user)
         ],
-
     }  # noqa: F841
 
     return render(request, "doghub_app/events_homepage.html", context=context)
@@ -565,14 +555,11 @@ def add_post(request):
     park_data = json.dumps(parks)
     groups = list(Groups.objects.all())
     in_group = []
-    show_group=[]
-    user_id = request.user.id
+    show_group = []
     group_members = list(GroupMember.objects.all())
 
     print("groups")
 
-
-      
     for group in groups:
         if group.group_owner == request.user:
             show_group.append(group)
@@ -581,9 +568,8 @@ def add_post(request):
         if group.member == request.user:
             show_group.append(group.group)
 
-    print("Show group:")        
+    print("Show group:")
     print(show_group)
-
 
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
@@ -594,18 +580,17 @@ def add_post(request):
                 event_title=request.POST.get("event_title"),
                 event_description=request.POST.get("event_description"),
                 event_time=request.POST.get("event_time"),
-                event_group = request.POST.get("event_group") or None,
+                event_group=request.POST.get("event_group") or None,
             )
-         
 
             for group in groups:
                 if event_post.event_group == group.group_title:
                     event_post.event_group = group.group_id
                     print(event_post.event_group)
-                    print('group_id')
-                    print(group['group_id'])
-            if event_post.event_group is None or event_post.event_group=="":
-                event_post.event_group=0
+                    print("group_id")
+                    print(group["group_id"])
+            if event_post.event_group is None or event_post.event_group == "":
+                event_post.event_group = 0
 
             location = request.POST.get("location")
             if "," not in location:
@@ -639,9 +624,9 @@ def add_post(request):
         "event_post_form": event_post_form,
         "current_datetime": current_datetime,
         "park_data": park_data,
-        "groups":groups,
-        "show_group":show_group,
-        "in_group":in_group
+        "groups": groups,
+        "show_group": show_group,
+        "in_group": in_group,
     }
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
@@ -910,9 +895,7 @@ def friends(request):
 
 
 @login_required
-
 def add_service(request):
-
     if request.method == "POST":
         title = request.POST.get("title")
         s_type = request.POST.get("service_type")
@@ -934,6 +917,7 @@ def add_service(request):
         return redirect("events")
 
     return render(request=request, template_name="doghub_app/add_service.html")
+
 
 def create_group(request):
     if request.method == "POST":
@@ -1013,4 +997,3 @@ def leave_group(request):
             "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
         }
     return render(request, "doghub_app/leave_group.html", context=context)
-

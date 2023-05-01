@@ -104,7 +104,9 @@ class EventPost(models.Model):
     date_created = models.DateTimeField(
         default=timezone.now, editable=False, blank=True
     )
-    event_group = models.CharField(max_length=MID_CHAR_SIZE, default = "", blank=True, null=True)
+    event_group = models.CharField(
+        max_length=MID_CHAR_SIZE, default="", blank=True, null=True
+    )
     park_id = models.ForeignKey(
         "Park", models.DO_NOTHING, blank=True, null=True, db_column="park_id"
     )
