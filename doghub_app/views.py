@@ -1008,11 +1008,10 @@ def leave_group(request):
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
 
-
 @login_required
 def edit_password(request):
     if request.method == "GET":
-        return render(request, "doghub_app/edit_password.html" )
+        return render(request, "doghub_app/edit_password.html")
     else:
         if request.method == "POST":
             if "save_password" in request.POST:
@@ -1037,7 +1036,7 @@ def edit_password(request):
                     errors.extend(password_errors)
 
                 if errors:
-                    context={}
+                    context = {}
                     context["errors"] = errors
                     if len("errors") > 0:
                         messages.error(
@@ -1052,9 +1051,7 @@ def edit_password(request):
                     messages.success(request, "Password has been changed.")
                     return redirect("user_profile")
             return render(
-                    request=request, template_name="doghub_app/edit_password.html", context=context
-                )
-
-
-
-
+                request=request,
+                template_name="doghub_app/edit_password.html",
+                context=context,
+            )
