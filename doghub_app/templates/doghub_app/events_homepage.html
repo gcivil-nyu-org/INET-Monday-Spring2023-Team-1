@@ -1,5 +1,10 @@
 {% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
-<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+<div class="alert alert-info" style="padding: 0.3em; background-color: rgba(252, 139, 116, 0.514); text-align: center;"><h4>{{ message }}</h4></div>
+<script>
+  setTimeout(function() {
+    document.querySelector('.alert-info').remove();
+  }, 3000);
+</script>
 {% endfor %} {% endif %}
 <!DOCTYPE html>
 <html>
@@ -18,9 +23,7 @@
       href="{% static 'styles/events.css' %}"
     />
     <title>Title</title>
-   {% if messages %} {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %} {% endif %}
+
   </head>
   <body>
     <div class="side-bar">
