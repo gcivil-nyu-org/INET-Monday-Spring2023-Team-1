@@ -6,13 +6,18 @@ mail_items.forEach((item)=>{
         console.log(env_icon)
         if(content.classList.contains("content_expand")){
             content.classList.remove("content_expand")
-            env_icon.classList.remove("fa-envelope-open")
-            env_icon.classList.add("fa-envelope")
+            if(env_icon.classList.contains("fa-envelope-open")){
+                env_icon.classList.remove("fa-envelope-open")
+                env_icon.classList.add("fa-envelope")
+            }
         }
         else{
             content.classList.add("content_expand")
-            env_icon.classList.add("fa-envelope-open")
-            env_icon.classList.remove("fa-envelope")
+            if(env_icon.classList.contains("fa-envelope")){
+                env_icon.classList.add("fa-envelope-open")
+                env_icon.classList.remove("fa-envelope")
+            }
+
         }
     })
 })
@@ -116,6 +121,74 @@ function send_message(token){
     });
   }
 
+
+
+
+  function accept_request(token, thisButton){
+
+    content= thisButton.parentElement
+    card= content.parentElement
+    container = content.parentElement.parentElement
+    icon=card.firstElementChild.firstElementChild
+    console.log(content)
+    console.log(content.classList)
+    setTimeout(() => {
+        content.classList.toggle('content_expand')
+      }, 500)
+    setTimeout(() => {
+        container.style.opacity='0'
+    }, 1000)
+    // content.classList.toggle('content_expand')
+    switchIcon(icon, '<i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i>', 100)
+    return null
+// $.ajax({
+//     url: 'inbox',
+//     type: 'POST',
+//     data: { 
+//     csrfmiddlewaretoken: token,
+//     receiver: receiver_post,
+//     message: sending_text.value
+//     },
+//     success: function (res) {
+//         sending_container.classList.toggle('drop_down')
+//         sending_cover.classList.toggle('drop_down')
+//         console.log(sending_container.classList)
+//         send_content.classList.toggle('sending_content_expand')
+//         recipient.innerHTML=''
+//         recipient.classList.toggle('expand')
+//         sending_text.value=''
+//         document.getElementById('recipient_warning').style.opacity='0'
+//         document.getElementById('content_warning').style.opacity='0'
+//         if(dropdown_friend.classList.contains('expand')){
+//             dropdown_friend.classList.remove('expand')
+//         }
+//         switchIcon(document.getElementById('add_icon'), '<i class="fa fa-check-circle" aria-hidden="true"></i>', 100)
+//         switchIcon(document.getElementById('add_icon'), '<i class="fa-solid fa-circle-plus"></i>', 800)
+//         sending_text.value=''
+//         receiver= null
+//         return null
+//     }
+// });
+}
+
+
+function decline_request(token, thisButton){
+    content= thisButton.parentElement
+    card= content.parentElement
+    container = content.parentElement.parentElement
+    icon=card.firstElementChild.firstElementChild
+    console.log(content)
+    console.log(content.classList)
+    setTimeout(() => {
+        content.classList.toggle('content_expand')
+      }, 500)
+    setTimeout(() => {
+        container.style.opacity='0'
+    }, 1000)
+    // content.classList.toggle('content_expand')
+    switchIcon(icon, '<i class="fa fa-check-circle" aria-hidden="true" style="color: red"></i>', 100)
+    return null
+}
 
   const switchIcon = (container,newHtml, timeout) => {
   

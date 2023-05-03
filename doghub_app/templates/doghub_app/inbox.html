@@ -40,6 +40,20 @@
                 </div>
             </li>
             {% endfor %}
+              <li>
+                <div class="container">
+                    <div class="card">
+                        <div class="cover">
+                            <h2><i class="fa fa-users" aria-hidden="true"></i>Group Invitation</h2>
+                            <p>Group Invite from TestGroup</p>
+                        </div>
+                        <div class="invite-content">
+                            <button onclick="accept_request('{{csrf_token}}', this)">Accept </button>
+                            <button onclick="decline_request('{{csrf_token}}', this)">Decline </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
         </ul>
         {% else %}
         <h1>No Message</h1>
