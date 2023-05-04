@@ -218,6 +218,8 @@ body {
     width: 3rem;
     height: 3rem;
     top: 0px;
+    position: fixed;
+    margin-top: 100px;
   }
 
 
