@@ -1280,4 +1280,4 @@ class AddServiceViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
-    # self.assertTemplateUsed(response, 'doghub_app/add_service.html')
+        # self.assertTemplateUsed(response, 'doghub_app/add_service.html')
