@@ -1229,12 +1229,17 @@ class GroupEventPage(TestCase):
 class AddServiceViewTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='testuser, password=Testpass@123')
-
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="Test@123",
+            email_verified=True,
+        )
     
     def test_add_service_view_with_valid_inputs(self):
-        self.client.login(username='testuser', password='testpass')
-        response = self.client.post('/add_service/', {
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post('/add_service', {
             'title': 'Test Service',
             'service_type': 'Test Type',
             'service_description': 'Test Description',
@@ -1244,4 +1249,29 @@ class AddServiceViewTest(TestCase):
         })
 
         self.assertEqual(response.status_code, 302)
-        self.assertRedriects(response, '/events/')
+        self.assertRedirects(response, '/events')
+
+    def test_add_service_view_with_invalid_inputs(self):
+        url = reverse("add_service")
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'doghub_app/add_service.html')
+
+
+    def test_add_service_view_for_logged_out_user(self):
+        response = self.client.get('/add_service')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/login?next=/add_service')
+
+    def test_add_service_view_with_incomplete_fields(self):
+        url= reverse("add_service")
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(url, {
+            'title': 'Test Service',
+            'service_type': 'Test Type',
+            'rate': '10',
+            'contact': 'test@test.com',
+        })
+        self.assertEqual(response.status_code, 302)
+       # self.assertTemplateUsed(response, 'doghub_app/add_service.html')

@@ -913,6 +913,9 @@ def add_service(request):
         contact_details = request.POST.get("contact")
         address = request.POST.get("address", None)
 
+        if not title or not s_type or not description or not rate or not contact_details:
+            return redirect("add_service")
+
         service = Service(
             title=title,
             s_type=s_type,
