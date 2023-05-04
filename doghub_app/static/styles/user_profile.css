@@ -458,10 +458,10 @@ button.createbtn i {
   position: relative;
   top: 0px;
   margin-left: 95%;
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
-  background-color: #43077e;
+  background-color: #fff;
   display: inline-block;
   justify-content: center;
   align-items: center;
@@ -470,14 +470,13 @@ button.createbtn i {
 
 .toggle > .fa {
   margin: auto;
-  color: #fff;
-  text-align: center;
+  color: #43077e;
   cursor: pointer;
   transition: 0.25s;
   font-size: 1.3rem;
-  width: 1.35rem;
-  height: 1.35rem;
-
+  width: 1.4rem;
+  height: 1.4rem;
+  font-weight: 500;
   top: 0px;
 }
 .proflist--item.active {
