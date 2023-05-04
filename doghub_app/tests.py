@@ -1224,3 +1224,24 @@ class GroupEventPage(TestCase):
         self.assertEqual(len(response.context["groups_joined"]), 1)
         self.assertEqual(response.context["groups_joined"][0].group_title, "NotMyGroup")
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
+
+
+class AddServiceViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser, password=Testpass@123')
+
+    
+    def test_add_service_view_with_valid_inputs(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post('/add_service/', {
+            'title': 'Test Service',
+            'service_type': 'Test Type',
+            'service_description': 'Test Description',
+            'rate': '10',
+            'contact': 'test@test.com',
+            'address': 'Test Address',
+        })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedriects(response, '/events/')
