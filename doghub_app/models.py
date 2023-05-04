@@ -26,6 +26,32 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+    def get_own_groups(self) -> "Groups":
+        "groups this user created"
+        return self.group_owner.all()
+
+    def get_joined_groups(self) -> "Groups":
+        "groups this user joined"
+        return self.groupmember_set.filter(pending=False)
+
+    def get_pending_groups(self) -> "Groups":
+        "groups this user requested to join but pending"
+        return [mem.group for mem in self.groupmember_set.filter(pending=True)]
+
+    def get_pending_members(self) -> dict["Groups":"GroupMember"]:
+        res = dict()
+        for g in self.get_own_groups():
+            mem = g.get_pending_members()
+            if mem:
+                res[g] = mem
+        return res
+
+    def get_groups_to_join(self) -> "Groups":
+        """
+        return groups for which this user
+        is not an owner, a member or has pending request "
+        """
+
 
 class UserProfile(models.Model):
     user_id = models.OneToOneField(
@@ -263,6 +289,22 @@ class Groups(models.Model):
     def __str__(self):
         return self.group_title
 
+    def get_pending_members(self):
+        return self.groupmember_set.filter(pending=True)
+
+    def accept_member(self, member: "GroupMember") -> None:
+        if isinstance(member, int):
+            member = self.groupmember_set.get(member_id=member)
+
+        member.pending = False
+        member.save()
+
+    def reject_member(self, member: "GroupMember") -> None:
+        if isinstance(member, int):
+            member = self.groupmember_set.get(member_id=member)
+
+        member.delete()
+
 
 class GroupMember(models.Model):
     gm_id = models.AutoField(primary_key=True)
@@ -273,3 +315,6 @@ class GroupMember(models.Model):
     class Meta:
         db_table = "group_member"
         unique_together = (("group", "member"),)
+
+    def __str__(self):
+        return f"{self.member.userprofile.fname} {self.member.userprofile.lname}"
