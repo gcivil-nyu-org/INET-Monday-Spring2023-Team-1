@@ -1015,3 +1015,14 @@ def leave_group(request):
             "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
+
+
+@login_required
+def support(request):
+    return render(request, "doghub_app/support.html")
+
+
+@login_required
+def about(request):
+    return render(request, "doghub_app/about.html")
+
