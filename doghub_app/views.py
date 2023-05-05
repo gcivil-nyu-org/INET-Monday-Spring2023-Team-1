@@ -807,8 +807,10 @@ def add_friend(request, email):
         return redirect("public-profile", email=email)
     else:
         Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+        friend_request_url = reverse("friend_requests")
         notification_message = (
-            f"You have received a friend request from {request.user.email}."
+            f"You have received a friend request from {request.user.email}. "
+            f"Click <a href='{friend_request_url}'>here</a> to view your friend requests."
         )
         notification = Chat(
             receiver=friend, text=notification_message, sender=request.user
