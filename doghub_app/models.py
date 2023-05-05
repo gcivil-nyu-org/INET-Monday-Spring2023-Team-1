@@ -32,7 +32,7 @@ class CustomUser(AbstractUser):
 
     def get_joined_groups(self) -> "Groups":
         "groups this user joined"
-        return self.groupmember_set.filter(pending=False)
+        return [mem.group for mem in self.groupmember_set.filter(pending=False)]
 
     def get_pending_groups(self) -> "Groups":
         "groups this user requested to join but pending"
