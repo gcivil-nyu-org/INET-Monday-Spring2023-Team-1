@@ -962,13 +962,15 @@ def my_groups(request):
         else:
             logging.warning(f"unknown mem status for group {g}")
 
-    context = {
-        "groups_owned": request.user.get_own_groups(),
-        "groups_joined": request.user.get_joined_groups(),
-        "groups_pending": request.user.get_pending_groups(),
-        "members_pending": request.user.get_pending_members(),
-    }
-    return render(request, "doghub_app/my_groups.html", context=context)
+        return HttpResponseRedirect("/my-groups")
+    else:
+        context = {
+            "groups_owned": request.user.get_own_groups(),
+            "groups_joined": request.user.get_joined_groups(),
+            "groups_pending": request.user.get_pending_groups(),
+            "members_pending": request.user.get_pending_members(),
+        }
+        return render(request, "doghub_app/my_groups.html", context=context)
 
 
 @login_required
