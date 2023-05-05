@@ -5,6 +5,7 @@ python:
 install:
   - pip install -r requirements.txt
 
+
 services:
   - mysql
 
@@ -13,6 +14,21 @@ before_install:
   - echo $DOGHUB_DB_ENV
   - echo $DOGHUB_DB_NAME
   - mysql -e "CREATE DATABASE $DOGHUB_DB_NAME;"
+  - echo $(openssl version)
+  - sudo apt-get install -y libfindbin-libs-perl build-essential
+  - wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1k.tar.gz -O openssl.tar.gz
+  - tar -xf openssl.tar.gz
+  - ls -al
+  - cd openssl-OpenSSL_1_1_1k
+  - ./config --libdir=/usr/local/lib
+  - make -j 4
+  - sudo make install
+  - sudo mv /usr/bin/openssl /usr/bin/openssl-1.0.2g
+  - sudo ln -s /usr/local/bin/openssl /usr/bin/openssl
+  - sudo ldconfig
+  - echo $(openssl version)
+  - ls -al
+  - cd ..
 
 before_script:
   - python manage.py makemigrations
