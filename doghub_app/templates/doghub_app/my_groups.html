@@ -78,7 +78,34 @@
     </div>
     {% endfor %}
     </div>
-{% else %}
+{% endif %}
+
+{% if groups_pending %}
+<h4> Membership Request Sent to: </h4>
+<ul>
+{% for g in groups_pending %}
+<li> {{ g }} </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if members_pending %}
+<h4> Incoming Requests </h4>
+{% for g, mem_list in members_pending.items %}
+{% for mem in mem_list %}
+<p> {{ mem }} would like to join your {{ g }}
+<form action="" method="post">
+  {% csrf_token %}
+<input type="submit" value="accept" name="status">
+<input type="submit" value="reject" name="status">
+<input type="hidden" name="member_id" value={{ mem.member_id }}>
+<input type="hidden" name="group_id" value={{ g.group_id }}>
+</p>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if not group_joined and not groups_pending %}
 <p> You have not joined any groups, why not join a group ? </p>
 {% endif %}
 
