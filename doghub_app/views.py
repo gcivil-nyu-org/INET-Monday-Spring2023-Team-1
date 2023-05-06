@@ -1041,4 +1041,3 @@ def support(request):
 @login_required
 def about(request):
     return render(request, "doghub_app/about.html")
-
