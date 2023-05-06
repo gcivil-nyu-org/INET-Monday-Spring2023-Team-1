@@ -1263,7 +1263,6 @@ class EditPasswordViewTestCase(TestCase):
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
-
     def test_post_edit_password_invalid_confirmation(self):
         url = reverse("edit_password")
         data = {
