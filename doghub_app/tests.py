@@ -1226,11 +1226,12 @@ class GroupEventPage(TestCase):
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
 
 
-
 class EditPasswordViewTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
-            username="testuser@gmail.com", password="testpassword123", email_verified=True
+            username="testuser@gmail.com",
+            password="testpassword123",
+            email_verified=True,
         )
         self.client.login(username="testuser", password="testpassword")
 
@@ -1263,9 +1264,7 @@ class EditPasswordViewTestCase(TestCase):
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
         self.assertTemplateUsed(response, "doghub_app/edit_password.html")
-        self.assertFormError(
-            response, "form", None, "Current password is incorrect."
-        )
+        self.assertFormError(response, "form", None, "Current password is incorrect.")
 
     def test_post_edit_password_invalid_confirmation(self):
         url = reverse("edit_password")
