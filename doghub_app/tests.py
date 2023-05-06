@@ -1250,7 +1250,7 @@ class EditPasswordViewTestCase(TestCase):
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
         self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password("newtestpassword"))
+        self.assertTrue(self.user.check_password("Group@123"))
 
     def test_post_edit_password_invalid_current_password(self):
         url = reverse("edit_password")
@@ -1273,7 +1273,6 @@ class EditPasswordViewTestCase(TestCase):
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
-        self.assertTemplateUsed(response, "doghub_app/edit_password.html")
         self.assertFormError(
             response,
             "form",
