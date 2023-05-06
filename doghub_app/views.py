@@ -1080,3 +1080,11 @@ def edit_password(request):
                 template_name="doghub_app/edit_password.html",
                 context=context,
             )
+
+def support(request):
+    return render(request, "doghub_app/support.html")
+
+
+@login_required
+def about(request):
+    return render(request, "doghub_app/about.html")
