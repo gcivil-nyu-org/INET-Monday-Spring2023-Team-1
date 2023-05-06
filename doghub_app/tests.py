@@ -1249,7 +1249,7 @@ class EditPasswordViewTestCase(TestCase):
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
-        self.user.refresh_from_db()s
+        self.user.refresh_from_db()
 
     def test_post_edit_password_invalid_current_password(self):
         url = reverse("edit_password")
