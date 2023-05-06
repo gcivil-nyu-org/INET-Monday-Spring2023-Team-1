@@ -913,6 +913,15 @@ def add_service(request):
         contact_details = request.POST.get("contact")
         address = request.POST.get("address", None)
 
+        if (
+            not title
+            or not s_type
+            or not description
+            or not rate
+            or not contact_details
+        ):
+            return redirect("add_service")
+
         service = Service(
             title=title,
             s_type=s_type,
@@ -942,13 +951,26 @@ def create_group(request):
 
 @login_required
 def my_groups(request):
-    context = {
-        "groups_owned": Groups.objects.filter(group_owner=request.user),
-        "groups_joined": [
-            g.group for g in GroupMember.objects.filter(member=request.user)
-        ],
-    }
-    return render(request, "doghub_app/my_groups.html", context=context)
+    if request.method == "POST":
+        g = Groups.objects.get(group_id=request.POST["group_id"])
+        mem_id = request.POST["member_id"]
+        status = request.POST["status"]
+        if status == "accept":
+            g.accept_member(int(mem_id))
+        elif status == "reject":
+            g.reject_member(int(mem_id))
+        else:
+            logging.warning(f"unknown mem status for group {g}")
+
+        return HttpResponseRedirect("/my-groups")
+    else:
+        context = {
+            "groups_owned": request.user.get_own_groups(),
+            "groups_joined": request.user.get_joined_groups(),
+            "groups_pending": request.user.get_pending_groups(),
+            "members_pending": request.user.get_pending_members(),
+        }
+        return render(request, "doghub_app/my_groups.html", context=context)
 
 
 @login_required
@@ -1003,7 +1025,10 @@ def leave_group(request):
     else:
         # display the groups for which the user is a member
         context = {
-            "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
+            "groups": [
+                g.group
+                for g in GroupMember.objects.filter(member=request.user, pending=False)
+            ]
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
