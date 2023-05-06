@@ -240,7 +240,7 @@ body {
 
 .main-content .event p{
   color: var(--secondary-color);
-  font-size: 0.86rem;
+  font-size: 1rem;
 }
 
 .main-content .friend p{
@@ -432,7 +432,7 @@ body {
 
 .card__date{
   color: #6e6b80;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 div[data-view-active="false"] {
