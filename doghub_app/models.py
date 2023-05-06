@@ -311,7 +311,7 @@ class GroupMember(models.Model):
     group = models.ForeignKey(Groups, models.CASCADE, db_column="group_id")
     member = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
     pending = models.BooleanField(default=True)
-
+    timestamp = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table = "group_member"
         unique_together = (("group", "member"),)
