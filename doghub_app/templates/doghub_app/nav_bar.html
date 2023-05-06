@@ -13,8 +13,8 @@
     <nav>
         <ul>
             <li><a href="{% url 'events' %}">Home</a></li>
-            <li><a href="">News</a></li>
-            <li><a href="">Contact</a></li>
+            <li><a href="{% url 'about'%}">About</a></li>
+            <li><a href="{% url 'support'%}">Support</a></li>
             <li>
 
                 <form method="post" action="{% url 'search-user' %}">
