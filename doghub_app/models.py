@@ -38,7 +38,7 @@ class CustomUser(AbstractUser):
         "groups this user requested to join but pending"
         return [mem.group for mem in self.groupmember_set.filter(pending=True)]
 
-    def get_pending_members(self) -> dict["Groups":"GroupMember"]:
+    def get_pending_members(self):  # -> dict["Groups":"GroupMember"]:
         res = dict()
         for g in self.get_own_groups():
             mem = g.get_pending_members()
