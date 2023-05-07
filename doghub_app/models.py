@@ -26,15 +26,15 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-    def get_own_groups(self) -> "Groups":
+    def get_own_groups(self):
         "groups this user created"
         return self.group_owner.all()
 
-    def get_joined_groups(self) -> "Groups":
+    def get_joined_groups(self):
         "groups this user joined"
         return [mem.group for mem in self.groupmember_set.filter(pending=False)]
 
-    def get_pending_groups(self) -> "Groups":
+    def get_pending_groups(self):
         "groups this user requested to join but pending"
         return [mem.group for mem in self.groupmember_set.filter(pending=True)]
 
@@ -46,7 +46,7 @@ class CustomUser(AbstractUser):
                 res[g] = mem
         return res
 
-    def get_groups_to_join(self) -> "Groups":
+    def get_groups_to_join(self):
         """
         return groups for which this user
         is not an owner, a member or has pending request "
@@ -311,6 +311,7 @@ class GroupMember(models.Model):
     group = models.ForeignKey(Groups, models.CASCADE, db_column="group_id")
     member = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
     pending = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "group_member"

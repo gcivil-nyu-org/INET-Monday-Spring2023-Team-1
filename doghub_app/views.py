@@ -737,6 +737,7 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+    messageLs = []
     if request.method == "POST":
         print(request)
         receiver = CustomUser.objects.get(pk=request.POST.get("receiver"))
@@ -748,7 +749,36 @@ def inbox(request):
     if Chat.objects.filter(receiver=request.user).exists():
         messages = list(Chat.objects.filter(receiver=request.user))
         messages.reverse()
-        context["messageList"] = messages
+        for message in messages:
+            message.type = "chat"
+            messageLs.append(message)
+
+    requestLs = list(request.user.get_pending_members())
+    print(requestLs)
+    for i in range(len(requestLs)):
+        # pending_member=r
+        pending_members = GroupMember.objects.filter(group=requestLs[i], pending=True)
+        lastInsertIdx = -2
+        for member in pending_members:
+            member.type = "request"
+            member.group = requestLs[i]
+            member.group_id = requestLs[i].group_id
+            if len(messageLs) == 0:
+                messageLs.append(member)
+            else:
+                print(lastInsertIdx + 2)
+                print(messageLs)
+                if lastInsertIdx + 2 >= len(messageLs):
+                    messageLs.append(member)
+                else:
+                    messageLs.insert(lastInsertIdx + 2, member)
+                    lastInsertIdx += 2
+    messageLs = sorted(messageLs, key=lambda message: message.timestamp, reverse=True)
+
+    print(messageLs)
+    context["messageList"] = messageLs
+
+    #  friend list
     friendsLs = []
     if Friends.objects.filter(receiver=request.user, pending=False).exists():
         for relationship in list(
@@ -761,6 +791,7 @@ def inbox(request):
         ):
             if relationship.receiver not in friendsLs:
                 friendsLs.append(relationship.receiver)
+
     context["friendsLs"] = friendsLs
 
     return render(request, "doghub_app/inbox.html", context=context)
@@ -956,17 +987,17 @@ def create_group(request):
 def my_groups(request):
     userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
-        g = Groups.objects.get(group_id=request.POST["group_id"])
-        mem_id = request.POST["member_id"]
-        status = request.POST["status"]
+        g = Groups.objects.get(group_id=request.POST.get("group_id"))
+        mem_id = request.POST.get("member_id")
+        status = request.POST.get("status")
         if status == "accept":
             g.accept_member(int(mem_id))
         elif status == "reject":
             g.reject_member(int(mem_id))
         else:
             logging.warning(f"unknown mem status for group {g}")
-
-        return HttpResponseRedirect("/my-groups")
+        return HttpResponse(status=200)
+        # return HttpResponseRedirect("/my-groups")
     else:
         context = {
             "groups_owned": request.user.get_own_groups(),
@@ -1014,7 +1045,7 @@ def join_group(request):
 def leave_group(request):
     userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -1023,7 +1054,7 @@ def leave_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # remove member from the checked groups
         for group_id in gids:
             GroupMember.objects.get(
