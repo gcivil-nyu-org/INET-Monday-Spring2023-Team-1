@@ -365,7 +365,7 @@ def user_profile(request):
             if event.user_id != request.user:
                 print(event)
                 events_list.append(event)
-                
+
         except EventPost.DoesNotExist:
             pass
     print(events_list)
