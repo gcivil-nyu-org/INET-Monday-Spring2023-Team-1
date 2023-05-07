@@ -1037,7 +1037,7 @@ def join_group(request):
 @login_required
 def leave_group(request):
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -1046,7 +1046,7 @@ def leave_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # remove member from the checked groups
         for group_id in gids:
             GroupMember.objects.get(
