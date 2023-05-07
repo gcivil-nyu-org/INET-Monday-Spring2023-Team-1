@@ -1020,8 +1020,13 @@ def create_group(request):
     else:
         form = CreateGroupForm()
     return render(
-        request, "doghub_app/create_group.html", {"form": form, "userprof": userprof,
-                                                  "media_url": settings.MEDIA_URL,}
+        request,
+        "doghub_app/create_group.html",
+        {
+            "form": form,
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
     )
 
 
@@ -1169,10 +1174,24 @@ def edit_password(request):
 
 def support(request):
     userprof = UserProfile.objects.get(user_id=request.user)
-    return render(request, "doghub_app/support.html", {"userprof": userprof, "media_url": settings.MEDIA_URL,})
+    return render(
+        request,
+        "doghub_app/support.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
 
 
 @login_required
 def about(request):
     userprof = UserProfile.objects.get(user_id=request.user)
-    return render(request, "doghub_app/about.html", {"userprof": userprof, "media_url": settings.MEDIA_URL,})
+    return render(
+        request,
+        "doghub_app/about.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
