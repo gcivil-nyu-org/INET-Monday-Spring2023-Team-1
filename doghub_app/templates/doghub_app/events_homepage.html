@@ -76,11 +76,16 @@
   
       <div class="event" data-view-active="true">
 
-        <a class= "add_event" href="{% url 'add_post' %}" >
-          <i class="fa-solid fa-circle-plus"></i>
-        </a>
-
-
+        <div class="dropdown">
+          <a class="add_event" href="#">
+            <i class="fa-solid fa-circle-plus"></i>
+          </a>
+          <div class="dropdown-content">
+            <a href="{% url 'add_post' %}">Add Event</a>
+            <a href="{% url 'add_service' %}">Add Service</a>
+          </div>
+        </div>
+        
         
           {% if post_list %}
 

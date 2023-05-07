@@ -749,6 +749,7 @@ def inbox(request):
 
     user_prof = UserProfile.objects.get(user_id=request.user.id)
     context["userprof"] = user_prof
+    context["media_url"] = settings.MEDIA_URL
 
     messageLs = []
 
@@ -1008,6 +1009,7 @@ def add_service(request):
 
 
 def create_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         form = CreateGroupForm(request.POST)
         if form.is_valid():
@@ -1017,11 +1019,20 @@ def create_group(request):
             return HttpResponseRedirect("/my-groups")
     else:
         form = CreateGroupForm()
-    return render(request, "doghub_app/create_group.html", {"form": form})
+    return render(
+        request,
+        "doghub_app/create_group.html",
+        {
+            "form": form,
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
 
 
 @login_required
 def my_groups(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         g = Groups.objects.get(group_id=request.POST.get("group_id"))
         mem_id = request.POST.get("member_id")
@@ -1040,12 +1051,15 @@ def my_groups(request):
             "groups_joined": request.user.get_joined_groups(),
             "groups_pending": request.user.get_pending_groups(),
             "members_pending": request.user.get_pending_members(),
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
         return render(request, "doghub_app/my_groups.html", context=context)
 
 
 @login_required
 def join_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         # logging.debug(request.POST)
         gids = []  # group ids checked
@@ -1070,12 +1084,15 @@ def join_group(request):
                 for g in Groups.objects.filter(~Q(group_owner=request.user))
                 if request.user not in [u.member for u in g.groupmember_set.all()]
             ],
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
 
 @login_required
 def leave_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         # logging.debug(request.POST)
         gids = []  # group ids checked
@@ -1099,7 +1116,9 @@ def leave_group(request):
             "groups": [
                 g.group
                 for g in GroupMember.objects.filter(member=request.user, pending=False)
-            ]
+            ],
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
@@ -1154,9 +1173,25 @@ def edit_password(request):
 
 
 def support(request):
-    return render(request, "doghub_app/support.html")
+    userprof = UserProfile.objects.get(user_id=request.user)
+    return render(
+        request,
+        "doghub_app/support.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
 
 
 @login_required
 def about(request):
-    return render(request, "doghub_app/about.html")
+    userprof = UserProfile.objects.get(user_id=request.user)
+    return render(
+        request,
+        "doghub_app/about.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
