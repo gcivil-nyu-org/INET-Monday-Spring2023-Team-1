@@ -93,16 +93,23 @@
                     {% if friend_request_sent.pending %}
                         <p>Friend request sent</p>
                     {% else %}
-                        <form action="{% url 'add_friend' email=friend.email %}" method="post">
+                        <form action="{% url 'delete_friend' email=friend.email %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="createbtn" id="follow-user"><i id="follow_icon" class="fa fa-plus"></i> Add Friend</button>
+                            <button type="submit" class="createbtn" id="follow-user"><i id="follow_icon" class="fa fa-plus"></i> Unfriend</button>
                         </form>
                     {% endif %}
                 {% else %}
-                    <form action="{% url 'add_friend' email=friend.email %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="createbtn" id="follow-user"><i id="follow_icon" class="fa fa-plus"></i> Add Friend</button>
+                  {% if friendship %}
+                    <form action="{% url 'delete_friend' email=friend.email %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="createbtn" id="unfriend-user"><i id="unfollow_icon" class="fa fa-times"></i> Unfriend</button>
                     </form>
+                  {% else %}
+                    <form action="{% url 'add_friend' email=friend.email %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="createbtn" id="follow-user"><i id="follow_icon" class="fa fa-plus"></i> Add Friend</button>
+                    </form>
+                  {% endif %}
                 {% endif %}
             {% endif %}
         </div>

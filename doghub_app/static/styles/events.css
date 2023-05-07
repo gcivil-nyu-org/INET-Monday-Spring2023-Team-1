@@ -559,7 +559,14 @@ ul {
     color: #666;
     margin: 0;
 }
-
+.delete-friend{
+    float: right;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+.delete-friend > a {
+  color: red;
+}
 .group-content{
   margin-left: 30%;
 }
