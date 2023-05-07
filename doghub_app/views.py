@@ -737,7 +737,12 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+
+    user_prof = UserProfile.objects.get(user_id=request.user.id)
+    context["userprof"] = user_prof
+
     messageLs = []
+
     if request.method == "POST":
         print(request)
         receiver = CustomUser.objects.get(pk=request.POST.get("receiver"))
@@ -836,6 +841,15 @@ def add_friend(request, email):
         return redirect("public-profile", email=email)
     else:
         Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+        friend_request_url = reverse("friend_requests")
+        notification_message = (
+            f"You have received a friend request from {request.user.email}. "
+            f"Click <a href='{friend_request_url}'>here</a> to view your friend requests."
+        )
+        notification = Chat(
+            receiver=friend, text=notification_message, sender=request.user
+        )
+        notification.save()
         messages.success(request, f"Friend request sent to {friend.email}.")
     return redirect("public-profile", email=email)
 
