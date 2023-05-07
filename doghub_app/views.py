@@ -1074,6 +1074,54 @@ def leave_group(request):
 
 
 @login_required
+def edit_password(request):
+    if request.method == "GET":
+        return render(request, "doghub_app/edit_password.html")
+    else:
+        if request.method == "POST":
+            if "save_password" in request.POST:
+                current_password = request.POST.get("current_password")
+                new_password = request.POST.get("new_password")
+                confirm_password = request.POST.get("confirm_password")
+                errors = []
+
+                # Check if the current password is correct
+                if not request.user.check_password(current_password):
+                    errors.append("Current password is incorrect.")
+                    # errors.append("Current password is incorrect.")
+                    # return redirect('user_profile')
+
+                # Check if the new password and confirmation match
+                if new_password != confirm_password:
+                    errors.append("New password and confirmation do not match.")
+                    # return redirect('user_profile')
+
+                password_errors = validate_password(new_password)
+                if password_errors:
+                    errors.extend(password_errors)
+
+                if errors:
+                    context = {}
+                    context["errors"] = errors
+                    if len("errors") > 0:
+                        messages.error(
+                            request,
+                            "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                        )
+                else:
+                    # Change the user's password
+                    request.user.set_password(new_password)
+                    request.user.save()
+                    update_session_auth_hash(request, request.user)
+                    messages.success(request, "Password has been changed.")
+                    return redirect("user_profile")
+            return render(
+                request=request,
+                template_name="doghub_app/edit_password.html",
+                context=context,
+            )
+
+
 def support(request):
     userprof = UserProfile.objects.get(user_id=request.user)
     return render(request, "doghub_app/support.html", {"userprof": userprof})

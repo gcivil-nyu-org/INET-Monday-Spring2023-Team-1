@@ -1241,6 +1241,65 @@ class GroupEventPage(TestCase):
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
 
 
+class EditPasswordViewTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser@gmail.com",
+            password="testpassword123",
+            email_verified=True,
+        )
+        self.client.login(username="testuser", password="testpassword")
+
+    def test_get_edit_password_page(self):
+        response = self.client.get(reverse("edit_password"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_valid_data(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "Group@123",
+            "confirm_password": "Group@123",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+
+    def test_post_edit_password_invalid_current_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "wrongpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "newtestpassword",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_confirmation(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "mismatch",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_new_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "weak",
+            "confirm_password": "weak",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+
 class AddServiceViewTest(TestCase):
     def setUp(self):
         self.client = Client()
