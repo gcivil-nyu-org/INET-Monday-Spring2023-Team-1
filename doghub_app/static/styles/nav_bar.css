@@ -26,6 +26,7 @@
     border-right: 1px solid #dbdadc;
     height: 65px;
     align-items: center;
+    font-family: 'Arial';
   }
   
   nav ul li a {
@@ -56,6 +57,7 @@
 
 .check_box label{
     margin-right: 50px;
+    font-family: 'Arial';
 }
  
 .user{
@@ -91,6 +93,7 @@
     background: #9a7dc8;
     padding: 20px;
     margin: 10px;
+    font-family: 'Arial';
   }
 
   .uinfo{
@@ -100,6 +103,7 @@
 
   .uinfo h3{
     font-weight: 500;
+    
   }
 
   .uinfo img{
@@ -115,6 +119,7 @@
     width: 100%;
     background: #ccc;
     margin: 15px 0 10px;
+    
   }
   
   .s3{
@@ -140,6 +145,7 @@
   .s3 span{
     font-size: 20px;
     transition: transform 0.5s;
+    
 
   }
 
@@ -150,6 +156,7 @@
 
   .s3:hover p{
     font-weight: 600;
+    
   }
   
   .searchTerm {

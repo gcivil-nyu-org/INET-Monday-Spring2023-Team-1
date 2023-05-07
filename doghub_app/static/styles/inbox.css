@@ -404,7 +404,7 @@ body {
   }
 
   .sending_icon {
-    margin-left:23rem;
+    margin-left:27rem;
     margin-top:-2rem;
     height:3rem;
     width:3rem;
@@ -493,7 +493,7 @@ body {
   .recipient.expand{
     background:#faf1e6;
     height:2rem;
-    width: 12rem;
+    width: 18rem;
     margin-left:11rem;
     margin-top:-2.5rem;
     border-radius: 10px;
@@ -508,7 +508,7 @@ body {
     margin-top:-0.75rem;
     background-color: #ede1d1;
     min-width: 10rem;
-    width:10rem;
+    width:15rem;
     height:0rem;
     z-index: 1;
     overflow: auto;
@@ -533,8 +533,8 @@ body {
     border-color: #ede1d1;
     border-radius: 5%;
     margin:0;
-    height:0.5rem;
-    margin-left: -4rem;
+    height:2.45rem;
+    margin-left: -5rem;
     border-width: 2px;
     text-align: center;
     font-weight: bold;
@@ -550,7 +550,7 @@ body {
     position: absolute;
     background-color: #ede1d1;
     min-width: 10rem;
-    width:10rem;
+    width:15rem;
     height:8rem;
     z-index: 1;
     margin-left: 12.2rem;
