@@ -1,11 +1,23 @@
-{% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
-<div class="alert alert-info" style="padding: 0.3em; background-color: rgba(252, 139, 116, 0.514); text-align: center;"><h4>{{ message }}</h4></div>
-<script>
-  setTimeout(function() {
-    document.querySelector('.alert-info').remove();
-  }, 3000);
-</script>
-{% endfor %} {% endif %}
+{% include "doghub_app/nav_bar.html" %}{% load static %} 
+{% if messages %} 
+  {% for message in messages %}
+    {% if "error" in message.tags%}
+      <div class="alert alert-info" style="padding: 0.3em; background-color: rgba(252, 42, 0, 0.889); text-align: center;"><h4>{{ message }}</h4></div>
+      <script>
+        setTimeout(function() {
+          document.querySelector('.alert-info').remove();
+        }, 3000);
+      </script>
+    {% elif "success" in message.tags %}
+    <div class="alert alert-info" style="padding: 0.3em; background-color: rgba(1, 213, 1, 0.935); text-align: center;"><h4>{{ message }}</h4></div>
+    <script>
+      setTimeout(function() {
+        document.querySelector('.alert-info').remove();
+      }, 3000);
+    </script>
+    {% endif %}
+  {% endfor %} 
+{% endif %}
 <!DOCTYPE html>
 <html>
   <head>
