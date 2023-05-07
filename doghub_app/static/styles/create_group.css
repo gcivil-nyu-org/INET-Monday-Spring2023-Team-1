@@ -5,19 +5,27 @@ body {
 h3 {
     color: rebeccapurple;
     margin-top: 70px;
+    font-family: 'Arial';
 }
 
-h3 + p {
+p {
     face: bold;
+    font-family: 'Arial';
+    
 }
 
-#id_group_description label {
+#id_group_description  {
     display:block;
+    font-family: 'Arial';
+   
+    
+   
 }
 
 textarea {
   display: flex;
   align-items: center;
+  font-family: 'Arial';
 }
 
 textarea {
@@ -29,11 +37,13 @@ textarea {
   border-radius: 4px;
   background-color: #f8f8f8;
   resize: none;
+  font-family: 'Arial';
 }
 
 @media only screen and (max-width: 800px) {
   textarea {
     width: 100%;
+    
   }
 }
 
@@ -49,4 +59,5 @@ input[type=button], input[type=submit], input[type=reset] {
     text-transform: uppercase;
     transition: transform 80ms ease-in;
     margin-top: 20px;
+    font-family: 'Arial';
 }

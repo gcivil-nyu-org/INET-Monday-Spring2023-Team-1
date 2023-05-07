@@ -1,10 +1,12 @@
 h3 {
     color: rebeccapurple;
     padding-top: 70px;
+    
 }
 
 body {
   background-color: #f1f1f3;
+  font-family: 'Arial';
 }
 
 
@@ -57,22 +59,24 @@ input[type=button], input[type=submit], input[type=reset] {
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-  background-color: blanchedalmond;
-  color: black;
+  background-color: #f1f1f3;
+  color: #3c3852;
   font-family: 'Arial';
-  box-shadow: 1px 1px 16px 0.5px rgba(65, 32, 158, 0.537);
+  box-shadow: 1px 1px 16px 0.5px rgba(30, 144, 255, 0.537);
   border-radius: 0.75rem;
+  
   
 }
 
 /* Style the back side */
 .flip-card-back {
-  background-color: dodgerblue;
-  color: white;
+  background-color: #f1f1f3;
+  color: #3c3852;
   transform: rotateY(180deg);
   font-family: 'Arial';
-  box-shadow: 1px 1px 16px 0.5px rgba(65, 32, 158, 0.537);
+  box-shadow: 1px 1px 16px 0.5px rgba(30, 144, 255, 0.537);
   border-radius: 0.75rem;
+  overflow: auto;
 }
 
 .title p {
@@ -94,7 +98,7 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 .flip-card-back .owner {
-    color: black;
+    color: #3c3852;
     margin: 0px;
 }
 
@@ -104,6 +108,7 @@ input[type=button], input[type=submit], input[type=reset] {
 
 .owner{
     display: inline-block;
+    color: #3c3852;
 }
 
 .desc {
@@ -111,7 +116,7 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1300px) {
 .row{
     flex-direction: column;
 }
