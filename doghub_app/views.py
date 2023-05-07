@@ -359,6 +359,7 @@ def user_profile(request):
     events_list = list(EventPost.objects.filter(user_id=request.user))
     events_list.reverse()
     attendee_events = list(Attendee.objects.filter(user_id=request.user))
+    services_list = list(Service.objects.filter(id=request.user.id))
     for attendee in attendee_events:
         try:
             event = EventPost.objects.get(event_id=attendee.event_id.event_id)
@@ -374,6 +375,7 @@ def user_profile(request):
         "dogprof": dog_prof,
         "media_url": settings.MEDIA_URL,
         "events_list": events_list,
+        "services_list": services_list,
     }
     if request.method == "POST":
         if "save_password" in request.POST:
@@ -645,6 +647,7 @@ def public_profile(request, email):
         public_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
         events_list = EventPost.objects.filter(user_id=request.user.id)
+        services_list = list(Service.objects.filter(id=request.user.id))
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         friend = get_object_or_404(CustomUser, email=email)
         friend_request_sent = Friends.objects.filter(
@@ -665,6 +668,7 @@ def public_profile(request, email):
             "dogprof": list(dog_prof),
             "media_url": settings.MEDIA_URL,
             "events_list": list(events_list),
+            "services_list": list(services_list),
             "userprof": user_prof,
             "friend": friend,
             "friend_request_sent": friend_request_sent,
