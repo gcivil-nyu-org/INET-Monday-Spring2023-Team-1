@@ -1081,6 +1081,7 @@ def edit_password(request):
                 context=context,
             )
 
+
 def support(request):
     return render(request, "doghub_app/support.html")
 

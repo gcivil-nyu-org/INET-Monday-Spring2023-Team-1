@@ -69,7 +69,6 @@ urlpatterns = [
     path("edit_password/", views.edit_password, name="edit_password"),
     path("support", views.support, name="support"),
     path("about", views.about, name="about"),
-
 ]
 
 if settings.DEBUG:
