@@ -51,6 +51,7 @@ urlpatterns = [
     path("rsvp_event/<int:pk>/", views.rsvp_event, name="rsvp_event"),
     path("friends/", views.friends, name="friends"),
     path("add-friend/<str:email>/", views.add_friend, name="add_friend"),
+    path("delete_friend/<str:email>/", views.delete_friend, name="delete_friend"),
     path("friend_requests/", views.friend_requests, name="friend_requests"),
     path(
         "accept_friend_request/<int:fid>/",

@@ -212,7 +212,9 @@
         <ul>
           {% for user_profile in user_profiles %}
           <div class="friend-list clearfix">
-            <li>
+            <li><div class="delete-friend">
+              <a class="fa fa-trash" href="{% url 'delete_friend' email=user_profile.email   %}"></a>
+            </div>
                 <a href="{% url 'public-profile' user_profile.email   %}">
                     <div><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}" class="friend-img">
                     </div>

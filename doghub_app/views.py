@@ -648,6 +648,14 @@ def public_profile(request, email):
         friend_request_sent = Friends.objects.filter(
             sender=request.user, receiver=friend, pending=True
         ).first()
+        friendship = (
+            Friends.objects.filter(
+                sender=request.user, receiver=friend, pending=False
+            ).exists()
+            or Friends.objects.filter(
+                sender=friend, receiver=request.user, pending=False
+            ).exists()
+        )
 
         context = {
             "user": user,
@@ -658,6 +666,7 @@ def public_profile(request, email):
             "userprof": user_prof,
             "friend": friend,
             "friend_request_sent": friend_request_sent,
+            "friendship": friendship,
         }
         return render(
             request=request,
@@ -806,6 +815,23 @@ def add_friend(request, email):
     else:
         Friends.objects.create(sender=request.user, receiver=friend, pending=True)
         messages.success(request, f"Friend request sent to {friend.email}.")
+    return redirect("public-profile", email=email)
+
+
+@login_required
+def delete_friend(request, email):
+    friend = get_object_or_404(CustomUser, email=email)
+    friendship = Friends.objects.filter(
+        (Q(sender=request.user) & Q(receiver=friend))
+        | (Q(sender=friend) & Q(receiver=request.user))
+    ).first()
+
+    if not friendship:
+        messages.warning(request, f"You are not friends with {friend.email}.")
+        return redirect("public-profile", email=email)
+
+    friendship.delete()
+    messages.success(request, f"You have deleted {friend.email} from your friends.")
     return redirect("public-profile", email=email)
 
 
