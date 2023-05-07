@@ -78,7 +78,7 @@
                 font-size: 0.8rem;" class="card__date">
                     {{event.event_time}}
                 </div>
-                <div style="  position: absolute;
+                <div onclick = "redirectToInbox()" style="  position: absolute;
                 background: var(--primary-color);
                 padding: 0.1rem;
                 height: 20px;
@@ -91,7 +91,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;" class="card__arrow">
-                <p style="color: white;  font-size: 0.75rem;">RSVP</p>
+                <script>
+                  function redirectToInbox() {
+                    var events_link = 'events#map-' + {{event.event_id}};
+                    window.location.href = events_link;
+                  }
+                </script>
+                <p style="color: white;  font-size: 0.75rem;">View</p>
                 </div> 
               </div> 
             </header>

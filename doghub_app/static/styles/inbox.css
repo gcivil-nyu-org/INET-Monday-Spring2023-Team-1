@@ -488,6 +488,7 @@ body {
     border-radius: 10px;
     transition: all 0.4s ease-in-out;
     overflow: auto;
+    
   }
 
   .recipient.expand{
@@ -517,6 +518,8 @@ body {
     transition: all 0.4s ease-in-out;
     margin-top:0rem;
     margin-left: 12.2rem; 
+    
+
   }
 
   .dropdown-friend ul{
