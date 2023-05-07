@@ -749,6 +749,7 @@ def inbox(request):
 
     user_prof = UserProfile.objects.get(user_id=request.user.id)
     context["userprof"] = user_prof
+    context["media_url"] = settings.MEDIA_URL
 
     messageLs = []
 
@@ -1019,7 +1020,8 @@ def create_group(request):
     else:
         form = CreateGroupForm()
     return render(
-        request, "doghub_app/create_group.html", {"form": form, "userprof": userprof}
+        request, "doghub_app/create_group.html", {"form": form, "userprof": userprof,
+                                                  "media_url": settings.MEDIA_URL,}
     )
 
 
@@ -1045,6 +1047,7 @@ def my_groups(request):
             "groups_pending": request.user.get_pending_groups(),
             "members_pending": request.user.get_pending_members(),
             "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
         return render(request, "doghub_app/my_groups.html", context=context)
 
@@ -1077,6 +1080,7 @@ def join_group(request):
                 if request.user not in [u.member for u in g.groupmember_set.all()]
             ],
             "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
@@ -1109,6 +1113,7 @@ def leave_group(request):
                 for g in GroupMember.objects.filter(member=request.user, pending=False)
             ],
             "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
     return render(request, "doghub_app/join_leave_group.html", context=context)
 
@@ -1164,10 +1169,10 @@ def edit_password(request):
 
 def support(request):
     userprof = UserProfile.objects.get(user_id=request.user)
-    return render(request, "doghub_app/support.html", {"userprof": userprof})
+    return render(request, "doghub_app/support.html", {"userprof": userprof, "media_url": settings.MEDIA_URL,})
 
 
 @login_required
 def about(request):
     userprof = UserProfile.objects.get(user_id=request.user)
-    return render(request, "doghub_app/about.html", {"userprof": userprof})
+    return render(request, "doghub_app/about.html", {"userprof": userprof, "media_url": settings.MEDIA_URL,})
