@@ -6,13 +6,18 @@ mail_items.forEach((item)=>{
         console.log(env_icon)
         if(content.classList.contains("content_expand")){
             content.classList.remove("content_expand")
-            env_icon.classList.remove("fa-envelope-open")
-            env_icon.classList.add("fa-envelope")
+            if(env_icon.classList.contains("fa-envelope-open")){
+                env_icon.classList.remove("fa-envelope-open")
+                env_icon.classList.add("fa-envelope")
+            }
         }
         else{
             content.classList.add("content_expand")
-            env_icon.classList.add("fa-envelope-open")
-            env_icon.classList.remove("fa-envelope")
+            if(env_icon.classList.contains("fa-envelope")){
+                env_icon.classList.add("fa-envelope-open")
+                env_icon.classList.remove("fa-envelope")
+            }
+
         }
     })
 })
@@ -116,6 +121,111 @@ function send_message(token){
     });
   }
 
+
+function index(el,cards) {
+    i = 0;
+    console.log(cards)
+    for (; i < cards.length; i++) {
+        if (cards[i] == el) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+var card_containers = document.querySelectorAll(".container");
+var ulList = document.getElementById('message_list')
+
+
+function accept_request(token, thisButton, group_id,mem_id){
+// content= thisButton.parentElement
+// card= content.parentElement
+// container = content.parentElement.parentElement
+
+// console.log(mem_id)
+// console.log('list')
+// ulList.removeChild(container.parentElement)
+// console.log(ulList.children)
+$.ajax({
+    url: 'my-groups/',
+    type: 'POST',
+    data: { 
+    csrfmiddlewaretoken: token,
+    group_id: group_id,
+    member_id: mem_id,
+    status:'accept'
+    },
+    success: function (res) {
+        content= thisButton.parentElement
+        card= content.parentElement
+        container = content.parentElement.parentElement
+        cur_idx = index(container, card_containers)
+        icon=card.firstElementChild.firstElementChild
+        console.log(content)
+        console.log(content.classList)
+        setTimeout(() => {
+            content.classList.toggle('content_expand')
+          }, 500)
+        setTimeout(() => {
+            container.style.opacity='0'
+            container.style.height='0 rem'
+            ulList.removeChild(container.parentElement)
+        }, 1000)
+        // content.classList.toggle('content_expand')
+        switchIcon(icon, '<i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i>', 100)
+        return null    
+    }
+});
+}
+
+
+function decline_request(token, thisButton, group_id,mem_id){
+    // content= thisButton.parentElement
+    // card= content.parentElement
+    // container = content.parentElement.parentElement
+    // icon=card.firstElementChild.firstElementChild
+    // console.log(content)
+    // console.log(content.classList)
+    // setTimeout(() => {
+    //     content.classList.toggle('content_expand')
+    //   }, 500)
+    // setTimeout(() => {
+    //     container.style.opacity='0'
+    // }, 1000)
+    // // content.classList.toggle('content_expand')
+    // switchIcon(icon, '<i class="fa fa-check-circle" aria-hidden="true" style="color: red"></i>', 100)
+    // return null
+    $.ajax({
+        url: 'my-groups/',
+        type: 'POST',
+        data: { 
+        csrfmiddlewaretoken: token,
+        group_id: group_id,
+        member_id: mem_id,
+        status:'reject'
+        },
+        success: function (res) {
+            content= thisButton.parentElement
+            card= content.parentElement
+            container = content.parentElement.parentElement
+            cur_idx = index(container, card_containers)
+            icon=card.firstElementChild.firstElementChild
+            console.log(content)
+            console.log(content.classList)
+            setTimeout(() => {
+                content.classList.toggle('content_expand')
+              }, 500)
+            setTimeout(() => {
+                container.style.opacity='0'
+                container.style.height='0 rem'
+                ulList.removeChild(container.parentElement)
+            }, 1000)
+            // content.classList.toggle('content_expand')
+            switchIcon(icon, '<i class="fa fa-check-circle" aria-hidden="true" style="color: red"></i>', 100)
+            return null    
+        }
+    });
+}
 
   const switchIcon = (container,newHtml, timeout) => {
   
