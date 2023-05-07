@@ -1040,6 +1040,14 @@ class TestEventPageFriendList(TestCase):
         )
         self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
 
+        url = reverse("support")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        url = reverse("about")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
 
 # class FriendsTestCase(TestCase):
 #     def setUp(self):
