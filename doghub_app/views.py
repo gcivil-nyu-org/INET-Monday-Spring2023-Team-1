@@ -15,7 +15,6 @@ import logging
 from .validators import validate_password
 from doghub_app.tokens import verification_token_generator
 from datetime import date
-import random
 from .forms import (
     EventPostForm,
     CreateGroupForm,
@@ -751,36 +750,35 @@ def inbox(request):
         messages = list(Chat.objects.filter(receiver=request.user))
         messages.reverse()
         for message in messages:
-            message.type='chat'
+            message.type = "chat"
             messageLs.append(message)
 
     requestLs = list(request.user.get_pending_members())
     print(requestLs)
     for i in range(len(requestLs)):
         # pending_member=r
-        pending_members= GroupMember.objects.filter(group=requestLs[i], pending=True)
-        lastInsertIdx=-2
+        pending_members = GroupMember.objects.filter(group=requestLs[i], pending=True)
+        lastInsertIdx = -2
         for member in pending_members:
-            member.type= 'request'
-            member.group= requestLs[i]
-            member.group_id= requestLs[i].group_id
-            if len(messageLs)==0:
+            member.type = "request"
+            member.group = requestLs[i]
+            member.group_id = requestLs[i].group_id
+            if len(messageLs) == 0:
                 messageLs.append(member)
             else:
-                print(lastInsertIdx+2)
+                print(lastInsertIdx + 2)
                 print(messageLs)
-                if lastInsertIdx+2>=len(messageLs):
+                if lastInsertIdx + 2 >= len(messageLs):
                     messageLs.append(member)
                 else:
-                    messageLs.insert(lastInsertIdx+2,member)
-                    lastInsertIdx+=2
+                    messageLs.insert(lastInsertIdx + 2, member)
+                    lastInsertIdx += 2
     messageLs = sorted(messageLs, key=lambda message: message.timestamp, reverse=True)
 
     print(messageLs)
-    context['messageList']= messageLs
+    context["messageList"] = messageLs
 
-
-    ##friend list
+    #  friend list
     friendsLs = []
     if Friends.objects.filter(receiver=request.user, pending=False).exists():
         for relationship in list(
@@ -793,7 +791,7 @@ def inbox(request):
         ):
             if relationship.receiver not in friendsLs:
                 friendsLs.append(relationship.receiver)
-    
+
     context["friendsLs"] = friendsLs
 
     return render(request, "doghub_app/inbox.html", context=context)
