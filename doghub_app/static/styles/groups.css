@@ -25,6 +25,27 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 
+.linkbutton {		
+  border-radius: 20px;
+  background-color: #6F36A8;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  margin-top: 20px;
+  font-family: 'Arial';
+  
+}
+
+.linkbutton > a{		
+  color: white;
+  text-decoration: none;
+}
+
+
 .flip-card {
   background-color: transparent;
   width: 300px;

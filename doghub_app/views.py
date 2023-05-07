@@ -357,6 +357,7 @@ def user_profile(request):
 
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     events_list = list(EventPost.objects.filter(user_id=request.user))
+    events_list.reverse()
     attendee_events = list(Attendee.objects.filter(user_id=request.user))
     for attendee in attendee_events:
         try:
@@ -364,6 +365,7 @@ def user_profile(request):
             if event.user_id != request.user:
                 print(event)
                 events_list.append(event)
+
         except EventPost.DoesNotExist:
             pass
     print(events_list)
@@ -598,14 +600,14 @@ def add_post(request):
             location = request.POST.get("location")
             if "," not in location:
                 messages.error(request, "Invalid location format")
-                return redirect("add_post")
+                return redirect("events")
             latitude, longitude = location.split(",")
             # latitude, longitude = location[0], location[1]
             try:
                 park = Park.objects.get(latitude=latitude, longitude=longitude)
             except Park.DoesNotExist:
                 messages.error(request, "No park found for the given info")
-                return redirect("add_post")
+                return redirect("events")
             event_post.park_id = park
 
             user = request.user
