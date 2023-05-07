@@ -36,10 +36,12 @@ LOGGING_LEVEL = "DEBUG" if DEBUG else "WARNING"
 
 ALLOWED_HOSTS = [
     "doghub-production-env.eba-7pbt5sqz.us-west-2.elasticbeanstalk.com",
+    "doghub-env2.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
     "127.0.0.1",
     "doghub-develop-env.eba-jymag3pg.us-west-2.elasticbeanstalk.com",
     "172.31.23.176",  # Private IPv4 addresses for AWS EC2 Develop instance
     "172.31.13.70",  # Private IPv4 addresses for AWS EC2 Prod instance
+    "172.31.8.12",
 ]
 
 
