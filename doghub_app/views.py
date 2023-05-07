@@ -937,7 +937,7 @@ def add_service(request):
 
 
 def create_group(request):
-    userprof = UserProfile.objects.get(user_id=request.user)
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         form = CreateGroupForm(request.POST)
         if form.is_valid():
@@ -954,7 +954,7 @@ def create_group(request):
 
 @login_required
 def my_groups(request):
-    userprof = UserProfile.objects.get(user_id=request.user)
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         g = Groups.objects.get(group_id=request.POST["group_id"])
         mem_id = request.POST["member_id"]
@@ -980,7 +980,7 @@ def my_groups(request):
 
 @login_required
 def join_group(request):
-    userprof = UserProfile.objects.get(user_id=request.user)
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         # logging.debug(request.POST)
         gids = []  # group ids checked
@@ -1012,7 +1012,7 @@ def join_group(request):
 
 @login_required
 def leave_group(request):
-    userprof = UserProfile.objects.get(user_id=request.user)
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         logging.debug(request.POST)
         gids = []  # group ids checked

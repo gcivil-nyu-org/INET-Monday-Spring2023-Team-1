@@ -1128,8 +1128,22 @@ class GroupsTestCase(TestCase):
         self.user = CustomUser.objects.create_user(
             username="Hades", email="Hades@doghub.com", password="Test@123"
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
         self.user2 = CustomUser.objects.create_user(
             username="Hermes", email="Hermes@doghub.com", password="Test@123"
+        )
+        self.user2_profile = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test",
+            lname="User2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User2",
         )
 
         self.client.login(email="Hades@doghub.com", password="Test@123")
@@ -1286,6 +1300,13 @@ class CreateGroupViewTest(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
             username="testuser", password="Test@123"
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
         )
         self.url = reverse("create_group")
 
