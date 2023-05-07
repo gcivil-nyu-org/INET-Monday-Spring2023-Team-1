@@ -1208,7 +1208,6 @@ class GroupEventPage(TestCase):
         self.client.login(email="user1@test.com", password="password123")
         url = reverse("events")
         response = self.client.get(url)
-        print(response.context)
         self.assertEqual(len(list(response.context["groups_owned"])), 1)
         self.assertEqual(
             list(response.context["groups_owned"])[0].group_title, "MyGroup"
@@ -1224,3 +1223,181 @@ class GroupEventPage(TestCase):
         self.assertEqual(len(response.context["groups_joined"]), 1)
         self.assertEqual(response.context["groups_joined"][0].group_title, "NotMyGroup")
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
+
+
+class AddServiceViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="Test@123",
+            email_verified=True,
+        )
+
+    def test_add_service_view_with_valid_inputs(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post(
+            "/add_service",
+            {
+                "title": "Test Service",
+                "service_type": "Test Type",
+                "service_description": "Test Description",
+                "rate": "10",
+                "contact": "test@test.com",
+                "address": "Test Address",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/events")
+
+    def test_add_service_view_with_invalid_inputs(self):
+        url = reverse("add_service")
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/add_service.html")
+
+    def test_add_service_view_for_logged_out_user(self):
+        response = self.client.get("/add_service")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/login?next=/add_service")
+
+    def test_add_service_view_with_incomplete_fields(self):
+        url = reverse("add_service")
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.post(
+            url,
+            {
+                "title": "Test Service",
+                "service_type": "Test Type",
+                "rate": "10",
+                "contact": "test@test.com",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+
+    # self.assertTemplateUsed(response, 'doghub_app/add_service.html')
+
+
+class CreateGroupViewTest(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="Test@123"
+        )
+        self.url = reverse("create_group")
+
+    def test_create_group_with_valid_data(self):
+        self.client.login(username="testuser", password="Test@123")
+        form_data = {
+            "group_title": "Test Group",
+            "group_description": "This is a test group.",
+        }
+        response = self.client.post(self.url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, "/my-groups/")
+        self.assertTrue(Groups.objects.filter(group_title="Test Group").exists())
+        self.assertEqual(
+            Groups.objects.filter(group_title="Test Group").first().group_owner,
+            self.user,
+        )
+
+    def test_create_group_with_invalid_data(self):
+        self.client.login(username="testuser", password="Test@123")
+        form_data = {}
+        response = self.client.post(self.url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This field is required.")
+        self.assertFalse(Groups.objects.filter(group_title="Test Group").exists())
+
+
+# class JoinLeaveGroupTestCase(TestCase):
+#     def setUp(self):
+#         # Create a user
+#         self.user = CustomUser.objects.create_user(
+#             username="testuser", email="testuser@example.com", password="testpassword"
+#         )
+
+#         # Create some groups
+#         self.group1 = Groups.objects.create(
+#             group_title="Group 1",
+#             group_description="Group 1 description",
+#             group_owner=self.user,
+#         )
+#         self.group2 = Groups.objects.create(
+#             group_title="Group 2",
+#             group_description="Group 2 description",
+#             group_owner=self.user,
+#         )
+#         self.group3 = Groups.objects.create(
+#             group_title="Group 3",
+#             group_description="Group 3 description",
+#             group_owner=self.user,
+#         )
+
+#     def test_join_group_view(self):
+#         # Login the user
+#         self.client.login(username="testuser", password="testpassword")
+
+#         # Access the join_group view
+#         response = self.client.get(reverse("join_group"))
+
+#         # Check that the response is successful and the context is correct
+#         self.assertEqual(response.status_code, 200)
+#         self.assertTrue("groups" in response.context)
+#         self.assertEqual(len(response.context["groups"]), 0)
+
+#         # Check that the user is not a member of any of the groups
+#         for group in response.context["groups"]:
+#             self.assertFalse(group.groupmember_set.filter(member=self.user).exists())
+
+#         # Join Group 1 and Group 2
+#         response = self.client.post(reverse("join_group"), data={"1": "on", "2": "on"})
+
+#         # Check that the response is a redirect to my_groups
+#         self.assertRedirects(response, reverse("my_groups"))
+
+#         # Check that the user is now a member of Group 1 and Group 2
+#         self.assertTrue(self.group1.groupmember_set.filter(member=self.user).exists())
+#         self.assertTrue(self.group2.groupmember_set.filter(member=self.user).exists())
+#         self.assertFalse(self.group3.groupmember_set.filter(member=self.user).exists())
+
+#     def test_leave_group_view(self):
+#         # Create a new user
+#         user2 = CustomUser.objects.create_user(
+#             username="testuser2",
+#             email="testuser2@example.com",
+#             password="testpassword2",
+#         )
+
+#         # Add user and user2 as members of Group 1
+#         GroupMember.objects.create(group=self.group1, member=self.user)
+#         GroupMember.objects.create(group=self.group1, member=user2)
+
+#         # Add user as a member of Group 2
+#         GroupMember.objects.create(group=self.group2, member=self.user)
+
+#         # Login the user
+#         self.client.login(username="testuser", password="testpassword")
+
+#         # Access the leave_group view
+#         response = self.client.get(reverse("leave_group"))
+
+#         # Check that the response is successful and the context is correct
+#         self.assertEqual(response.status_code, 200)
+#         self.assertTrue("groups" in response.context)
+#         self.assertEqual(len(response.context["groups"]), 0)
+
+#         # Check that the user is a member of Group 1 and Group 2
+#         self.assertTrue(self.group1.groupmember_set.filter(member=self.user).exists())
+#         self.assertTrue(self.group2.groupmember_set.filter(member=self.user).exists())
+
+#         # Leave Group 1
+#         response = self.client.post(reverse("leave_group"), data={"1": "on"})
+
+#         # Check that the response is a redirect to my_groups
+#         self.assertRedirects(response, reverse("my_groups"))
+
+#         # Check
