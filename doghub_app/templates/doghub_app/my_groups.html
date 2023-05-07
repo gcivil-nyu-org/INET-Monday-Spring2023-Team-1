@@ -111,9 +111,15 @@
 <p> You have not joined any groups, why not join a group ? </p>
 {% endif %}
 
+
 <p>
-  <a href="{% url 'join_group' %}">Join Group</a>
-  <a href="{% url 'create_group' %}"> Create Group </a>
-  <a href="{% url 'leave_group' %}"> Leave Group </a>
+	<button class= "linkbutton">
+  <a href="{% url 'join_group' %}">Join Group</a></button>
+  
+	<button class= "linkbutton">
+  <a href="{% url 'create_group' %}"> Create Group </a> </button>
+	
+		<button class= "linkbutton">
+  <a href="{% url 'leave_group' %}"> Leave Group </a> </button>
 </p>
 
