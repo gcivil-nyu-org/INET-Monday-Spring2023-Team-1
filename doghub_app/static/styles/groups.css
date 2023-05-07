@@ -19,6 +19,7 @@ input[type=button], input[type=submit], input[type=reset] {
     text-transform: uppercase;
     transition: transform 80ms ease-in;
     margin-top: 20px;
+    font-family: 'Arial';
 }
 
 
@@ -58,6 +59,10 @@ input[type=button], input[type=submit], input[type=reset] {
 .flip-card-front {
   background-color: blanchedalmond;
   color: black;
+  font-family: 'Arial';
+  box-shadow: 1px 1px 16px 0.5px rgba(65, 32, 158, 0.537);
+  border-radius: 0.75rem;
+  
 }
 
 /* Style the back side */
@@ -65,6 +70,9 @@ input[type=button], input[type=submit], input[type=reset] {
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
+  font-family: 'Arial';
+  box-shadow: 1px 1px 16px 0.5px rgba(65, 32, 158, 0.537);
+  border-radius: 0.75rem;
 }
 
 .title p {
