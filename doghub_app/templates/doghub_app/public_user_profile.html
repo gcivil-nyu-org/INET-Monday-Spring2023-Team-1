@@ -87,7 +87,12 @@
             </p>
           </div>
           <div class="profile-btn">
-            <button class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
+            <button onclick="redirectToInbox()" class="chatbtn" id="chatBtn"><i class="fa fa-comment"></i> Chat</button>
+            <script>
+              function redirectToInbox() {
+                window.location.href = "{% url 'inbox' %}";
+              }
+            </script>
             {% if request.user != friend %}
                 {% if friend_request_sent %}
                     {% if friend_request_sent.pending %}
