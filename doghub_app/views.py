@@ -666,7 +666,7 @@ def public_profile(request, email):
             "dogprof": list(dog_prof),
             "media_url": settings.MEDIA_URL,
             "events_list": list(events_list),
-            "services_list" : list(services_list),
+            "services_list": list(services_list),
             "userprof": user_prof,
             "friend": friend,
             "friend_request_sent": friend_request_sent,
