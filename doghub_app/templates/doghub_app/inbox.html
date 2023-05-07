@@ -24,8 +24,9 @@
     <div class="mail-area">
 
         {% if messageList %}
-        <ul>
+        <ul id = 'message_list'>
             {% for message in messageList %}
+            {% if 'chat' in message.type  %}
             <li>
                 <div class="container">
                     <div class="card">
@@ -34,12 +35,29 @@
                             <p>Received at {{message.timestamp}}</p>
                         </div>
                         <div class="content">
-                            <p>{{message.text}} </p>
+                            <p>{{message.text|safe}} </p>
                         </div>
                     </div>
                 </div>
             </li>
+            {% else  %}
+             <li>
+              <div class="container">
+                  <div class="card">
+                      <div class="cover">
+                          <h2><i class="fa fa-users" aria-hidden="true"></i>Group Invitation</h2>
+                          <p>{{ message }} would like to join your {{ message.group }}</p>
+                      </div>
+                      <div class="invite-content">
+                          <button onclick="accept_request('{{csrf_token}}', this,'{{message.group_id}}','{{message.member_id}}')">Accept </button>
+                          <button onclick="decline_request('{{csrf_token}}', this,'{{message.group_id}}','{{message.member_id}}')">Decline </button>
+                      </div>
+                  </div>
+              </div>
+            </li>
+            {% endif %}
             {% endfor %}
+             
         </ul>
         {% else %}
         <h1>No Message</h1>

@@ -89,6 +89,7 @@
 </ul>
 {% endif %}
 
+<div hidden>
 {% if members_pending %}
 <h4> Incoming Requests </h4>
 {% for g, mem_list in members_pending.items %}
@@ -104,6 +105,7 @@
 {% endfor %}
 {% endfor %}
 {% endif %}
+</div>
 
 {% if not group_joined and not groups_pending %}
 <p> You have not joined any groups, why not join a group ? </p>

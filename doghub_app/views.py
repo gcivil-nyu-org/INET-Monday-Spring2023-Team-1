@@ -746,6 +746,12 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+
+    user_prof = UserProfile.objects.get(user_id=request.user.id)
+    context["userprof"] = user_prof
+
+    messageLs = []
+
     if request.method == "POST":
         print(request)
         receiver = CustomUser.objects.get(pk=request.POST.get("receiver"))
@@ -757,7 +763,36 @@ def inbox(request):
     if Chat.objects.filter(receiver=request.user).exists():
         messages = list(Chat.objects.filter(receiver=request.user))
         messages.reverse()
-        context["messageList"] = messages
+        for message in messages:
+            message.type = "chat"
+            messageLs.append(message)
+
+    requestLs = list(request.user.get_pending_members())
+    print(requestLs)
+    for i in range(len(requestLs)):
+        # pending_member=r
+        pending_members = GroupMember.objects.filter(group=requestLs[i], pending=True)
+        lastInsertIdx = -2
+        for member in pending_members:
+            member.type = "request"
+            member.group = requestLs[i]
+            member.group_id = requestLs[i].group_id
+            if len(messageLs) == 0:
+                messageLs.append(member)
+            else:
+                print(lastInsertIdx + 2)
+                print(messageLs)
+                if lastInsertIdx + 2 >= len(messageLs):
+                    messageLs.append(member)
+                else:
+                    messageLs.insert(lastInsertIdx + 2, member)
+                    lastInsertIdx += 2
+    messageLs = sorted(messageLs, key=lambda message: message.timestamp, reverse=True)
+
+    print(messageLs)
+    context["messageList"] = messageLs
+
+    #  friend list
     friendsLs = []
     if Friends.objects.filter(receiver=request.user, pending=False).exists():
         for relationship in list(
@@ -770,6 +805,7 @@ def inbox(request):
         ):
             if relationship.receiver not in friendsLs:
                 friendsLs.append(relationship.receiver)
+
     context["friendsLs"] = friendsLs
 
     return render(request, "doghub_app/inbox.html", context=context)
@@ -814,6 +850,15 @@ def add_friend(request, email):
         return redirect("public-profile", email=email)
     else:
         Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+        friend_request_url = reverse("friend_requests")
+        notification_message = (
+            f"You have received a friend request from {request.user.email}. "
+            f"Click <a href='{friend_request_url}'>here</a> to view your friend requests."
+        )
+        notification = Chat(
+            receiver=friend, text=notification_message, sender=request.user
+        )
+        notification.save()
         messages.success(request, f"Friend request sent to {friend.email}.")
     return redirect("public-profile", email=email)
 
@@ -978,17 +1023,17 @@ def create_group(request):
 @login_required
 def my_groups(request):
     if request.method == "POST":
-        g = Groups.objects.get(group_id=request.POST["group_id"])
-        mem_id = request.POST["member_id"]
-        status = request.POST["status"]
+        g = Groups.objects.get(group_id=request.POST.get("group_id"))
+        mem_id = request.POST.get("member_id")
+        status = request.POST.get("status")
         if status == "accept":
             g.accept_member(int(mem_id))
         elif status == "reject":
             g.reject_member(int(mem_id))
         else:
             logging.warning(f"unknown mem status for group {g}")
-
-        return HttpResponseRedirect("/my-groups")
+        return HttpResponse(status=200)
+        # return HttpResponseRedirect("/my-groups")
     else:
         context = {
             "groups_owned": request.user.get_own_groups(),
@@ -1032,7 +1077,7 @@ def join_group(request):
 @login_required
 def leave_group(request):
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -1041,7 +1086,7 @@ def leave_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # remove member from the checked groups
         for group_id in gids:
             GroupMember.objects.get(
@@ -1060,6 +1105,54 @@ def leave_group(request):
 
 
 @login_required
+def edit_password(request):
+    if request.method == "GET":
+        return render(request, "doghub_app/edit_password.html")
+    else:
+        if request.method == "POST":
+            if "save_password" in request.POST:
+                current_password = request.POST.get("current_password")
+                new_password = request.POST.get("new_password")
+                confirm_password = request.POST.get("confirm_password")
+                errors = []
+
+                # Check if the current password is correct
+                if not request.user.check_password(current_password):
+                    errors.append("Current password is incorrect.")
+                    # errors.append("Current password is incorrect.")
+                    # return redirect('user_profile')
+
+                # Check if the new password and confirmation match
+                if new_password != confirm_password:
+                    errors.append("New password and confirmation do not match.")
+                    # return redirect('user_profile')
+
+                password_errors = validate_password(new_password)
+                if password_errors:
+                    errors.extend(password_errors)
+
+                if errors:
+                    context = {}
+                    context["errors"] = errors
+                    if len("errors") > 0:
+                        messages.error(
+                            request,
+                            "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                        )
+                else:
+                    # Change the user's password
+                    request.user.set_password(new_password)
+                    request.user.save()
+                    update_session_auth_hash(request, request.user)
+                    messages.success(request, "Password has been changed.")
+                    return redirect("user_profile")
+            return render(
+                request=request,
+                template_name="doghub_app/edit_password.html",
+                context=context,
+            )
+
+
 def support(request):
     return render(request, "doghub_app/support.html")
 

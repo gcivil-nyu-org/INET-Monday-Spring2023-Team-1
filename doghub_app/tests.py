@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
+# import logging
+
 # from django.utils import timezone
 # from datetime import datetime
 from django.contrib.auth import get_user_model
@@ -1225,6 +1227,65 @@ class GroupEventPage(TestCase):
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
 
 
+class EditPasswordViewTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser@gmail.com",
+            password="testpassword123",
+            email_verified=True,
+        )
+        self.client.login(username="testuser", password="testpassword")
+
+    def test_get_edit_password_page(self):
+        response = self.client.get(reverse("edit_password"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_valid_data(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "Group@123",
+            "confirm_password": "Group@123",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+
+    def test_post_edit_password_invalid_current_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "wrongpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "newtestpassword",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_confirmation(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "mismatch",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_new_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "weak",
+            "confirm_password": "weak",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+
 class AddServiceViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -1313,91 +1374,133 @@ class CreateGroupViewTest(TestCase):
         self.assertFalse(Groups.objects.filter(group_title="Test Group").exists())
 
 
-# class JoinLeaveGroupTestCase(TestCase):
-#     def setUp(self):
-#         # Create a user
-#         self.user = CustomUser.objects.create_user(
-#             username="testuser", email="testuser@example.com", password="testpassword"
-#         )
+class JoinLeaveGroupTestCase(TestCase):
+    def setUp(self):
+        # Create a user
+        self.user = CustomUser.objects.create_user(
+            username="user1", email="user1@example.com", password="testpassword"
+        )
 
-#         # Create some groups
-#         self.group1 = Groups.objects.create(
-#             group_title="Group 1",
-#             group_description="Group 1 description",
-#             group_owner=self.user,
-#         )
-#         self.group2 = Groups.objects.create(
-#             group_title="Group 2",
-#             group_description="Group 2 description",
-#             group_owner=self.user,
-#         )
-#         self.group3 = Groups.objects.create(
-#             group_title="Group 3",
-#             group_description="Group 3 description",
-#             group_owner=self.user,
-#         )
+        # Create some groups
+        self.group1 = Groups.objects.create(
+            group_title="Group 1",
+            group_description="Group 1 description",
+            group_owner=self.user,
+        )
+        self.group2 = Groups.objects.create(
+            group_title="Group 2",
+            group_description="Group 2 description",
+            group_owner=self.user,
+        )
+        self.group3 = Groups.objects.create(
+            group_title="Group 3",
+            group_description="Group 3 description",
+            group_owner=self.user,
+        )
+        self.group1.save()
+        self.group2.save()
+        self.group3.save()
 
-#     def test_join_group_view(self):
-#         # Login the user
-#         self.client.login(username="testuser", password="testpassword")
+        # user1 owns 3 groups
+        # Create another user to join user1 groups
+        self.user2 = CustomUser.objects.create_user(
+            username="user2", email="user2@example.com", password="testpassword"
+        )
 
-#         # Access the join_group view
-#         response = self.client.get(reverse("join_group"))
+    def test_join_leave_group_view(self):
+        # Login user2
+        self.client.login(username="user2", password="testpassword")
 
-#         # Check that the response is successful and the context is correct
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTrue("groups" in response.context)
-#         self.assertEqual(len(response.context["groups"]), 0)
+        # Access the join_group view
+        response = self.client.get(reverse("join_group"))
 
-#         # Check that the user is not a member of any of the groups
-#         for group in response.context["groups"]:
-#             self.assertFalse(group.groupmember_set.filter(member=self.user).exists())
+        # Check that the response is successful and the context is correct
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("groups" in response.context)
+        self.assertEqual(len(response.context["groups"]), 3)
 
-#         # Join Group 1 and Group 2
-#         response = self.client.post(reverse("join_group"), data={"1": "on", "2": "on"})
+        # logging.debug("so far so good")
+        # Check that the user is not a member of any of the groups
+        for group in response.context["groups"]:
+            # logging.debug(f"checking member for group {group}")
+            self.assertFalse(group.groupmember_set.filter(member=self.user2).exists())
 
-#         # Check that the response is a redirect to my_groups
-#         self.assertRedirects(response, reverse("my_groups"))
+        # Join Group 1 and Group 2
+        group_ids = [g.group_id for g in response.context["groups"]]
+        gid1, gid2, gid3 = group_ids
+        response = self.client.post(
+            reverse("join_group"), data={str(gid1): "on", str(gid2): "on"}
+        )
 
-#         # Check that the user is now a member of Group 1 and Group 2
-#         self.assertTrue(self.group1.groupmember_set.filter(member=self.user).exists())
-#         self.assertTrue(self.group2.groupmember_set.filter(member=self.user).exists())
-#         self.assertFalse(self.group3.groupmember_set.filter(member=self.user).exists())
+        # Check that the user is now a pending member of Group 1 and Group 2 but not group3
+        self.assertTrue(
+            self.group1.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
+        self.assertTrue(
+            self.group2.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
+        self.assertFalse(
+            self.group3.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
 
-#     def test_leave_group_view(self):
-#         # Create a new user
-#         user2 = CustomUser.objects.create_user(
-#             username="testuser2",
-#             email="testuser2@example.com",
-#             password="testpassword2",
-#         )
+        # check that the owner is not a member
+        self.assertFalse(self.group1.groupmember_set.filter(member=self.user).exists())
+        self.assertFalse(self.group2.groupmember_set.filter(member=self.user).exists())
+        self.assertFalse(self.group3.groupmember_set.filter(member=self.user).exists())
 
-#         # Add user and user2 as members of Group 1
-#         GroupMember.objects.create(group=self.group1, member=self.user)
-#         GroupMember.objects.create(group=self.group1, member=user2)
+        # login the owner and accept incoming requests
+        self.client.login(username="user", password="testpassword")
 
-#         # Add user as a member of Group 2
-#         GroupMember.objects.create(group=self.group2, member=self.user)
+        response = self.client.get(reverse("my_groups"))
 
-#         # Login the user
-#         self.client.login(username="testuser", password="testpassword")
+        # check that there are 2 pending requests
+        self.assertEqual(len(response.context["groups_pending"]), 2)
 
-#         # Access the leave_group view
-#         response = self.client.get(reverse("leave_group"))
+        # accept one and reject the other
+        gid1, gid2 = [g.group_id for g in response.context["groups_pending"]]
 
-#         # Check that the response is successful and the context is correct
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTrue("groups" in response.context)
-#         self.assertEqual(len(response.context["groups"]), 0)
+        # accept member into group1
+        response = self.client.post(
+            reverse("my_groups"),
+            data={"group_id": gid1, "member_id": self.user2.pk, "status": "accept"},
+        )
 
-#         # Check that the user is a member of Group 1 and Group 2
-#         self.assertTrue(self.group1.groupmember_set.filter(member=self.user).exists())
-#         self.assertTrue(self.group2.groupmember_set.filter(member=self.user).exists())
+        # reject member from group2
+        response = self.client.post(
+            reverse("my_groups"),
+            data={"group_id": gid2, "member_id": self.user2.pk, "status": "reject"},
+        )
 
-#         # Leave Group 1
-#         response = self.client.post(reverse("leave_group"), data={"1": "on"})
+        # login user2 and check that he's no longer pending for group1
+        # and was rejected for group2
+        self.client.login(username="user2", password="testpassword")
+        # Check that the user is now a pending member of Group 1 and Group 2 but not group3
 
-#         # Check that the response is a redirect to my_groups
-#         self.assertRedirects(response, reverse("my_groups"))
+        self.assertTrue(
+            self.group1.groupmember_set.filter(
+                member=self.user2, pending=False
+            ).exists()
+        )
+        self.assertFalse(self.group2.groupmember_set.filter(member=self.user2).exists())
 
-#         # Check
+        # test leave group
+        # user2 is currently logged in
+        # and is a member of group1 only, test that they can leave group1
+
+        # get a list of groups to leave
+        response = self.client.get(reverse("leave_group"))
+
+        # check that the user is part of only one group
+        # and that it's group one
+        self.assertEqual(len(response.context["groups"]), 1)
+        self.assertEqual(response.context["groups"][0].group_id, gid1)
+
+        # logging.debug(f"the response: {response}")
+        # logging.debug(f"the context: {response.context}")
+        # logging.debug(f"gid1: {gid1} gid2: {gid2}")
+
+        # leave group1
+        response = self.client.post(reverse("leave_group"), data={str(gid1): "on"})
+
+        # check that user2 is no longer a member of group1
+        self.assertFalse(self.group1.groupmember_set.filter(member=self.user2).exists())

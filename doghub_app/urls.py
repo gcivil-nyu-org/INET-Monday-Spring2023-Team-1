@@ -67,6 +67,7 @@ urlpatterns = [
     path("join-group/", views.join_group, name="join_group"),
     path("my-groups/", views.my_groups, name="my_groups"),
     path("leave-group/", views.leave_group, name="leave_group"),
+    path("edit_password/", views.edit_password, name="edit_password"),
     path("support", views.support, name="support"),
     path("about", views.about, name="about"),
 ]
