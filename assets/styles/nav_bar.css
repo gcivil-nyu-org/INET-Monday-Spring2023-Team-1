@@ -1,0 +1,171 @@
+
+.nav1 {
+    background-color: #6f36a8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 60px;
+    overflow: hidden;
+    
+  }
+  
+  nav ul li {
+    width: fit-content;
+    float: left;
+    border-right: 1px solid #dbdadc;
+    height: 65px;
+    align-items: center;
+  }
+  
+  nav ul li a {
+    display: block;
+    padding: 14px 16px;
+    color: #fbfdf7;
+    text-decoration: none;
+  }
+
+  nav ul li :last-child{
+    margin-right: 30px;
+  }
+  
+  nav ul li a:hover:not(.active3) {
+    background-color: #4ba3b1;
+  }
+
+  .check_box {
+    display: flex;
+    align-items: center;
+    margin-left: -5px;
+    justify-content: center
+  }
+
+.check_box input[type="checkbox"] {
+    margin-right: 50px;
+}
+
+.check_box label{
+    margin-right: 50px;
+}
+ 
+.user{
+    float: right;
+    margin-left: auto;
+    align-items: center;
+    right: 20px;
+    position: absolute;
+    
+}
+  .userpic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: right;
+  margin-left: auto;
+  margin-right: 10px;
+}
+  .s1{
+    position: absolute;
+    top: 100%;
+    right: -70%;
+    width: 320px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s;
+  }
+
+  .s1.open-menu{
+    min-height: 340px;
+  }
+  .s2{
+    background: #9a7dc8;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .uinfo{
+    display: flex;
+    align-items: center;
+  }
+
+  .uinfo h3{
+    font-weight: 500;
+  }
+
+  .uinfo img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  .s2 hr{
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px;
+  }
+  
+  .s3{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6f36a8;
+    margin: 12px 0;
+  }
+
+  .s3 p{
+    width: 100%;
+  }
+
+  .s3 img{
+    width: 40px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+  }
+
+  .s3 span{
+    font-size: 20px;
+    transition: transform 0.5s;
+
+  }
+
+  .s3:hover span{
+    right: auto;
+    transform: translateX(5px);
+  }
+
+  .s3:hover p{
+    font-weight: 600;
+  }
+  
+  .searchTerm {
+    width: 900px;
+    border: 3px solid #00b4cc;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9dbfaf;
+    margin-right: 48px;
+    margin-left: 53px;
+  }
+  
+  .searchTerm:focus {
+    color: #8b00cc;
+  }
+  
+  
