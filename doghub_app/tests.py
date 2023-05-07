@@ -1130,8 +1130,22 @@ class GroupsTestCase(TestCase):
         self.user = CustomUser.objects.create_user(
             username="Hades", email="Hades@doghub.com", password="Test@123"
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
         self.user2 = CustomUser.objects.create_user(
             username="Hermes", email="Hermes@doghub.com", password="Test@123"
+        )
+        self.user2_profile = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test",
+            lname="User2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User2",
         )
 
         self.client.login(email="Hades@doghub.com", password="Test@123")
@@ -1348,6 +1362,13 @@ class CreateGroupViewTest(TestCase):
         self.user = CustomUser.objects.create_user(
             username="testuser", password="Test@123"
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
         self.url = reverse("create_group")
 
     def test_create_group_with_valid_data(self):
@@ -1380,6 +1401,13 @@ class JoinLeaveGroupTestCase(TestCase):
         self.user = CustomUser.objects.create_user(
             username="user1", email="user1@example.com", password="testpassword"
         )
+        self.user_profile1 = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
 
         # Create some groups
         self.group1 = Groups.objects.create(
@@ -1405,6 +1433,13 @@ class JoinLeaveGroupTestCase(TestCase):
         # Create another user to join user1 groups
         self.user2 = CustomUser.objects.create_user(
             username="user2", email="user2@example.com", password="testpassword"
+        )
+        self.user_profile2 = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test",
+            lname="User 2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
         )
 
     def test_join_leave_group_view(self):
