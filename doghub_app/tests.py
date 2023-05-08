@@ -915,6 +915,21 @@ class AddFriendTestCase(TestCase):
         )
         self.url = reverse("add_friend", args=[self.friend.email])
         self.client.login(username="testuser", password="testpass")
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
+
+        self.friend_profile = UserProfile.objects.create(
+            user_id=self.friend,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
 
     def test_add_friend(self):
         response = self.client.post(self.url)
@@ -931,7 +946,7 @@ class AddFriendTestCase(TestCase):
 
     def test_add_existing_friend(self):
         Friends.objects.create(sender=self.user, receiver=self.friend, pending=False)
-
+        url = reverse("add_friend", args=[self.user.email])
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Friends.objects.count(), 1)
@@ -943,6 +958,10 @@ class AddFriendTestCase(TestCase):
         self.assertEqual(
             str(messages[0]), f"You are already friends with {self.friend.email}."
         )
+
+        url = reverse("delete_friend", args=[self.friend.email])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestCreateMessage(TestCase):
@@ -1020,6 +1039,14 @@ class TestEventPageFriendList(TestCase):
             list(response.context["user_profiles"])[0]["email"], "user2@test.com"
         )
         self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
+
+        url = reverse("support")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        url = reverse("about")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
 
 
 # class FriendsTestCase(TestCase):
