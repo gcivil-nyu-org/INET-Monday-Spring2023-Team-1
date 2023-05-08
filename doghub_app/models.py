@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from datetime import datetime
+from django.utils import timezone
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "doghub_app.CustomUser")
 
@@ -24,6 +25,32 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def get_own_groups(self):
+        "groups this user created"
+        return self.group_owner.all()
+
+    def get_joined_groups(self):
+        "groups this user joined"
+        return [mem.group for mem in self.groupmember_set.filter(pending=False)]
+
+    def get_pending_groups(self):
+        "groups this user requested to join but pending"
+        return [mem.group for mem in self.groupmember_set.filter(pending=True)]
+
+    def get_pending_members(self):  # -> dict["Groups":"GroupMember"]:
+        res = dict()
+        for g in self.get_own_groups():
+            mem = g.get_pending_members()
+            if mem:
+                res[g] = mem
+        return res
+
+    def get_groups_to_join(self):
+        """
+        return groups for which this user
+        is not an owner, a member or has pending request "
+        """
 
 
 class UserProfile(models.Model):
@@ -100,6 +127,12 @@ class EventPost(models.Model):
     event_title = models.CharField(max_length=MID_CHAR_SIZE)
     event_description = models.CharField(max_length=LARGE_CHAR_SIZE)
     event_time = models.DateTimeField(default=datetime.now)
+    date_created = models.DateTimeField(
+        default=timezone.now, editable=False, blank=True
+    )
+    event_group = models.CharField(
+        max_length=MID_CHAR_SIZE, default="", blank=True, null=True
+    )
     park_id = models.ForeignKey(
         "Park", models.DO_NOTHING, blank=True, null=True, db_column="park_id"
     )
@@ -171,11 +204,15 @@ class ParkTag(models.Model):
 class Service(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=MID_CHAR_SIZE)
+    s_type = models.CharField(max_length=MID_CHAR_SIZE, default="other")
     description = models.CharField(max_length=LARGE_CHAR_SIZE, default="")
     rate = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     contact_details = models.CharField(max_length=255, default="")
     address = models.CharField(max_length=255, blank=True, null=True)
-    tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    # tag_id = models.ForeignKey("Tag", models.DO_NOTHING, db_column="tag_id")
+    date_created = models.DateTimeField(
+        default=timezone.now, editable=False, blank=True
+    )
 
     class Meta:
         db_table = "service"
@@ -252,13 +289,33 @@ class Groups(models.Model):
     def __str__(self):
         return self.group_title
 
+    def get_pending_members(self):
+        return self.groupmember_set.filter(pending=True)
+
+    def accept_member(self, member: "GroupMember") -> None:
+        if isinstance(member, int):
+            member = self.groupmember_set.get(member_id=member)
+
+        member.pending = False
+        member.save()
+
+    def reject_member(self, member: "GroupMember") -> None:
+        if isinstance(member, int):
+            member = self.groupmember_set.get(member_id=member)
+
+        member.delete()
+
 
 class GroupMember(models.Model):
     gm_id = models.AutoField(primary_key=True)
     group = models.ForeignKey(Groups, models.CASCADE, db_column="group_id")
     member = models.ForeignKey(AUTH_USER_MODEL, models.DO_NOTHING, db_column="user_id")
     pending = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "group_member"
         unique_together = (("group", "member"),)
+
+    def __str__(self):
+        return f"{self.member.userprofile.fname} {self.member.userprofile.lname}"

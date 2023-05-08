@@ -1,5 +1,14 @@
-<h3> Welcome {{ request.user.userprofile.fname }}! </h3>
-<p> Create a new group </p>
+{% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
+<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %} {% endif %}
+
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/create_group.css' %}" />
+</head>
+
+<h3> Create a new group! </h3>
+
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}

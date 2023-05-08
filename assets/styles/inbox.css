@@ -120,7 +120,7 @@ body {
     } */
   /* } */ 
 
-  .content.content_expand{
+  .content_expand{
     width: 29rem;
     height: 10rem;
     font-family: 'Arial';
@@ -142,77 +142,9 @@ body {
     overflow: auto;
   }
 
-  .content.content_expand p{
+  .content_expand p{
     opacity:1;
   }
-
-
-  .invite-content {
-    width: 29rem;
-    height: 0rem;
-    font-family: 'Arial';
-    padding: 1rem;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    border-width: 5px;
-    text-align: center;
-    background: white;
-    box-shadow: 1px 1px 16px 0.5px rgba(60, 0, 51, 0.237);
-    position: relative;
-    z-index: 1;
-    transform: translatey(-2rem) ;
-    transition: .5s all ease-out;
-    opacity:0;
-    overflow:auto
-  }
-
-  .invite-content.content_expand{
-    width: 29rem;
-    height: 10rem;
-    font-family: 'Arial';
-    margin-top: 2rem;
-    padding: 1rem;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    border-width: 5px;
-    text-align: center;
-
-    background: #faf1e6;
-    /* background:#ede6d1; */
-    box-shadow: 1px 1px 16px 0.5px rgba(60, 0, 51, 0.237);
-    position: relative;
-    z-index: 1;
-    transform: translatey(2rem);
-    opacity:1;
-    height: 3rem;
-    overflow: auto;
-  }
-
-  .invite-content.content_expand p{
-    opacity:1;
-  }
-
-  .invite-content button{
-  border-radius: 20px;
-  border: 1px solid #6f36a8;
-  background-color: #6f36a8;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: bold;
-  /* height:4rem;
-  width:5rem; */
-  padding: 12px 35px;
-  margin-left: 3rem;
-  margin-right: 2rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: transform 80ms ease-in;
-  }
-
-  .invite-content button:hover{
-    background-color: #5886a8;
-    border: 1px solid #5886a8;
-    }
 
 
   .card:hover .content p {
@@ -286,8 +218,6 @@ body {
     width: 3rem;
     height: 3rem;
     top: 0px;
-    position: fixed;
-    margin-top: 100px;
   }
 
 
@@ -404,7 +334,7 @@ body {
   }
 
   .sending_icon {
-    margin-left:27rem;
+    margin-left:23rem;
     margin-top:-2rem;
     height:3rem;
     width:3rem;
@@ -488,13 +418,12 @@ body {
     border-radius: 10px;
     transition: all 0.4s ease-in-out;
     overflow: auto;
-    
   }
 
   .recipient.expand{
     background:#faf1e6;
     height:2rem;
-    width: 18rem;
+    width: 12rem;
     margin-left:11rem;
     margin-top:-2.5rem;
     border-radius: 10px;
@@ -509,7 +438,7 @@ body {
     margin-top:-0.75rem;
     background-color: #ede1d1;
     min-width: 10rem;
-    width:15rem;
+    width:10rem;
     height:0rem;
     z-index: 1;
     overflow: auto;
@@ -518,8 +447,6 @@ body {
     transition: all 0.4s ease-in-out;
     margin-top:0rem;
     margin-left: 12.2rem; 
-    
-
   }
 
   .dropdown-friend ul{
@@ -536,8 +463,8 @@ body {
     border-color: #ede1d1;
     border-radius: 5%;
     margin:0;
-    height:2.45rem;
-    margin-left: -5rem;
+    height:0.5rem;
+    margin-left: -4rem;
     border-width: 2px;
     text-align: center;
     font-weight: bold;
@@ -553,7 +480,7 @@ body {
     position: absolute;
     background-color: #ede1d1;
     min-width: 10rem;
-    width:15rem;
+    width:10rem;
     height:8rem;
     z-index: 1;
     margin-left: 12.2rem;

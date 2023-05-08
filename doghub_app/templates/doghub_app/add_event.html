@@ -43,7 +43,18 @@
 
                 </div>
 
+                <div class = "input-inline">
+                    <label>Would you like to make this event group specific?:</label>
 
+                    <select id="event_group" name="event_group" size="4" multiple>
+                        {% for group in show_group %}
+                    <option value="{{group.group_id}}">{{ group.group_title}}</option>
+                    {% endfor %}
+                    {% for group in in_group %}
+                    <option value="{{group.group_id}}">{{ group.group_title}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
                     <button class="button" type="submit">Submit</button>
 
                   
@@ -55,7 +66,7 @@
               
             </div>
             <div class="column">
-                <h3 class="card__title">Select a marker for a dog park</h3>
+                <h3 class="card__title">Choose a dog park!</h3>
                 <div id="map"></div>
             </div>
         </div>

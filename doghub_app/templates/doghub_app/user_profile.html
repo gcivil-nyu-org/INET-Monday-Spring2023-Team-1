@@ -86,6 +86,9 @@
           {% if events_list %}
           <p id="state" class="button-87" >Event Host</p>
           {% endif %}
+          {% if services_list %}
+          <p id="state" class="button-871" >Service Provider</p>
+          {% endif %}
           <!-- <span id="country" >USA.</span> -->
         </div>
   
@@ -279,7 +282,8 @@
                 font-size: 0.8rem;" class="card__date">
                     {{event.event_time}}
                 </div>
-                <div style="  position: absolute;
+
+                <div onclick="redirectToInbox()" style="  position: absolute;
                 background: var(--primary-color);
                 padding: 0.4rem;
                 border-top-left-radius: var(--border-radius);
@@ -290,6 +294,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;" class="card__arrow">
+               
+                <script>
+                  function redirectToInbox() {
+                    var events_link = 'events#map-' + {{event.event_id}};
+                    window.location.href = events_link;
+                  }
+                </script>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="15" width="15">
                         <path fill="#fff" d="M13.4697 17.9697C13.1768 18.2626 13.1768 18.7374 13.4697 19.0303C13.7626 19.3232 14.2374 19.3232 14.5303 19.0303L20.3232 13.2374C21.0066 12.554 21.0066 11.446 20.3232 10.7626L14.5303 4.96967C14.2374 4.67678 13.7626 4.67678 13.4697 4.96967C13.1768 5.26256 13.1768 5.73744 13.4697 6.03033L18.6893 11.25H4C3.58579 11.25 3.25 11.5858 3.25 12C3.25 12.4142 3.58579 12.75 4 12.75H18.6893L13.4697 17.9697Z"></path>
                     </svg>
@@ -311,7 +322,9 @@
               <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit omnis eaque, expedita nostrum, facere libero provident laudantium. Quis, hic doloribus! Laboriosam nemo tempora praesentium. Culpa quo velit omnis, debitis maxime, sequi
                 animi dolores commodi odio placeat, magnam, cupiditate facilis impedit veniam? Soluta aliquam excepturi illum natus adipisci ipsum quo, voluptatem, nemo, commodi, molestiae doloribus magni et. Cum, saepe enim quam voluptatum vel debitis
                 nihil, recusandae, omnis officiis tenetur, ullam rerum.</p>-->
-              <button id="edit-password-btn" class="editpassbtn">Edit Password</button>
+                <button id="edit-password-btn" class="editpassbtn" onclick="location.href='/edit_password'">Edit Password</button>
+
+
     
               <div id="password-change-fields" style="display: none;">
                 <form method="POST">

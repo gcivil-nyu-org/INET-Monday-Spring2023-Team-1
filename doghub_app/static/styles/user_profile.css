@@ -424,6 +424,9 @@ button.createbtn i {
 /* .profile-details {
     @extend %group;
   } */
+.dog-profile-public{
+  margin-top: 20px;
+}
 .prof-img {
   height: 6em;
   width: 6em;
@@ -458,27 +461,29 @@ button.createbtn i {
   position: relative;
   top: 0px;
   margin-left: 95%;
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
   background-color: #43077e;
   display: inline-block;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  
 }
 
 .toggle > .fa {
   margin: auto;
   color: #fff;
-  text-align: center;
   cursor: pointer;
   transition: 0.25s;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   width: 1.35rem;
   height: 1.35rem;
-
-  top: 0px;
+  position: absolute;
+  display: inline-flex;
+  top: 10%;
+  left:12%;
 }
 .proflist--item.active {
   height: auto;
@@ -489,6 +494,8 @@ button.createbtn i {
   transform: rotate(-540deg);
   background-color: #5886a8;
   border-radius: 50%;
+  left: 1px;
+  top: 1px;
 }
 
 .delete-bin {

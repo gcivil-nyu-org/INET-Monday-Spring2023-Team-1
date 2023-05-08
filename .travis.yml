@@ -1,3 +1,4 @@
+dist: focal
 language: python
 python:
   - "3.9.7"
@@ -46,8 +47,8 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
     region: "us-west-2"
-    app: "doghub-production-env"
-    env: "doghub-production-env"
+    app: "django-tutorial"
+    env: "doghub-env2"
     bucket_name: "elasticbeanstalk-us-west-2-730437625654"
     on:
       repo: gcivil-nyu-org/INET-Monday-Spring2023-Team-1

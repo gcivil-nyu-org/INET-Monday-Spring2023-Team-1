@@ -193,6 +193,7 @@ def dog_profile_create(request):
             name=request.POST.get("dogName"),
             bio=request.POST.get("dogBio"),
         )
+
         if "dogPic" in request.FILES:
             dog_profile.pic = request.FILES["dogPic"]
         if request.POST.get("dogDOB") != "":
@@ -240,22 +241,69 @@ def events(request):
 
     context = {"userprof": user_prof}  # noqa: F841
     park = list(Park.objects.all())
+    member_of = list(GroupMember.objects.all())
+
+    groups = list(Groups.objects.all())
+    group_member = []
+
+    for group in groups:
+        if group.group_owner == request.user:
+            group_member.append(group)
+
+    for group in member_of:
+        if group.member == request.user:
+            group_member.append(group)
+            # print(group.group_owner)
+
+    show_posts = []
+
     event_posts = list(EventPost.objects.all())
     event_posts.reverse()
-    event_ls = []
+    # event_ls = []
     for event in event_posts:
-        cur_event = {}
-        cur_event["event_info"] = event
-        cur_event["hostname"] = CustomUser.objects.get(id=event.user_id.id).username
-        if event.user_id == request.user:
-            cur_event["host"] = True
+        if event.event_group == "0" or event.event_group is None:
+            if event.event_id not in show_posts:
+                show_posts.append(event)
+
+    for event in event_posts:
+        for group in group_member:
+            print(
+                f"event.event_group = {event.event_group}, group.group_id = {group.group_id}"
+            )
+
+            if int(event.event_group) == int(group.group_id):
+                if event not in show_posts:
+                    show_posts.append(event)
+                    print("Posts:")
+                    print(show_posts)
+
+    for post in show_posts:
+        post.type = "event"
+        post.event_info = post
+        post.hostname = CustomUser.objects.get(id=post.user_id.id).username
+        if post.user_id == request.user:
+            post.host = True
         else:
-            cur_event["host"] = False
-        if Attendee.objects.filter(event_id=event.event_id, user_id=request.user):
-            cur_event["attendee"] = True
+            post.host = False
+        if Attendee.objects.filter(event_id=post.event_id, user_id=request.user):
+            post.attendee = True
         else:
-            cur_event["attendee"] = False
-        event_ls.append(cur_event)
+            post.attendee = False
+
+    service_posts = list(Service.objects.all())
+    for post in service_posts:
+        post.type = "service"
+
+    # combining event_posts and service_posts
+    post_list = []
+    post_list.extend(show_posts)
+    post_list.extend(service_posts)
+    post_list = sorted(post_list, key=lambda post: post.date_created, reverse=True)
+
+    # print(post_list)
+
+    # cur_event["attendee"] = False
+    # event_ls.append(cur_event)
 
     friends = Friends.objects.filter(
         Q(sender=request.user) | Q(receiver=request.user), pending=False
@@ -275,11 +323,15 @@ def events(request):
                 "pic": friend_profile.pic,
             }
         )
+
     context = {
         "userprof": user_prof,
-        "event_posts": event_ls,
+        # "event_posts": event_ls,
         "media_url": settings.MEDIA_URL,
         "park": park,
+        "service_posts": service_posts,
+        "friends": friends,
+        "post_list": post_list,
         "user_profiles": user_profiles,
         "groups_owned": Groups.objects.filter(group_owner=request.user),
         "groups_joined": [
@@ -305,18 +357,25 @@ def user_profile(request):
 
     dog_prof = DogProfile.objects.filter(user_id=request.user)
     events_list = list(EventPost.objects.filter(user_id=request.user))
+    events_list.reverse()
     attendee_events = list(Attendee.objects.filter(user_id=request.user))
+    services_list = list(Service.objects.filter(id=request.user.id))
     for attendee in attendee_events:
-        event = EventPost.objects.get(event_id=attendee.event_id.event_id)
-        if event.user_id != request.user:
-            print(event)
-            events_list.append(event)
+        try:
+            event = EventPost.objects.get(event_id=attendee.event_id.event_id)
+            if event.user_id != request.user:
+                print(event)
+                events_list.append(event)
+
+        except EventPost.DoesNotExist:
+            pass
     print(events_list)
     context = {
         "userprof": user_prof,
         "dogprof": dog_prof,
         "media_url": settings.MEDIA_URL,
         "events_list": events_list,
+        "services_list": services_list,
     }
     if request.method == "POST":
         if "save_password" in request.POST:
@@ -438,6 +497,16 @@ def dog_profile_edit(request, pk):
 def dog_profile_add(request):
     context = {}
     if request.method == "POST":
+        name = request.POST.get("dogName")
+        if name is None or name == "":  # noqa: F632
+            messages.error(request, "Enter a valid Name for the Dog")
+            return redirect("register_details")
+
+        bio = request.POST.get("dogBio")
+        if bio is None or bio == "":  # noqa: F632
+            messages.error(request, "Enter a valid Bio for the Dog")
+            return redirect("register_details")
+
         dog_profile = DogProfile(
             user_id=request.user,
             name=request.POST.get("dogName"),
@@ -491,8 +560,24 @@ def add_post(request):
     current_datetime = datetime.now().strftime("%Y-%m-%dT%H:%M")
     parks = list(Park.objects.values())
     park_data = json.dumps(parks)
-    # park_data = Park.objects.all()
-    # park_data_list = list(park_data)
+    groups = list(Groups.objects.all())
+    in_group = []
+    show_group = []
+    group_members = list(GroupMember.objects.all())
+
+    print("groups")
+
+    for group in groups:
+        if group.group_owner == request.user:
+            show_group.append(group)
+
+    for group in group_members:
+        if group.member == request.user:
+            show_group.append(group.group)
+
+    print("Show group:")
+    print(show_group)
+
     if request.method == "POST":
         event_post_form = EventPostForm(request.POST)
         if event_post_form.is_valid():
@@ -502,19 +587,29 @@ def add_post(request):
                 event_title=request.POST.get("event_title"),
                 event_description=request.POST.get("event_description"),
                 event_time=request.POST.get("event_time"),
+                event_group=request.POST.get("event_group") or None,
             )
+
+            for group in groups:
+                if event_post.event_group == group.group_title:
+                    event_post.event_group = group.group_id
+                    print(event_post.event_group)
+                    print("group_id")
+                    print(group["group_id"])
+            if event_post.event_group is None or event_post.event_group == "":
+                event_post.event_group = 0
 
             location = request.POST.get("location")
             if "," not in location:
                 messages.error(request, "Invalid location format")
-                return redirect("add_post")
+                return redirect("events")
             latitude, longitude = location.split(",")
             # latitude, longitude = location[0], location[1]
             try:
                 park = Park.objects.get(latitude=latitude, longitude=longitude)
             except Park.DoesNotExist:
                 messages.error(request, "No park found for the given info")
-                return redirect("add_post")
+                return redirect("events")
             event_post.park_id = park
 
             user = request.user
@@ -536,6 +631,9 @@ def add_post(request):
         "event_post_form": event_post_form,
         "current_datetime": current_datetime,
         "park_data": park_data,
+        "groups": groups,
+        "show_group": show_group,
+        "in_group": in_group,
     }
     return render(
         request=request, template_name="doghub_app/add_event.html", context=context
@@ -549,11 +647,20 @@ def public_profile(request, email):
         public_prof = UserProfile.objects.get(user_id=user.id)
         dog_prof = DogProfile.objects.filter(user_id=user.id)
         events_list = EventPost.objects.filter(user_id=request.user.id)
+        services_list = list(Service.objects.filter(id=request.user.id))
         user_prof = UserProfile.objects.get(user_id=request.user.id)
         friend = get_object_or_404(CustomUser, email=email)
         friend_request_sent = Friends.objects.filter(
             sender=request.user, receiver=friend, pending=True
         ).first()
+        friendship = (
+            Friends.objects.filter(
+                sender=request.user, receiver=friend, pending=False
+            ).exists()
+            or Friends.objects.filter(
+                sender=friend, receiver=request.user, pending=False
+            ).exists()
+        )
 
         context = {
             "user": user,
@@ -561,9 +668,11 @@ def public_profile(request, email):
             "dogprof": list(dog_prof),
             "media_url": settings.MEDIA_URL,
             "events_list": list(events_list),
+            "services_list": list(services_list),
             "userprof": user_prof,
             "friend": friend,
             "friend_request_sent": friend_request_sent,
+            "friendship": friendship,
         }
         return render(
             request=request,
@@ -643,6 +752,13 @@ def search_user(request):
 @login_required
 def inbox(request):
     context = {}
+
+    user_prof = UserProfile.objects.get(user_id=request.user.id)
+    context["userprof"] = user_prof
+    context["media_url"] = settings.MEDIA_URL
+
+    messageLs = []
+
     if request.method == "POST":
         print(request)
         receiver = CustomUser.objects.get(pk=request.POST.get("receiver"))
@@ -654,7 +770,36 @@ def inbox(request):
     if Chat.objects.filter(receiver=request.user).exists():
         messages = list(Chat.objects.filter(receiver=request.user))
         messages.reverse()
-        context["messageList"] = messages
+        for message in messages:
+            message.type = "chat"
+            messageLs.append(message)
+
+    requestLs = list(request.user.get_pending_members())
+    print(requestLs)
+    for i in range(len(requestLs)):
+        # pending_member=r
+        pending_members = GroupMember.objects.filter(group=requestLs[i], pending=True)
+        lastInsertIdx = -2
+        for member in pending_members:
+            member.type = "request"
+            member.group = requestLs[i]
+            member.group_id = requestLs[i].group_id
+            if len(messageLs) == 0:
+                messageLs.append(member)
+            else:
+                print(lastInsertIdx + 2)
+                print(messageLs)
+                if lastInsertIdx + 2 >= len(messageLs):
+                    messageLs.append(member)
+                else:
+                    messageLs.insert(lastInsertIdx + 2, member)
+                    lastInsertIdx += 2
+    messageLs = sorted(messageLs, key=lambda message: message.timestamp, reverse=True)
+
+    print(messageLs)
+    context["messageList"] = messageLs
+
+    #  friend list
     friendsLs = []
     if Friends.objects.filter(receiver=request.user, pending=False).exists():
         for relationship in list(
@@ -667,6 +812,7 @@ def inbox(request):
         ):
             if relationship.receiver not in friendsLs:
                 friendsLs.append(relationship.receiver)
+
     context["friendsLs"] = friendsLs
 
     return render(request, "doghub_app/inbox.html", context=context)
@@ -691,22 +837,53 @@ def add_friend(request, email):
         messages.warning(request, "You cannot add yourself as a friend.")
         return redirect("public-profile", email=email)
 
-    if Friends.objects.filter(sender=request.user, receiver=friend).exists():
-        messages.warning(
-            request, f"You have already sent a friend request to {friend.email}."
-        )
+    elif (
+        Friends.objects.filter(
+            sender=request.user, receiver=friend, pending=False
+        ).exists()
+        or Friends.objects.filter(
+            sender=friend, receiver=request.user, pending=False
+        ).exists()
+    ):
+        messages.warning(request, f"You are already friends with {friend.email}.")
         return redirect("public-profile", email=email)
 
-    if Friends.objects.filter(
+    elif Friends.objects.filter(
         sender=friend, receiver=request.user, pending=True
     ).exists():
         messages.warning(
             request, f"{friend.email} has already sent you a friend request."
         )
         return redirect("public-profile", email=email)
+    else:
+        Friends.objects.create(sender=request.user, receiver=friend, pending=True)
+        friend_request_url = reverse("friend_requests")
+        notification_message = (
+            f"You have received a friend request from {request.user.email}. "
+            f"Click <a href='{friend_request_url}'>here</a> to view your friend requests."
+        )
+        notification = Chat(
+            receiver=friend, text=notification_message, sender=request.user
+        )
+        notification.save()
+        messages.success(request, f"Friend request sent to {friend.email}.")
+    return redirect("public-profile", email=email)
 
-    Friends.objects.create(sender=request.user, receiver=friend, pending=True)
-    messages.success(request, f"Friend request sent to {friend.email}.")
+
+@login_required
+def delete_friend(request, email):
+    friend = get_object_or_404(CustomUser, email=email)
+    friendship = Friends.objects.filter(
+        (Q(sender=request.user) & Q(receiver=friend))
+        | (Q(sender=friend) & Q(receiver=request.user))
+    ).first()
+
+    if not friendship:
+        messages.warning(request, f"You are not friends with {friend.email}.")
+        return redirect("public-profile", email=email)
+
+    friendship.delete()
+    messages.success(request, f"You have deleted {friend.email} from your friends.")
     return redirect("public-profile", email=email)
 
 
@@ -723,30 +900,30 @@ def add_friend(request, email):
 @login_required
 def friend_requests(request):
     friend_requests = Friends.objects.filter(receiver=request.user, pending=True)
-    # friend_profiles=[]
-    # userprof = UserProfile.objects.get(user_id=request.user)
-    # for friend in friend_requests:
-    #     if friend.receiver == request.user:
-    #         friend_user = friend.sender
-    #     else:
-    #         friend_user = friend.receiver
-    #     friend_profile = UserProfile.objects.get(user_id=friend_user.id)
-    #     friend_profiles.append(
-    #         {
-    #             "fname": friend_profile.fname,
-    #             "lname": friend_profile.lname,
-    #             "email": friend_user.email,
-    #             "pic": friend_profile.pic,
-    #         }
-    #     )
-    # context = {
-    #     "friend_profiles": friend_profiles,
-    #     "media_url": settings.MEDIA_URL,
-    #     "userprof": userprof,
-    # }
-    return render(
-        request, "doghub_app/friend_requests.html", {"friend_requests": friend_requests}
-    )
+    friend_profiles = []
+    userprof = UserProfile.objects.get(user_id=request.user)
+    for friend in friend_requests:
+        #     if friend.receiver == request.user:
+        friend_user = friend.sender
+        #     else:
+        #         friend_user = friend.receiver
+        friend_profile = UserProfile.objects.get(user_id=friend_user.id)
+        friend_profiles.append(
+            {
+                "fname": friend_profile.fname,
+                "lname": friend_profile.lname,
+                "email": friend_user.email,
+                "pic": friend_profile.pic,
+                "fid": friend.fid,
+            }
+        )
+    context = {
+        "friend_requests": friend_requests,
+        "friend_profiles": friend_profiles,
+        "media_url": settings.MEDIA_URL,
+        "userprof": userprof,
+    }
+    return render(request, "doghub_app/friend_requests.html", context=context)
 
 
 @login_required
@@ -804,34 +981,93 @@ def friends(request):
 
 
 @login_required
+def add_service(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        s_type = request.POST.get("service_type")
+
+        description = request.POST.get("service_description")
+        rate = request.POST.get("rate")
+        contact_details = request.POST.get("contact")
+        address = request.POST.get("address", None)
+
+        if (
+            not title
+            or not s_type
+            or not description
+            or not rate
+            or not contact_details
+        ):
+            return redirect("add_service")
+
+        service = Service(
+            title=title,
+            s_type=s_type,
+            description=description,
+            rate=rate,
+            contact_details=contact_details,
+            address=address,
+        )
+        service.save()
+        return redirect("events")
+
+    return render(request=request, template_name="doghub_app/add_service.html")
+
+
 def create_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
         form = CreateGroupForm(request.POST)
         if form.is_valid():
             g = form.save(commit=False)
             g.group_owner = request.user
             g.save()
-            return HttpResponseRedirect("/events")
+            return HttpResponseRedirect("/my-groups")
     else:
         form = CreateGroupForm()
-    return render(request, "doghub_app/create_group.html", {"form": form})
+    return render(
+        request,
+        "doghub_app/create_group.html",
+        {
+            "form": form,
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
 
 
 @login_required
 def my_groups(request):
-    context = {
-        "groups_owned": Groups.objects.filter(group_owner=request.user),
-        "groups_joined": [
-            g.group for g in GroupMember.objects.filter(member=request.user)
-        ],
-    }
-    return render(request, "doghub_app/my_groups.html", context=context)
+    userprof = UserProfile.objects.get(user_id=request.user.id)
+    if request.method == "POST":
+        g = Groups.objects.get(group_id=request.POST.get("group_id"))
+        mem_id = request.POST.get("member_id")
+        status = request.POST.get("status")
+        if status == "accept":
+            g.accept_member(int(mem_id))
+        elif status == "reject":
+            g.reject_member(int(mem_id))
+        else:
+            logging.warning(f"unknown mem status for group {g}")
+        return HttpResponse(status=200)
+        # return HttpResponseRedirect("/my-groups")
+    else:
+        context = {
+            "groups_owned": request.user.get_own_groups(),
+            "groups_joined": request.user.get_joined_groups(),
+            "groups_pending": request.user.get_pending_groups(),
+            "members_pending": request.user.get_pending_members(),
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        }
+        return render(request, "doghub_app/my_groups.html", context=context)
 
 
 @login_required
 def join_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -840,27 +1076,31 @@ def join_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # add user to the member list of the checked groups
         for group_id in gids:
             GroupMember(group_id=group_id, member_id=request.user.pk).save()
-        return HttpResponseRedirect("/events")
+        return HttpResponseRedirect("/my-groups")
     else:
         # display the groups for which the user is not a member
         context = {
+            "Join": True,
             "groups": [
                 g
                 for g in Groups.objects.filter(~Q(group_owner=request.user))
                 if request.user not in [u.member for u in g.groupmember_set.all()]
-            ]
+            ],
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
-    return render(request, "doghub_app/join_group.html", context=context)
+    return render(request, "doghub_app/join_leave_group.html", context=context)
 
 
 @login_required
 def leave_group(request):
+    userprof = UserProfile.objects.get(user_id=request.user.id)
     if request.method == "POST":
-        logging.debug(request.POST)
+        # logging.debug(request.POST)
         gids = []  # group ids checked
         for k in request.POST.keys():
             try:
@@ -869,16 +1109,95 @@ def leave_group(request):
                 pass  # not a checkbox
             else:
                 gids.append(int(k))
-        logging.debug(gids)
+        # logging.debug(gids)
         # remove member from the checked groups
         for group_id in gids:
             GroupMember.objects.get(
                 group_id=group_id, member_id=request.user.pk
             ).delete()
-        return HttpResponseRedirect("/events")
+        return HttpResponseRedirect("/my-groups")
     else:
         # display the groups for which the user is a member
         context = {
-            "groups": [g.group for g in GroupMember.objects.filter(member=request.user)]
+            "groups": [
+                g.group
+                for g in GroupMember.objects.filter(member=request.user, pending=False)
+            ],
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
         }
-    return render(request, "doghub_app/leave_group.html", context=context)
+    return render(request, "doghub_app/join_leave_group.html", context=context)
+
+
+@login_required
+def edit_password(request):
+    if request.method == "GET":
+        return render(request, "doghub_app/edit_password.html")
+    else:
+        if request.method == "POST":
+            if "save_password" in request.POST:
+                current_password = request.POST.get("current_password")
+                new_password = request.POST.get("new_password")
+                confirm_password = request.POST.get("confirm_password")
+                errors = []
+
+                # Check if the current password is correct
+                if not request.user.check_password(current_password):
+                    errors.append("Current password is incorrect.")
+                    # errors.append("Current password is incorrect.")
+                    # return redirect('user_profile')
+
+                # Check if the new password and confirmation match
+                if new_password != confirm_password:
+                    errors.append("New password and confirmation do not match.")
+                    # return redirect('user_profile')
+
+                password_errors = validate_password(new_password)
+                if password_errors:
+                    errors.extend(password_errors)
+
+                if errors:
+                    context = {}
+                    context["errors"] = errors
+                    if len("errors") > 0:
+                        messages.error(
+                            request,
+                            "For you and your dog's safety, please choose a strong password.",  # noqa: #501
+                        )
+                else:
+                    # Change the user's password
+                    request.user.set_password(new_password)
+                    request.user.save()
+                    update_session_auth_hash(request, request.user)
+                    messages.success(request, "Password has been changed.")
+                    return redirect("user_profile")
+            return render(
+                request=request,
+                template_name="doghub_app/edit_password.html",
+                context=context,
+            )
+
+
+def support(request):
+    userprof = UserProfile.objects.get(user_id=request.user)
+    return render(
+        request,
+        "doghub_app/support.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )
+
+
+@login_required
+def about(request):
+    userprof = UserProfile.objects.get(user_id=request.user)
+    return render(
+        request,
+        "doghub_app/about.html",
+        {
+            "userprof": userprof,
+            "media_url": settings.MEDIA_URL,
+        },
+    )

@@ -1,7 +1,23 @@
-
-{% include "doghub_app/nav_bar.html" %}{% load static %} {% if messages %} {% for message in messages %}
-<div class="alert alert-{{ message.tags }}">{{ message }}</div>
-{% endfor %} {% endif %}
+{% include "doghub_app/nav_bar.html" %}{% load static %} 
+{% if messages %} 
+  {% for message in messages %}
+    {% if "error" in message.tags%}
+      <div class="alert alert-info" style="padding: 0.3em; background-color: rgba(252, 42, 0, 0.889); text-align: center;"><h4>{{ message }}</h4></div>
+      <script>
+        setTimeout(function() {
+          document.querySelector('.alert-info').remove();
+        }, 3000);
+      </script>
+    {% elif "success" in message.tags %}
+    <div class="alert alert-info" style="padding: 0.3em; background-color: rgba(1, 213, 1, 0.935); text-align: center;"><h4>{{ message }}</h4></div>
+    <script>
+      setTimeout(function() {
+        document.querySelector('.alert-info').remove();
+      }, 3000);
+    </script>
+    {% endif %}
+  {% endfor %} 
+{% endif %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,9 +35,7 @@
       href="{% static 'styles/events.css' %}"
     />
     <title>Title</title>
-   {% if messages %} {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %} {% endif %}
+
   </head>
   <body>
     <div class="side-bar">
@@ -49,7 +63,7 @@
           </a>
         </li>
         <li class="nav-tab" data-view-name="group">
-          <a href="">
+          <a href="{% url 'my_groups' %}">
             <i class="fa-solid fa-people-group"></i>
             <span>
               Groups
@@ -61,22 +75,34 @@
     <div class="main-content">
   
       <div class="event" data-view-active="true">
-        <a class= "add_event" href="{% url 'add_post' %}" >
-          <i class="fa-solid fa-circle-plus"></i>
-        </a>
-        {% if event_posts %}
+
+        <div class="dropdown">
+          <a class="add_event" href="#">
+            <i class="fa-solid fa-circle-plus"></i>
+          </a>
+          <div class="dropdown-content">
+            <a href="{% url 'add_post' %}">Add Event</a>
+            <a href="{% url 'add_service' %}">Add Service</a>
+          </div>
+        </div>
+        
+        
+          {% if post_list %}
+
         <ul>
-        {% for event in event_posts %}
+        {% for event in post_list %}
+
+        {% if "event" in event.type%}
           <li class="card">
             <div class="card-inner">
                 <div class="front">
-                  <h3 class="card__title"> {{event.event_info.event_title}}</h3>
+                  <h3 class="card__title"> {{event.event_title}}</h3>
                   <p> Host By: {{event.hostname}}</p>
                   <div class="event-description">
-                  <p> {{event.event_info.event_description}}</p>
+                  <p> {{event.event_description}}</p>
                   </div>
                   
-                   <div class="card__date">{{event.event_info.event_time}} </div>
+                   <div class="card__date">{{event.event_time}} </div>
                 </div>
                 <div class="back">
                     <div class="back_content">
@@ -91,14 +117,14 @@
                     </div>
                     
                      {% for parkinfo in park %}
-                    {% if parkinfo.park_id == event.event_info.park_id.park_id %}
-                    <div id ="map-{{event.event_info.event_id}}" style= "height:200px; width:97%;"></div>
+                    {% if parkinfo.park_id == event.park_id.park_id %}
+                    <div id ="map-{{event.event_id}}" style= "height:200px; width:97%;"></div>
                     
                   
                     <script>
                         function initMap() {
                           var myLatLng = {lat: {{ parkinfo.latitude }}, lng: {{ parkinfo.longitude }}};
-                          var map = new google.maps.Map(document.getElementById('map-{{event.event_info.event_id }}'), {
+                          var map = new google.maps.Map(document.getElementById('map-{{event.event_id }}'), {
                               zoom: 17,
                               center: myLatLng
                           });
@@ -111,7 +137,7 @@
                       }
                       initMap();
                       console.log('init Map')
-                      var mapListener = document.getElementById('map-{{event.event_info.event_id}}');
+                      var mapListener = document.getElementById('map-{{event.event_id}}');
                       mapListener.addEventListener("click",(e)=>{
                         e.stopPropagation();
                       });
@@ -127,9 +153,9 @@
                     
                     
                     {% if event.host %}
-                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
                     {% else %}
-                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_info.event_id}}','{{csrf_token}}')">
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
                     {% endif %}    
                     {% if event.attendee %}
                     <i id="registerIc" class="fa-solid fa-star" style="opacity: 0;"></i>
@@ -141,6 +167,59 @@
                 </div>
              </div>
            </li>
+
+
+          {% elif "service" in event.type %}
+          <li class="card service-card">
+            <div class="card-inner-service">
+                <div class="front">
+                  <h3 class="card__title"> {{event.title}}</h3>
+                  <!-- <p> Host By:+ {{event.hostname}}</p> -->
+                  <p> Service {{event.s_type}}</p>
+                  <div class="event-description">
+                  <p> {{event.description}}</p>
+                  </div>
+                  
+                  
+                </div>
+                <div class="back">
+                    <div class="back_content">
+                      <div class="detail_content"><h3> Details</h3></div>
+                      
+                     <div id="reg_ind" > 
+                      {% if event.attendee %}
+                       <i id="registerIc" class="fa-solid fa-star"></i>
+                      {% else %}
+                      <i id="registerIc" class="fa-regular fa-star"></i>
+                      {% endif %}
+                      
+                    </div>  
+                    </div>
+                    
+                    <p> Contact Info: {{event.contact_details}}</p>
+                    <br>
+                    <p> Hourly Rate: ${{event.rate}}</p>
+                  
+                    {%if address%}
+                    <p> Address: {{event.address}}</p>
+                    {% endif%}
+                 <!--  {% if event.host %}
+                          <button class="registerBtn" id="registerBtn" style="pointer-events:none; opacity: 0;" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
+                    {% else %}
+                          <button class="registerBtn" id="registerBtn" onclick="rsvp_event('{{event.event_id}}','{{csrf_token}}')">
+                    {% endif %}    
+                    {% if event.attendee %}
+                    <i id="registerIc" class="fa-solid fa-star" style="opacity: 0;"></i>
+                    {% else %}
+                    <i id="registerIc" class="fa-regular fa-star"></i>
+                    {% endif %}
+                     Contact</button>
+                          -->
+
+                </div>
+             </div>
+           </li>
+           {% endif %}
         {% endfor %}
         </ul>
         {% else %}
@@ -149,12 +228,15 @@
       </div>
       <div class="friend" data-view-active="false">
         <!-- <h1>Friendsssss</h1> -->
+        <a href="{% url 'friend_requests' %}" class="request-data"><img src="{% static 'images/friend_request.png' %}" class="request-img"></a>
         <ul>
           {% for user_profile in user_profiles %}
           <div class="friend-list clearfix">
-            <li>
+            <li><div class="delete-friend">
+              <a class="fa fa-trash" href="{% url 'delete_friend' email=user_profile.email   %}"></a>
+            </div>
                 <a href="{% url 'public-profile' user_profile.email   %}">
-                    <div class="friend-img"><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}">
+                    <div><img src="{{media_url}}{{user_profile.pic}}" alt="{% static 'images/profile1.jpg' %}" class="friend-img">
                     </div>
                     <div class="friend-info">
                         <h4>{{ user_profile.fname }}</h4>
@@ -171,39 +253,8 @@
         <!-- <p>okkkk</p> -->
       </div>
       <div class="group" data-view-active="false">
-        <div class="group-content">
-        <h3> Welcome {{ request.user.userprofile.fname }}! </h3 >
-          {% if groups_owned %}
-        <h4> Groups I own </h4>
-        <ul class="group-content-list">
-        {% for g in groups_owned %}
-          <li> {{ g.group_title }} </li>
-        {% endfor %}
-        </ul>
-        {% else %}
-        <p> You do not own any groups, why not create one? </p>
-        {% endif %}
-
-        {% if groups_joined %}  
-        <h4> Groups I joined </h4>
-        <ul>
-          {% for g in groups_joined %}
-          <li> {{ g.group_title }} </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p> You have not joined any groups, why not join a group ? </p>
-        {% endif %}
-          <p>
-            <a href="{% url 'join_group' %}">Join Group</a>
-            <a href="{% url 'create_group' %}"> Create Group </a>
-            <a href="{% url 'leave_group' %}"> Leave Group </a>
-          </p>
-        </div>
       </div>
     </div>
-
-
   <script src= "{% static 'scripts/events.js' %}" ></script>
   </body>
 

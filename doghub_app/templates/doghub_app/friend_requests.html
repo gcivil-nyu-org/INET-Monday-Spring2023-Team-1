@@ -1,19 +1,20 @@
-
+{% include "doghub_app/nav_bar.html" %}
 {% load static %}
 
 {% block content %}
+<div class="friend-request">
   <h1 id="friend-requests-heading">Friend Requests</h1>
   <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/friend_requests.css' %}">
   <div class="card" id="friend-requests-card">
-    {% if friend_requests %}
+    {% if friend_profiles %}
       <ul id="friend-requests-list">
-        {% for request in friend_requests %}
+        {% for request in friend_profiles %}
           <li class="friend-request-item">
             <div class="media">
-              <img src="{{ media_url }}/{{ request.sender.pic }}" alt="{{ request.sender.profile.fname }} {{ request.sender.profile.lname }}" class="mr-3 rounded-circle friend-request-image" width="64" height="64">
+              <img src="{{media_url}}{{request.pic}}" alt="{{ request.fname }} {{ request.sender.profile.lname }}" class="mr-3 rounded-circle friend-request-image" width="64" height="64">
               <div class="media-body friend-request-body">
-                <h5 class="mt-0 friend-request-name">{{ request.sender.fname }} {{ request.sender.profile.lname }}</h5>
-                <p class="friend-request-email">{{ request.sender.email }}</p>
+                <h5 class="mt-0 friend-request-name">{{ request.fname }} {{ request.lname }}</h5>
+                <p class="friend-request-email">{{ request.email }}</p>
                 <div class="button-group">
                   <a href="{% url 'accept_friend_request' request.fid %}" class="btn btn-success btn-sm friend-request-accept-btn mr-2">Accept</a>
                   <a href="{% url 'decline_friend_request' request.fid %}" class="btn btn-danger btn-sm friend-request-decline-btn">Reject</a>
@@ -26,5 +27,5 @@
     {% else %}
       <p id="no-friend-requests-msg">You have no friend requests.</p>
     {% endif %}
-  </div>
+  </div></div>
 {% endblock %}

@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
+# import logging
+
 # from django.utils import timezone
 # from datetime import datetime
 from django.contrib.auth import get_user_model
@@ -913,6 +915,21 @@ class AddFriendTestCase(TestCase):
         )
         self.url = reverse("add_friend", args=[self.friend.email])
         self.client.login(username="testuser", password="testpass")
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
+
+        self.friend_profile = UserProfile.objects.create(
+            user_id=self.friend,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
 
     def test_add_friend(self):
         response = self.client.post(self.url)
@@ -928,10 +945,23 @@ class AddFriendTestCase(TestCase):
         self.assertEqual(Friends.objects.count(), 0)
 
     def test_add_existing_friend(self):
-        Friends.objects.create(sender=self.user, receiver=self.friend)
+        Friends.objects.create(sender=self.user, receiver=self.friend, pending=False)
+        url = reverse("add_friend", args=[self.user.email])
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Friends.objects.count(), 1)
+        existing_friend = Friends.objects.first()
+        self.assertEqual(existing_friend.sender, self.user)
+        self.assertEqual(existing_friend.receiver, self.friend)
+        messages = list(response.wsgi_request._messages)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]), f"You are already friends with {self.friend.email}."
+        )
+
+        url = reverse("delete_friend", args=[self.friend.email])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestCreateMessage(TestCase):
@@ -1010,6 +1040,29 @@ class TestEventPageFriendList(TestCase):
         )
         self.assertEqual(list(response.context["user_profiles"])[0]["fname"], "Test2")
 
+        url = reverse("support")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        url = reverse("about")
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+
+# class FriendsTestCase(TestCase):
+#     def setUp(self):
+#         self.client = Client()
+#         self.user = CustomUser.objects.create_user(
+#             username="testuser2@gmail.com",
+#             email="testuser2@gmail.com",
+#             password="password",
+#         )
+#         self.friend_user = CustomUser.objects.create_user(
+#             username="frienduser2@gmail.com",
+#             email="frienduser2@gmail.com",
+#             password="password",
+#         )
+
 
 class FriendsTestCase(TestCase):
     def setUp(self):
@@ -1024,6 +1077,20 @@ class FriendsTestCase(TestCase):
             email="frienduser2@gmail.com",
             password="password",
         )
+        self.friend_user_profile = UserProfile.objects.create(
+            user_id=self.friend_user,
+            fname="Friend",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test Friend bio",
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="User",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test Friend bio",
+        )
 
     def test_friend_requests(self):
         self.client.force_login(self.user)
@@ -1035,6 +1102,8 @@ class FriendsTestCase(TestCase):
         )
         response = self.client.get(reverse("friend_requests"))
         self.assertContains(response, self.friend_user.email)
+        self.assertContains(response, self.user_profile.fname)
+        self.assertContains(response, self.user_profile.lname)
 
         friend_request.delete()
         response = self.client.get(reverse("friend_requests"))
@@ -1088,8 +1157,22 @@ class GroupsTestCase(TestCase):
         self.user = CustomUser.objects.create_user(
             username="Hades", email="Hades@doghub.com", password="Test@123"
         )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
         self.user2 = CustomUser.objects.create_user(
             username="Hermes", email="Hermes@doghub.com", password="Test@123"
+        )
+        self.user2_profile = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test",
+            lname="User2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User2",
         )
 
         self.client.login(email="Hades@doghub.com", password="Test@123")
@@ -1168,7 +1251,6 @@ class GroupEventPage(TestCase):
         self.client.login(email="user1@test.com", password="password123")
         url = reverse("events")
         response = self.client.get(url)
-        print(response.context)
         self.assertEqual(len(list(response.context["groups_owned"])), 1)
         self.assertEqual(
             list(response.context["groups_owned"])[0].group_title, "MyGroup"
@@ -1184,3 +1266,303 @@ class GroupEventPage(TestCase):
         self.assertEqual(len(response.context["groups_joined"]), 1)
         self.assertEqual(response.context["groups_joined"][0].group_title, "NotMyGroup")
         self.assertEqual(response.context["groups_joined"][0].group_owner, self.user2)
+
+
+class EditPasswordViewTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser@gmail.com",
+            password="testpassword123",
+            email_verified=True,
+        )
+        self.client.login(username="testuser", password="testpassword")
+
+    def test_get_edit_password_page(self):
+        response = self.client.get(reverse("edit_password"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_valid_data(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "Group@123",
+            "confirm_password": "Group@123",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+
+    def test_post_edit_password_invalid_current_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "wrongpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "newtestpassword",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_confirmation(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "newtestpassword",
+            "confirm_password": "mismatch",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_edit_password_invalid_new_password(self):
+        url = reverse("edit_password")
+        data = {
+            "current_password": "testpassword",
+            "new_password": "weak",
+            "confirm_password": "weak",
+            "save_password": True,
+        }
+        response = self.client.post(url, data=data)
+        self.assertEqual(response.status_code, 302)
+
+
+class AddServiceViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user_model = get_user_model()
+        self.user = self.user_model.objects.create_user(
+            username="testuser@test.com",
+            email="testuser@test.com",
+            password="Test@123",
+            email_verified=True,
+        )
+
+    def test_add_service_view_with_valid_inputs(self):
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.post(
+            "/add_service",
+            {
+                "title": "Test Service",
+                "service_type": "Test Type",
+                "service_description": "Test Description",
+                "rate": "10",
+                "contact": "test@test.com",
+                "address": "Test Address",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/events")
+
+    def test_add_service_view_with_invalid_inputs(self):
+        url = reverse("add_service")
+        self.client.login(username="testuser@test.com", password="Test@123")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "doghub_app/add_service.html")
+
+    def test_add_service_view_for_logged_out_user(self):
+        response = self.client.get("/add_service")
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/login?next=/add_service")
+
+    def test_add_service_view_with_incomplete_fields(self):
+        url = reverse("add_service")
+        self.client.login(username="testuser", password="testpass")
+        response = self.client.post(
+            url,
+            {
+                "title": "Test Service",
+                "service_type": "Test Type",
+                "rate": "10",
+                "contact": "test@test.com",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+
+    # self.assertTemplateUsed(response, 'doghub_app/add_service.html')
+
+
+class CreateGroupViewTest(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username="testuser", password="Test@123"
+        )
+        self.user_profile = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test User",
+        )
+        self.url = reverse("create_group")
+
+    def test_create_group_with_valid_data(self):
+        self.client.login(username="testuser", password="Test@123")
+        form_data = {
+            "group_title": "Test Group",
+            "group_description": "This is a test group.",
+        }
+        response = self.client.post(self.url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, "/my-groups/")
+        self.assertTrue(Groups.objects.filter(group_title="Test Group").exists())
+        self.assertEqual(
+            Groups.objects.filter(group_title="Test Group").first().group_owner,
+            self.user,
+        )
+
+    def test_create_group_with_invalid_data(self):
+        self.client.login(username="testuser", password="Test@123")
+        form_data = {}
+        response = self.client.post(self.url, form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This field is required.")
+        self.assertFalse(Groups.objects.filter(group_title="Test Group").exists())
+
+
+class JoinLeaveGroupTestCase(TestCase):
+    def setUp(self):
+        # Create a user
+        self.user = CustomUser.objects.create_user(
+            username="user1", email="user1@example.com", password="testpassword"
+        )
+        self.user_profile1 = UserProfile.objects.create(
+            user_id=self.user,
+            fname="Test",
+            lname="User",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+
+        # Create some groups
+        self.group1 = Groups.objects.create(
+            group_title="Group 1",
+            group_description="Group 1 description",
+            group_owner=self.user,
+        )
+        self.group2 = Groups.objects.create(
+            group_title="Group 2",
+            group_description="Group 2 description",
+            group_owner=self.user,
+        )
+        self.group3 = Groups.objects.create(
+            group_title="Group 3",
+            group_description="Group 3 description",
+            group_owner=self.user,
+        )
+        self.group1.save()
+        self.group2.save()
+        self.group3.save()
+
+        # user1 owns 3 groups
+        # Create another user to join user1 groups
+        self.user2 = CustomUser.objects.create_user(
+            username="user2", email="user2@example.com", password="testpassword"
+        )
+        self.user_profile2 = UserProfile.objects.create(
+            user_id=self.user2,
+            fname="Test",
+            lname="User 2",
+            dob=date.today() - timedelta(days=365 * 20),
+            bio="Test bio",
+        )
+
+    def test_join_leave_group_view(self):
+        # Login user2
+        self.client.login(username="user2", password="testpassword")
+
+        # Access the join_group view
+        response = self.client.get(reverse("join_group"))
+
+        # Check that the response is successful and the context is correct
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("groups" in response.context)
+        self.assertEqual(len(response.context["groups"]), 3)
+
+        # logging.debug("so far so good")
+        # Check that the user is not a member of any of the groups
+        for group in response.context["groups"]:
+            # logging.debug(f"checking member for group {group}")
+            self.assertFalse(group.groupmember_set.filter(member=self.user2).exists())
+
+        # Join Group 1 and Group 2
+        group_ids = [g.group_id for g in response.context["groups"]]
+        gid1, gid2, gid3 = group_ids
+        response = self.client.post(
+            reverse("join_group"), data={str(gid1): "on", str(gid2): "on"}
+        )
+
+        # Check that the user is now a pending member of Group 1 and Group 2 but not group3
+        self.assertTrue(
+            self.group1.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
+        self.assertTrue(
+            self.group2.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
+        self.assertFalse(
+            self.group3.groupmember_set.filter(member=self.user2, pending=True).exists()
+        )
+
+        # check that the owner is not a member
+        self.assertFalse(self.group1.groupmember_set.filter(member=self.user).exists())
+        self.assertFalse(self.group2.groupmember_set.filter(member=self.user).exists())
+        self.assertFalse(self.group3.groupmember_set.filter(member=self.user).exists())
+
+        # login the owner and accept incoming requests
+        self.client.login(username="user", password="testpassword")
+
+        response = self.client.get(reverse("my_groups"))
+
+        # check that there are 2 pending requests
+        self.assertEqual(len(response.context["groups_pending"]), 2)
+
+        # accept one and reject the other
+        gid1, gid2 = [g.group_id for g in response.context["groups_pending"]]
+
+        # accept member into group1
+        response = self.client.post(
+            reverse("my_groups"),
+            data={"group_id": gid1, "member_id": self.user2.pk, "status": "accept"},
+        )
+
+        # reject member from group2
+        response = self.client.post(
+            reverse("my_groups"),
+            data={"group_id": gid2, "member_id": self.user2.pk, "status": "reject"},
+        )
+
+        # login user2 and check that he's no longer pending for group1
+        # and was rejected for group2
+        self.client.login(username="user2", password="testpassword")
+        # Check that the user is now a pending member of Group 1 and Group 2 but not group3
+
+        self.assertTrue(
+            self.group1.groupmember_set.filter(
+                member=self.user2, pending=False
+            ).exists()
+        )
+        self.assertFalse(self.group2.groupmember_set.filter(member=self.user2).exists())
+
+        # test leave group
+        # user2 is currently logged in
+        # and is a member of group1 only, test that they can leave group1
+
+        # get a list of groups to leave
+        response = self.client.get(reverse("leave_group"))
+
+        # check that the user is part of only one group
+        # and that it's group one
+        self.assertEqual(len(response.context["groups"]), 1)
+        self.assertEqual(response.context["groups"][0].group_id, gid1)
+
+        # logging.debug(f"the response: {response}")
+        # logging.debug(f"the context: {response.context}")
+        # logging.debug(f"gid1: {gid1} gid2: {gid2}")
+
+        # leave group1
+        response = self.client.post(reverse("leave_group"), data={str(gid1): "on"})
+
+        # check that user2 is no longer a member of group1
+        self.assertFalse(self.group1.groupmember_set.filter(member=self.user2).exists())
